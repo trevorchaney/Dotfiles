@@ -69,6 +69,7 @@ set undofile            " Maintain undo history between sessions.
 set undodir=~/.vim/undodir  " Directory to vim undo files.
 set spelllang=en_us     "
 set complete+=kspell    "
+set mouse=a             " Enable mouse support for gui and term with support.
 set incsearch           " Incremental search.
 set hlsearch            " Highlight search.
 set ignorecase          " Ignore case in searches.
