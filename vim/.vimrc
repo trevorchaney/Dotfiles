@@ -32,8 +32,9 @@ inoremap {<cr> {<cr>}<esc>O<tab>
 inoremap (<cr> (<cr>)<esc>O<tab>
 " Move to next fill character, staying in insert mode and removing highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
-" Increment a number.
+" Trigger Codi scratchpad.
 nnoremap <silent> <leader>c :Codi!!<cr>
+" Increment a number.
 nnoremap <C-k> <C-A>
 " Decrement a number.
 nnoremap <C-j> <C-X>
