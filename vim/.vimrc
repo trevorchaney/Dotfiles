@@ -51,6 +51,10 @@ nmap <silent> <leader>O O<esc>
 nmap <silent> <leader><tab> :NERDTreeToggle<CR>
 "cnoremap w<cr> w<cr>:!ctags<cr>    " Replaced with Plugin 'vim-autotag'
 "nnoremap <leader>9 bcw()<esc>P
+" List available buffers                                                        
+nnoremap <silent> <leader>b :ls<cr>:b<space>                                    
+" Make the current file into a pdf.                                             
+nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 "
 "" Set vim colors.
 "syntax enable
@@ -143,7 +147,14 @@ function! g:ToggleSpellMode()
         set spell
     endif
 endfunc
-nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
+nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr> 
+"
+" Allows for running macros over all visually selected lines with @.
+function! ExecuteMacroOverVisualRange()
+    echo "@".getcmdline()
+    execute ":'<, '>normal @".nr2char(getchar())
+endfunc
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 "
 " _____Rmarkdown_____
 "
