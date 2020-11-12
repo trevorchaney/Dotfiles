@@ -121,6 +121,8 @@ nmap <silent> <leader><tab> :NERDTreeToggle<CR>
 nnoremap <silent> <leader>b :ls<cr>:b<space>
 " Make the current file into a pdf.
 nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
+" Autocorrect next misspelled word.
+nnoremap <silent> <leader>z ]s1z=
 "
 "==__==================_===_===================
 " / _|_   _ _ __   ___| |_(_) ___  _ __  ___  |
