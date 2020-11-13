@@ -92,9 +92,11 @@ nnoremap <silent> <leader>t :!ctags &<cr>
 " Compile latex (.tex) documents from normal mode.
 nnoremap <silent> <leader>l :w<cr>:!pdflatex %; open %:t:r.pdf<cr>
 " Brace completion.
-inoremap {<cr> {<cr>}<esc>O<tab>
+"inoremap {<cr> {<cr>}<esc>O<tab>
+inoremap {<cr> {<cr>}<esc>O
 " Paren completion.
-inoremap (<cr> (<cr>)<esc>O<tab>
+"inoremap (<cr> (<cr>)<esc>O<tab>
+inoremap (<cr> (<cr>)<esc>O
 " Move to next fill character, staying in insert mode and removing highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 " Trigger Codi scratchpad.
