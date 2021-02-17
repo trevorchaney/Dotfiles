@@ -59,6 +59,8 @@ set autoindent          "
 set expandtab           "
 set tags+=/usr/local/include/tags "
 set cursorline
+"set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
+set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 hi CursorLine term=NONE cterm=None ctermbg=black
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
