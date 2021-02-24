@@ -16,15 +16,15 @@
 "|____/ \___|\__|\__|_|_| |_|\__, |___/ |
 "                            |___/      |
 "========================================
-"
-"" Set vim colors.
+
+" Set vim colors.
 syntax enable
 "set background=dark
 "colorscheme solarized
-""
-"" Enable transparency set by emulator. Must be after colorscheme.
+
+" Enable transparency set by emulator. Must be after colorscheme.
 "hi Normal guibg=NONE ctermbg=NONE
-"
+
 " Set vim behavior.
 set modelines=0         " CVE-2007-2438
 set nocompatible        " Use Vim defaults instead of 100% vi compatibility
@@ -64,19 +64,22 @@ set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 hi CursorLine term=NONE cterm=None ctermbg=black
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
-"
+
 " Don't write backup file if vim is being called by "crontab -e"
 au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
-"
+
 " Don't write backup file if vim is being called by "chpass"
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
-"
+
 " Set proper indentation for html, css, & javascript.
 autocmd FileType html,css,javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
-"
+
+" Set syntax highlighting for misc. c++ file extentions.
+autocmd BufEnter *.tpp :setlocal filetype=cpp
+
 " Set proper tab character for make.
 autocmd FileType make setlocal noexpandtab
-"
+
 "=__==__===================_===================
 "|  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___  |
 "| |\/| |/ _` | '_ \| '_ \| | '_ \ / _` / __| |
@@ -84,9 +87,9 @@ autocmd FileType make setlocal noexpandtab
 "|_|  |_|\__,_| .__/| .__/|_|_| |_|\__, |___/ |
 "             |_|   |_|            |___/      |
 "==============================================
+" (n)ormal-mode (no)n-(re)cursive (map).
 " Set <leader> to <space>.
 let mapleader=" "
-" (n)ormal-mode (no)n-(re)cursive (map).
 " Remove search highlighting till next search.
 nnoremap <silent> <leader><esc> :noh<cr>
 " Build tags.
@@ -127,14 +130,14 @@ nnoremap <silent> <leader>b :ls<cr>:b<space>
 nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 " Autocorrect next misspelled word.
 nnoremap <silent> <leader>z ]s1z=
-"
+
 "==__==================_===_===================
 " / _|_   _ _ __   ___| |_(_) ___  _ __  ___  |
 "| |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __| |
 "|  _| |_| | | | | (__| |_| | (_) | | | \__ \ |
 "|_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/ |
 "==============================================
-"
+
 " This function sets <leader>n to toggle between absolute and relative line
 " numbers.
 function! g:ToggleNuMode()
@@ -145,7 +148,7 @@ function! g:ToggleNuMode()
     endif
 endfunc
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
-"
+
 " This function sets <leader>s to toggle spelling markup.
 function! g:ToggleSpellMode()
     if(&spell == 1)
@@ -155,39 +158,72 @@ function! g:ToggleSpellMode()
     endif
 endfunc
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
-"
+
 " Allows for running macros over all visually selected lines with @.
 function! ExecuteMacroOverVisualRange()
     echo "@".getcmdline()
     execute ":'<, '>normal @".nr2char(getchar())
 endfunc
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
-"
-""=_==========================
-""| |_ __ _  __ _  __ _ ___  |
-""| __/ _` |/ _` |/ _` / __| |
-""| || (_| | (_| | (_| \__ \ |
-"" \__\__,_|\__, |\__, |___/ |
-""          |___/ |___/      |
-""============================
-""
+
+"=_==========================
+"| |_ __ _  __ _  __ _ ___  |
+"| __/ _` |/ _` |/ _` / __| |
+"| || (_| | (_| | (_| \__ \ |
+" \__\__,_|\__, |\__, |___/ |
+"          |___/ |___/      |
+"============================
+
 "" Set tagging for source code of file type.
 "autocmd Filetype cpp,c,h,hpp setlocal tags+=/usr/local/include/tags
-""
+
 "" TODO:[] Fix this shit.
 ""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tags
 ""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/tags
-""
-""============================
-""
+
+"==___=_===========_=============
+" | _ \ |_  _ __ _(_)_ _  ___   |
+" |  _/ | || / _` | | ' \(_-<   |
+" |_| |_|\_,_\__, |_|_||_/__/   |
+"            |___/              |
+"================================
+" Plugins installed with vimplug.
+" Plugins will be downloaded under the specified directory.
+call plug#begin('~/.vim/plugged')
+"
+" Declare the list of plugins.
+Plug 'scrooloose/nerdtree'
+"Plug 'Valloric/YouCompleteMe'
+"Plug 'ludovicchabant/vim-gutentags'
+Plug 'w0rp/ale'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+"Plug 'majutsushi/tagbar'
+"Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
+"Plug 'jaxbot/browserlink.vim'               " Live browser editing
+Plug 'mattn/emmet-vim'
+Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
+Plug 'Xuyuanp/nerdtree-git-plugin'          " Git plugin for nerdtree
+Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
+Plug 'rking/ag.vim'                         " Silver searcher searching
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
+
+"=____==_=============_=========____=======_===_===_==================
+"|  _ \| |_   _  __ _(_)_ __   / ___|  ___| |_| |_(_)_ __   __ _ ___ |
+"| |_) | | | | |/ _` | | '_ \  \___ \ / _ \ __| __| | '_ \ / _` / __||
+"|  __/| | |_| | (_| | | | | |  ___) |  __/ |_| |_| | | | | (_| \__ \|
+"|_|   |_|\__,_|\__, |_|_| |_| |____/ \___|\__|\__|_|_| |_|\__, |___/|
+"===============|___/======================================|___/=====
+
 "" ___Rmarkdown___
-""
+
 "autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
-""
-"" ___NERDTree___
-"let NERDTreeShowHidden=1
-"let NERDTreeQuitOnOpen=1
-""
+
+" ___NERDTree___
+let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
+
 "" ___YouCompleteMe___
 "" Set path for ycm's C autocompletion.
 "let g:ycm_global_ycm_extra_conf = "~/.vim/.ycm_extra_conf.py"
@@ -199,43 +235,15 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
 "let g:ycm_add_preview_to_completeopt=1
 "let g:ycm_autoclose_preview_window_after_completion=1
 "let g:ycm_autoclose_preview_window_after_insertion=1
-""
-""___ale___
-"" Set ale to lint only in normal mode.
-"let g:ale_lint_on_text_changed = "normal"
-"let g:ale_lint_on_insert_leave = 1
-""
-""___airline___
-"" Set the theme for airline.
-"let g:airline_powerline_fonts = 1
-"let g:airline_theme='luna'
-"" Set tabline
-"let g:airline#extensions#tabline#enabled = 1
-""
-""==___=_===========_=============
-"" | _ \ |_  _ __ _(_)_ _  ___   |
-"" |  _/ | || / _` | | ' \(_-<   |
-"" |_| |_|\_,_\__, |_|_||_/__/   |
-""            |___/              |
-""================================
-"" Plugins installed with vimplug.
-"" Plugins will be downloaded under the specified directory.
-"call plug#begin('~/.vim/plugged')
-""
-"" Declare the list of plugins.
-"Plug 'scrooloose/nerdtree'
-"Plug 'Valloric/YouCompleteMe'
-"Plug 'ludovicchabant/vim-gutentags'
-"Plug 'w0rp/ale'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-"Plug 'majutsushi/tagbar'
-"Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
-""Plug 'jaxbot/browserlink.vim'               " Live browser editing
-"Plug 'mattn/emmet-vim'
-"Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
-"Plug 'Xuyuanp/nerdtree-git-plugin'          " Git plugin for nerdtree
-"Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
-"Plug 'rking/ag.vim'                         " Silver searcher searching
-"" List ends here. Plugins become visible to Vim after this call.
-"call plug#end()
+
+"___ale___
+" Set ale to lint only in normal mode.
+let g:ale_lint_on_text_changed = "normal"
+let g:ale_lint_on_insert_leave = 1
+
+"___airline___
+" Set the theme for airline.
+let g:airline_powerline_fonts = 1
+let g:airline_theme='luna'
+" Set tabline
+let g:airline#extensions#tabline#enabled = 1
