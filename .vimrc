@@ -31,6 +31,9 @@ set nocompatible        " Use Vim defaults instead of 100% vi compatibility
 set backspace=2         " More powerful backspacing
 set nu                  " Enable line numbers at startup.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
+set backup              " Enable backups
+set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
+set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set undofile            " Maintain undo history between sessions.
 set undodir=~/.vim/undodir  " Directory to vim undo files.
 set spelllang=en_us     "
