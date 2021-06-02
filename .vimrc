@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 "
 "               ██╗   ██╗██╗███╗   ███╗
 "               ██║   ██║██║████╗ ████║
@@ -32,6 +31,9 @@ set nocompatible        " Use Vim defaults instead of 100% vi compatibility
 set backspace=2         " More powerful backspacing
 set nu                  " Enable line numbers at startup.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
+set backup              " Enable backups
+set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
+set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set undofile            " Maintain undo history between sessions.
 set undodir=~/.vim/undodir  " Directory to vim undo files.
 set spelllang=en_us     "
@@ -46,7 +48,7 @@ set hidden              " Allow buffer switching without saving.
 set colorcolumn=80      " Add a colored column at 80.
 set path+=**            " Used for nested file searching.
 set wildmenu            " Show tab completion options.
-set listchars=tab:o—,nbsp:_,trail:– " Exposes whitespace characters.
+set listchars=tab:o-,nbsp:_,trail:- " Exposes whitespace characters.
 set list                " This and the above expose whitespace characters.
 set scrolloff=5         " Keep at least 5 lines above and below the cursor.
 set foldmethod=indent   " Allows indented code folding.
@@ -61,7 +63,7 @@ set autowrite           "
 set updatetime=300      " Faster refresh rate.
 set autoindent          "
 set expandtab           "
-"set tags+=/usr/local/include/tags "
+"set tags+=/usr/include/tags "
 set cursorline
 "set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
 "set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
@@ -401,6 +403,55 @@ let g:limelight_priority = -1
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
+"___Gutentags___
+let g:gutentags_ctags_exclude = [
+      \ '*.git', '*.svg', '*.hg',
+      \ '*/tests/*',
+      \ 'build',
+      \ 'dist',
+      \ '*sites/*/files/*',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'cache',
+      \ 'compiled',
+      \ 'docs',
+      \ 'example',
+      \ 'bundle',
+      \ 'vendor',
+      \ '*.md',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '.*rc*',
+      \ '*.json',
+      \ '*.min.*',
+      \ '*.map',
+      \ '*.bak',
+      \ '*.zip',
+      \ '*.pyc',
+      \ '*.class',
+      \ '*.sln',
+      \ '*.Master',
+      \ '*.csproj',
+      \ '*.tmp',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ '*.pdb',
+      \ 'tags*',
+      \ 'cscope.*',
+      \ '*.css',
+      \ '*.less',
+      \ '*.scss',
+      \ '*.exe', '*.dll',
+      \ '*.mp3', '*.ogg', '*.flac',
+      \ '*.swp', '*.swo',
+      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \ ]
+
 "========================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
@@ -422,8 +473,8 @@ Plug 'junegunn/fzf.vim'                         " Fuzzy searching of files.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
 "Plug 'Valloric/YouCompleteMe'               " Completion engine, needs config.
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-"Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
-"Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'vim-airline/vim-airline'              " Adds styled statusbars.
 Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
