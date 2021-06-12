@@ -174,7 +174,7 @@ HISTCONTROL=ignoreboth
 
 # For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 # NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
-HISTSIZE=-1
+HISTSIZE=10000000
 HISTFILESIZE=10000000
 
 # enable programmable completion features (you don't need to enable
