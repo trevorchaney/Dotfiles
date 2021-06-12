@@ -156,6 +156,11 @@ nnoremap <silent> <leader>z ]s1z=
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
 nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
 
+" Switch to corresponding header/source file.
+" You could use ".hpp" or ".c" filename endings by changing it in the
+" replacement statements
+nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
 
