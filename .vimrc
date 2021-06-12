@@ -174,7 +174,7 @@ nnoremap <silent> <s-F7> :cp<cr>
 " Open Quickfix drawer.
 nnoremap <silent> <c-F7> :call g:ToggleQuickfix()<cr>
 
-" Run gdb wit an a.out executable.
+" Run gdb with an a.out executable.
 nnoremap <silent> <F8> :term gdb a.out<cr>
 
 " Run :make and open the Quickfix menu.
@@ -184,7 +184,7 @@ nnoremap <silent> <F9> :make<cr>:copen<cr>
 nnoremap <silent> <c-F9> :make clean<cr>
 
 " Run :make and then run the a.out program.
-nnoremap <silent> <s-F9> :make<cr>:copen<cr>:term ./a.out<cr>
+nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
 
 " Run :make clean && make, aka. rebuild and open the Quickfix menu.
 " Figure this out later.
@@ -321,7 +321,42 @@ endif
 "      from the NerdFonts collection of patched fonts. Otherwise, uncomment
 "      the fonts symbols that aren't broken below.
 
-" old vim-powerline symbols
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.colnr = ' ㏇:'
+let g:airline_symbols.colnr = ' ℅:'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = ' ␊:'
+let g:airline_symbols.linenr = ' ␤:'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.maxlinenr = '㏑'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.spell = ''
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
+
+"" powerline symbols
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.colnr = ' :'
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ' :'
+"let g:airline_symbols.maxlinenr = '☰ '
+"let g:airline_symbols.dirty='⚡'
+"
+"" old vim-powerline symbols
 "let g:airline_left_sep = '⮀'
 "let g:airline_left_alt_sep = '⮁'
 "let g:airline_right_sep = '⮂'
@@ -329,37 +364,6 @@ endif
 "let g:airline_symbols.branch = '⭠'
 "let g:airline_symbols.readonly = '⭤'
 "let g:airline_symbols.linenr = '⭡'
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.crypt = '🔒'
-"let g:airline_symbols.linenr = '☰'
-"let g:airline_symbols.linenr = '␊'
-"let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-"let g:airline_symbols.maxlinenr = ''
-"let g:airline_symbols.maxlinenr = '㏑'
-"let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-"let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.dirty='⚡'
 " --------------
 
 " vv Replaced with COC.nvim vv
@@ -486,5 +490,6 @@ Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
 Plug 'rking/ag.vim'                         " Silver file searcher
+Plug 'will133/vim-dirdiff'                  " Diff whole directories
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()

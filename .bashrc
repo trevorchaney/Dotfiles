@@ -1,6 +1,9 @@
-#
-# ~/.bashrc
-#
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -174,7 +177,7 @@ HISTCONTROL=ignoreboth
 
 # For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 # NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
-HISTSIZE=-1
+HISTSIZE=10000000
 HISTFILESIZE=10000000
 
 # enable programmable completion features (you don't need to enable
@@ -218,3 +221,14 @@ ex ()
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Diff whole directories with vim
+function dirdiff() {
+    # Shell-escape each path
+    DIR1=$(printf '%q' "$1"); shift
+    DIR2=$(printf '%q' "$1"); shift
+    vim $@ -c "DirDiff $DIR1 $DIR2"
+}
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
