@@ -156,6 +156,11 @@ nnoremap <silent> <leader>z ]s1z=
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
 nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
 
+" Switch to corresponding header/source file.
+" You could use ".hpp" or ".c" filename endings by changing it in the
+" replacement statements
+nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
 
@@ -344,7 +349,7 @@ let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
-"" powerline symbols
+" powerline symbols
 "let g:airline_left_sep = ''
 "let g:airline_left_alt_sep = ''
 "let g:airline_right_sep = ''
@@ -355,8 +360,9 @@ let g:airline_symbols.whitespace = 'Ξ'
 "let g:airline_symbols.linenr = ' :'
 "let g:airline_symbols.maxlinenr = '☰ '
 "let g:airline_symbols.dirty='⚡'
-"
-"" old vim-powerline symbols
+
+" old vim-powerline symbols
+>>>>>>> 020ba38d1473e1a32e13c7754a0c7360974724fa
 "let g:airline_left_sep = '⮀'
 "let g:airline_left_alt_sep = '⮁'
 "let g:airline_right_sep = '⮂'
