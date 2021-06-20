@@ -48,7 +48,7 @@ set hidden              " Allow buffer switching without saving.
 set colorcolumn=80      " Add a colored column at 80.
 set path+=**            " Used for nested file searching.
 set wildmenu            " Show tab completion options.
-set listchars=tab:o-,nbsp:_,trail:- " Exposes whitespace characters.
+set listchars=tab:o—,nbsp:_,trail:– " Exposes whitespace characters.
 set list                " This and the above expose whitespace characters.
 set scrolloff=5         " Keep at least 5 lines above and below the cursor.
 set foldmethod=indent   " Allows indented code folding.
@@ -63,7 +63,7 @@ set autowrite           "
 set updatetime=300      " Faster refresh rate.
 set autoindent          "
 set expandtab           "
-"set tags+=/usr/include/tags "
+"set tags+=/usr/local/include/tags "
 set cursorline
 "set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
 "set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
@@ -344,7 +344,7 @@ let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
-"let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
@@ -362,7 +362,6 @@ let g:airline_symbols.whitespace = 'Ξ'
 "let g:airline_symbols.dirty='⚡'
 
 " old vim-powerline symbols
->>>>>>> 020ba38d1473e1a32e13c7754a0c7360974724fa
 "let g:airline_left_sep = '⮀'
 "let g:airline_left_alt_sep = '⮁'
 "let g:airline_right_sep = '⮂'
