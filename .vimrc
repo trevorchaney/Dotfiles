@@ -70,8 +70,9 @@ set cursorline
 set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 
 " Cursor Related settings.
-hi CursorLine term=NONE cterm=None ctermbg=black
-hi CursorLine term=NONE cterm=None ctermbg=236
+hi CursorLine term=NONE cterm=NONE ctermbg=black
+hi CursorLine term=NONE cterm=NONE ctermbg=236
+hi VertSplit term=NONE cterm=NONE ctermbg=NONE ctermfg=white
 hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -156,10 +157,20 @@ nnoremap <silent> <leader>z ]s1z=
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
 nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
 
+" Visually select last changed or put text.
+"nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'<Paste>
+nnoremap gp `[v`]
+
 " Switch to corresponding header/source file.
 " You could use ".hpp" or ".c" filename endings by changing it in the
 " replacement statements
 nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+
+" VimGrep the open buffers
+nnoremap <silent> <leader>v :GrepBufs<c-l><space>
+
+" VimGrep the word under the cursor within the open buffers.
+nnoremap <silent> <leader>V :call GrepBuffers("<C-R><C-W>")<cr>
 
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
@@ -168,7 +179,7 @@ nnoremap <silent> <leader>4 :Files<cr>
 nnoremap <silent> <leader>2 @:
 
 " Run an a.out program.
-nnoremap <silent> <F5> :term ./a.out<cr>
+nnoremap <silent> <F5> :vs<cr>:term ./a.out<cr>
 
 " Jump to next item in quickfix after :make.
 nnoremap <silent> <F7> :cn<cr>
@@ -183,7 +194,7 @@ nnoremap <silent> <c-F7> :call g:ToggleQuickfix()<cr>
 nnoremap <silent> <F8> :term gdb a.out<cr>
 
 " Run :make and open the Quickfix menu.
-nnoremap <silent> <F9> :make<cr>:copen<cr>
+nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
 
 " Run :make clean.
 nnoremap <silent> <c-F9> :make clean<cr>
@@ -192,7 +203,8 @@ nnoremap <silent> <c-F9> :make clean<cr>
 nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
 
 " Run :make clean && make, aka. rebuild and open the Quickfix menu.
-" Figure this out later.
+" NOTE: Figure out how to call remapped keys, I'd guess that they would have
+"       to defined in order for stuff like this to work.
 "nnoremap <silent> <leader><F7> <F6><F7>
 
 
@@ -258,6 +270,22 @@ function! g:ToggleQuickfix()
     copen
 endfunction
 
+function! BufferList()
+    let all = range(0, bufnr('$'))
+    let res = []
+    for b in all
+        if buflisted(b)
+            call add(res, bufname(b))
+        endif
+    endfor
+    return res
+endfunction
+
+function! GrepBuffers(expression)
+    exec 'vimgrep/'.a:expression.'/'.join(BufferList())
+endfunction
+
+command! -nargs=+ GrepBufs call GrepBuffers(<q-args>)
 " Allows for running macros over all visually selected lines with @.
 function! ExecuteMacroOverVisualRange()
     echo "@".getcmdline()
@@ -349,7 +377,7 @@ let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
-" powerline symbols
+"" powerline symbols
 "let g:airline_left_sep = ''
 "let g:airline_left_alt_sep = ''
 "let g:airline_right_sep = ''
@@ -361,7 +389,7 @@ let g:airline_symbols.whitespace = 'Ξ'
 "let g:airline_symbols.maxlinenr = '☰ '
 "let g:airline_symbols.dirty='⚡'
 
-" old vim-powerline symbols
+"" old vim-powerline symbols
 "let g:airline_left_sep = '⮀'
 "let g:airline_left_alt_sep = '⮁'
 "let g:airline_right_sep = '⮂'
@@ -413,58 +441,40 @@ autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
 "___Gutentags___
+" Let gutentags generate tags in most cases.
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+
+" Let gutentags generate more info for tags.
+"    --fields=+ailmnS (info gathered from: $ ctags --list-fields)
+"    a: Access (or export) of class members
+"    i: Inheritance information
+"    l: Language of input file containing tag
+"    m: Implementation information
+"    n: Line number of tag definition
+"    S: Signature of routine (e.g. prototype or parameter list)
+let g:gutentags_ctags_extra_args = ['--tag-relative=yes', '--fields=+ailmnS']
+
+" File extentions for gutentags to ignore.
+" This is not meant to replace ~/.ctags but rather to double check it.
 let g:gutentags_ctags_exclude = [
-      \ '*.git', '*.svg', '*.hg',
-      \ '*/tests/*',
-      \ 'build',
-      \ 'dist',
-      \ '*sites/*/files/*',
-      \ 'bin',
-      \ 'node_modules',
-      \ 'bower_components',
-      \ 'cache',
-      \ 'compiled',
-      \ 'docs',
-      \ 'example',
-      \ 'bundle',
-      \ 'vendor',
-      \ '*.md',
-      \ '*-lock.json',
-      \ '*.lock',
-      \ '*bundle*.js',
-      \ '*build*.js',
-      \ '.*rc*',
-      \ '*.json',
-      \ '*.min.*',
-      \ '*.map',
-      \ '*.bak',
-      \ '*.zip',
-      \ '*.pyc',
-      \ '*.class',
-      \ '*.sln',
-      \ '*.Master',
-      \ '*.csproj',
-      \ '*.tmp',
-      \ '*.csproj.user',
-      \ '*.cache',
-      \ '*.pdb',
-      \ 'tags*',
-      \ 'cscope.*',
-      \ '*.css',
-      \ '*.less',
-      \ '*.scss',
-      \ '*.exe', '*.dll',
-      \ '*.mp3', '*.ogg', '*.flac',
-      \ '*.swp', '*.swo',
-      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
-      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
-      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
+      \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
+      \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor',
+      \ '*.md', '*-lock.json', '*.lock', '*bundle*.js', '*build*.js',
+      \ '.*rc*', '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc',
+      \ '*.class', '*.sln', '*.Master', '*.csproj', '*.tmp', '*.csproj.user',
+      \ '*.cache', '*.pdb', 'tags*', 'cscope.*', '*.css', '*.less', '*.scss',
+      \ '*.exe', '*.dll', '*.mp3', '*.ogg', '*.flac', '*.swp', '*.swo', '*.bmp',
+      \ '*.gif', '*.ico', '*.jpg', '*.png', '*.rar', '*.zip', '*.tar', '*.tar.gz',
+      \ '*.tar.xz', '*.tar.bz2', '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
       \ ]
 
 "========================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
-
 " NOTE: Anything to do with tags and youcompleteme in specific require
 "       configuration. Be sure that they are properly configured or they wont
 "       work. Other plugins that are commented out here are things I use only
@@ -475,6 +485,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
 Plug 'SirVer/ultisnips'
 Plug 'scrooloose/nerdtree'
