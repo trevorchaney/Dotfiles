@@ -1,5 +1,10 @@
 # Use an escaping backslash '\' to use command without alias.
 
+# Always show the contents after a change directory
+cd() {
+    builtin cd "$@" && ls --color=auto;
+}
+
 alias ard="arduino-cli"         # Tired of writing this out.
 alias cp="cp -ir"               # Recursive copy, Confirm before overwriting.
 alias df="df -h"                # Human-readable sizes.
@@ -19,6 +24,7 @@ alias mkdir="mkdir -p"          # Create parent directories.
 alias more=less                 # Use less instead of more.
 alias mv="mv -i"                # Confirm before overwriting.
 alias neo="nvim"                # Just an abbreviation for neovim
+alias nnn="nnn -e"              # Always open text documents in $EDITOR
 alias py="python3"              # Python abbreviation.
 alias scim="sc-im"
 alias sudo="doas"               # YAGNI
@@ -26,6 +32,8 @@ alias vdir='vdir --color=auto'  # Add color to vdir command.
 alias wtr="curl wttr.in"        # Get the local weather.
 alias xo="xdg-open"             # Open with system preferred application.
 
+# Always start 'nnn' in a tmux session.
+#alias nnn="tmux new-session -ds 'temp' nnn -ea; tmux attach-session -t 'temp'"
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert

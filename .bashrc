@@ -1,25 +1,18 @@
-# .bashrc
-
-# Source global definitions
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
-fi
+#
+# ~/.bashrc
+#
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
+## Include common shell settings for bash and zsh.
+if [ -f ~/.shell_commons ]; then
+    . ~/.shell_commons
 fi
 
-# If not running interactively, don't do anything.
-[[ $- != *i* ]] && return
-
-
-# Set PATH variable
-export PATH=$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin
+HISTFILE=~/.bash_history
 
 # Enter vi mode with <escape>.
 set -o vi
@@ -32,46 +25,6 @@ stty -ixon
 source /usr/share/fzf/key-bindings.bash
 source /usr/share/fzf/completion.bash
 export FZF_COMPLETION_TRIGGER="**"
-export FD_OPTIONS="--hidden --follow --exclude .git --exclude node_modules --exclude .vim"
-export FZF_DEFAULT_COMMAND="fd --type f --type l $FD_OPTIONS"
-export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
-export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
-
-# colored GCC warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# Set default text editor to vim.
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
-
-colors() {
-    local fgc bgc vals seq0
-
-    printf "Color escapes are %s\n" '\e[${value};...;${value}m'
-    printf "Values 30..37 are \e[33mforeground colors\e[m\n"
-    printf "Values 40..47 are \e[43mbackground colors\e[m\n"
-    printf "Value  1 gives a  \e[1mbold-faced look\e[m\n\n"
-
-    # foreground colors
-    for fgc in {30..37}; do
-        # background colors
-        for bgc in {40..47}; do
-            fgc=${fgc#37} # white
-            bgc=${bgc#40} # black
-
-            vals="${fgc:+$fgc;}${bgc}"
-            vals=${vals%%;}
-
-            seq0="${vals:+\e[${vals}m}"
-            printf "  %-9s" "${seq0:-(default)}"
-            printf " ${seq0}TEXT\e[m"
-            printf " \e[${vals:+${vals+$vals;}}1mBOLD\e[m"
-        done
-        echo; echo
-    done
-}
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
@@ -137,7 +90,6 @@ complete -cf sudo
 # it regains control.  #65623
 # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
 shopt -s checkwinsize
-
 shopt -s expand_aliases
 
 # export QT_SELECT=4
@@ -161,24 +113,6 @@ shopt -s cdspell
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Color man pages
-export LESS_TERMCAP_mb=$'\e[01;32m'
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;47;30m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;36m'
-export LESS=-r
-
-# Don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-# NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
-HISTSIZE=10000000
-HISTFILESIZE=10000000
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -191,44 +125,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#
-## ex - archive extractor
-## usage: ex <file>
-ex ()
-{
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1     ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
 # Enable jump command for directory jumping
 #eval "$(jump shell)"
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# Diff whole directories with vim
-function dirdiff() {
-    # Shell-escape each path
-    DIR1=$(printf '%q' "$1"); shift
-    DIR2=$(printf '%q' "$1"); shift
-    vim $@ -c "DirDiff $DIR1 $DIR2"
-}
-
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
