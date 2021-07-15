@@ -26,48 +26,49 @@ syntax enable
 "hi Normal guibg=NONE ctermbg=NONE
 
 " Set vim behavior.
-set modelines=0         " CVE-2007-2438
-set nocompatible        " Use Vim defaults instead of 100% vi compatibility
+set autoindent          "
+set autowrite           "
 set backspace=2         " More powerful backspacing
-set nu                  " Enable line numbers at startup.
-set printoptions=number:y   " Adds numbers to :hardcopy command.
 set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
-set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
-set undofile            " Maintain undo history between sessions.
-set undodir=~/.vim/undodir  " Directory to vim undo files.
-set spelllang=en_us     "
-set complete+=kspell    "
-set mouse=a             " Enable mouse support for gui and term with support.
-set incsearch           " Incremental search.
-set hlsearch            " Highlight search.
-set ignorecase          " Ignore case in searches.
-set smartcase           " '' excepted if an uppercase letter is used.
-set history=500         " Sets how many lines of history VIM has to remember.
-set hidden              " Allow buffer switching without saving.
 set colorcolumn=80      " Add a colored column at 80.
-set path+=**            " Used for nested file searching.
-set wildmenu            " Show tab completion options.
-set listchars=tab:o—,nbsp:_,trail:– " Exposes whitespace characters.
-set list                " This and the above expose whitespace characters.
-set scrolloff=5         " Keep at least 5 lines above and below the cursor.
+set complete+=kspell    "
+set cursorline
+set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
+set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
+"set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
+set expandtab           "
+set foldlevel=2         "
 set foldmethod=indent   " Allows indented code folding.
 set foldnestmax=10      "
+set hidden              " Allow buffer switching without saving.
+set history=500         " Sets how many lines of history VIM has to remember.
+set hlsearch            " Highlight search.
+set ignorecase          " Ignore case in searches.
+set incsearch           " Incremental search.
+set list                " This and the above expose whitespace characters.
+set listchars=tab:o—,nbsp:_,trail:– " Exposes whitespace characters.
+"set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
+set modelines=0         " CVE-2007-2438
+set mouse=a             " Enable mouse support for gui and term with support.
+set nocompatible        " Use Vim defaults instead of 100% vi compatibility
+set nofixendofline      " Do not add or remove final end of line.
 set nofoldenable        "
 set nrformats+=alpha    " Make letters increment and decrement able.
-set foldlevel=2         "
-set tabstop=4           "      " [] Add context to these.
-set softtabstop=4       "
+set nu                  " Enable line numbers at startup.
+set path+=**            " Used for nested file searching.
+set printoptions=number:y   " Adds numbers to :hardcopy command.
+set scrolloff=5         " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
-set autowrite           "
-set updatetime=300      " Faster refresh rate.
-set autoindent          "
-set expandtab           "
+set smartcase           " '' excepted if an uppercase letter is used.
+set softtabstop=4       "
+set spelllang=en_us     "
+set tabstop=4           "      " [] Add context to these.
 "set tags+=/usr/local/include/tags "
-set cursorline
-"set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
-"set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
-set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
+set undodir=~/.vim/undodir  " Directory to vim undo files.
+set undofile            " Maintain undo history between sessions.
+set updatetime=300      " Faster refresh rate.
+set wildmenu            " Show tab completion options.
 
 " Cursor Related settings.
 hi CursorLine term=NONE cterm=NONE ctermbg=black
@@ -91,7 +92,6 @@ autocmd BufEnter *.tpp :setlocal filetype=cpp
 
 " Set proper tab character for make.
 autocmd FileType make setlocal noexpandtab
-
 
 "=__==__===================_===================
 "|  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___  |
@@ -163,8 +163,9 @@ nnoremap gp `[v`]
 
 " Switch to corresponding header/source file.
 " You could use ".hpp" or ".c" filename endings by changing it in the
-" replacement statements
-nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
+" replacement statements. (see COC Plugin)
+" coc-clangd "clangd.switchSourceHeader" can do this as well.
+nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<cr>
 
 " VimGrep the open buffers
 nnoremap <silent> <leader>v :GrepBufs<c-l><space>
@@ -179,7 +180,7 @@ nnoremap <silent> <leader>4 :Files<cr>
 nnoremap <silent> <leader>2 @:
 
 " Run an a.out program.
-nnoremap <silent> <F5> :vs<cr>:term ./a.out<cr>
+nnoremap <silent> <F5> :term ./a.out<cr>
 
 " Jump to next item in quickfix after :make.
 nnoremap <silent> <F7> :cn<cr>
@@ -206,7 +207,6 @@ nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
 " NOTE: Figure out how to call remapped keys, I'd guess that they would have
 "       to defined in order for stuff like this to work.
 "nnoremap <silent> <leader><F7> <F6><F7>
-
 
 " Custom Function Mappings
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
@@ -284,8 +284,8 @@ endfunction
 function! GrepBuffers(expression)
     exec 'vimgrep/'.a:expression.'/'.join(BufferList())
 endfunction
-
 command! -nargs=+ GrepBufs call GrepBuffers(<q-args>)
+
 " Allows for running macros over all visually selected lines with @.
 function! ExecuteMacroOverVisualRange()
     echo "@".getcmdline()
@@ -318,6 +318,51 @@ endfunc
 
 " ___COC.nvim___
 "source ~/.vim/coc-config.vim
+
+" Disable python2 support, python2 is deprecated.
+let g:loaded_python_provider = 0
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+
+" Use K to show documentation in preview window.
+nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " ___Rmarkdown___
 autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
@@ -437,39 +482,67 @@ let g:limelight_eop = '\ze\n^\s'
 "   Set it to -1 not to overrule hlsearch
 let g:limelight_priority = -1
 
+" Have Goyo start/stop Limelight whenever Goyo is entered/left.
 autocmd! User GoyoEnter Limelight
 autocmd! User GoyoLeave Limelight!
 
+"___Vim-Cpp-Enhanced-Highlight___"
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+"let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1   " Faster than above
+let g:cpp_concepts_highlight = 1
+"let g:cpp_no_function_highlight = 1
+
 "___Gutentags___
-" Let gutentags generate tags in most cases.
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-
-" Let gutentags generate more info for tags.
-"    --fields=+ailmnS (info gathered from: $ ctags --list-fields)
-"    a: Access (or export) of class members
-"    i: Inheritance information
-"    l: Language of input file containing tag
-"    m: Implementation information
-"    n: Line number of tag definition
-"    S: Signature of routine (e.g. prototype or parameter list)
-let g:gutentags_ctags_extra_args = ['--tag-relative=yes', '--fields=+ailmnS']
-
-" File extentions for gutentags to ignore.
-" This is not meant to replace ~/.ctags but rather to double check it.
 let g:gutentags_ctags_exclude = [
-      \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
-      \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
-      \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor',
-      \ '*.md', '*-lock.json', '*.lock', '*bundle*.js', '*build*.js',
-      \ '.*rc*', '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc',
-      \ '*.class', '*.sln', '*.Master', '*.csproj', '*.tmp', '*.csproj.user',
-      \ '*.cache', '*.pdb', 'tags*', 'cscope.*', '*.css', '*.less', '*.scss',
-      \ '*.exe', '*.dll', '*.mp3', '*.ogg', '*.flac', '*.swp', '*.swo', '*.bmp',
-      \ '*.gif', '*.ico', '*.jpg', '*.png', '*.rar', '*.zip', '*.tar', '*.tar.gz',
-      \ '*.tar.xz', '*.tar.bz2', '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \ '*.git', '*.svg', '*.hg',
+      \ '*/tests/*',
+      \ 'build',
+      \ 'dist',
+      \ '*sites/*/files/*',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'cache',
+      \ 'compiled',
+      \ 'docs',
+      \ 'example',
+      \ 'bundle',
+      \ 'vendor',
+      \ '*.md',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '.*rc*',
+      \ '*.json',
+      \ '*.min.*',
+      \ '*.map',
+      \ '*.bak',
+      \ '*.zip',
+      \ '*.pyc',
+      \ '*.class',
+      \ '*.sln',
+      \ '*.Master',
+      \ '*.csproj',
+      \ '*.tmp',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ '*.pdb',
+      \ 'tags*',
+      \ 'cscope.*',
+      \ '*.css',
+      \ '*.less',
+      \ '*.scss',
+      \ '*.exe', '*.dll',
+      \ '*.mp3', '*.ogg', '*.flac',
+      \ '*.swp', '*.swo',
+      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
       \ ]
 
 "========================================================
@@ -482,30 +555,32 @@ call plug#begin('~/.vim/plugged')
 "       writing).
 
 " Declare the list of plugins.
-Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
-Plug 'tpope/vim-surround'                   " Surround text objects.
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'airblade/vim-gitgutter'
+Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
-Plug 'scrooloose/nerdtree'
-Plug 'junegunn/fzf.vim'                         " Fuzzy searching of files.
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
 "Plug 'Valloric/YouCompleteMe'               " Completion engine, needs config.
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+Plug 'airblade/vim-gitgutter'
+Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
+Plug 'junegunn/fzf.vim'                     " Fuzzy searching of files.
+Plug 'junegunn/goyo.vim'                    " Minimal interface.
+Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
+Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
+Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'preservim/tagbar'                     " Tag browser for ctags.
+Plug 'rking/ag.vim'                         " Silver file searcher
+Plug 'scrooloose/nerdtree'
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
-Plug 'w0rp/ale'                             " Linting engine.
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'vim-airline/vim-airline'              " Adds styled statusbars.
 Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
-Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'junegunn/goyo.vim'                    " Minimal interface.
-Plug 'preservim/tagbar'                     " Tag browser for ctags.
-Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
-Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
-Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
-Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
-Plug 'rking/ag.vim'                         " Silver file searcher
+Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()

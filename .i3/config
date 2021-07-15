@@ -42,6 +42,9 @@ bindsym $mod+d exec --no-startup-id dmenu_recency
 # launch categorized menu
 bindsym $mod+z exec --no-startup-id morc_menu
 
+# Launch a calculator
+bindsym XF86Calculator exec --no-startup-id qalculate-gtk
+
 ################################################################################################
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
@@ -63,7 +66,6 @@ bindsym $mod+Ctrl+b exec i3-sensible-terminal -e 'bmenu'
 bindsym $mod+F2 exec firefox
 bindsym $mod+F3 exec pcmanfm
 #bindsym $mod+F3 exec ranger
-bindsym $mod+Shift+F3 exec pcmanfm_pkexec
 bindsym $mod+F5 exec i3-sensible-terminal -e 'mocp'
 bindsym $mod+t exec --no-startup-id pkill picom
 bindsym $mod+Ctrl+t exec --no-startup-id picom -b
@@ -71,10 +73,13 @@ bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart du
 bindsym Print exec --no-startup-id i3-scrot
 bindsym $mod+Print --release exec --no-startup-id i3-scrot -w
 bindsym $mod+Shift+Print --release exec --no-startup-id i3-scrot -s
-#bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf //Just look it up.
+# Just look it up.
+#bindsym $mod+Shift+h exec xdg-open /usr/share/doc/manjaro/i3_help.pdf
 bindsym $mod+Ctrl+x --release exec --no-startup-id xkill
 
-# focus_follows_mouse no
+# Focus follows the mouse, changes focus if the mouse moves over a window.
+# Defaulet is 'yes'
+#focus_follows_mouse no
 
 # change focus
 bindsym $mod+h focus left
@@ -88,23 +93,23 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window, slowest:
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+# move focused window, fastest:
+bindsym $mod+Shift+h move left 120
+bindsym $mod+Shift+j move down 120
+bindsym $mod+Shift+k move up 120
+bindsym $mod+Shift+l move right 120
 
-# alternatively, you can use the cursor keys, default:
-bindsym $mod+Shift+Left move left 120
-bindsym $mod+Shift+Down move down 120
-bindsym $mod+Shift+Up move up 120
-bindsym $mod+Shift+Right move right 120
+# move slower:
+bindsym $mod+Shift+Ctrl+h move left 30
+bindsym $mod+Shift+Ctrl+j move down 30
+bindsym $mod+Shift+Ctrl+k move up 30
+bindsym $mod+Shift+Ctrl+l move right 30
 
-# slower:
-bindsym $mod+Shift+Ctrl+Left move left 30
-bindsym $mod+Shift+Ctrl+Down move down 30
-bindsym $mod+Shift+Ctrl+Up move up 30
-bindsym $mod+Shift+Ctrl+Right move right 30
+# Alternatively, you can use the cursor keys, default speed (slowest):
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
 
 # workspace back and forth (with/without active container)
 workspace_auto_back_and_forth yes
@@ -143,9 +148,12 @@ bindsym $mod+Shift+minus move scratchpad
 # If there are multiple scratchpad windows, this command cycles through them.
 bindsym $mod+minus scratchpad show
 
-#navigate workspaces next / previous
-bindsym $mod+Ctrl+Right workspace next
+# Navigate workspaces next / previous
 bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Ctrl+Right workspace next
+# Alternative
+bindsym $mod+Mod1+h workspace prev
+bindsym $mod+Mod1+l workspace next
 
 # Workspace names
 # to display names or symbols instead of plain workspace numbers you can use
@@ -228,6 +236,11 @@ for_window [class="zoom"] floating enable border pixel 1
 for_window [class="Timeset-gui"] floating enable border normal
 for_window [class="(?i)virtualbox"] floating enable border normal
 for_window [class="Xfburn"] floating enable
+for_window [title="Qalculate!"] floating enable
+for_window [title="Zeal"] floating enable
+
+# Stop specific windows from stealing focus
+no_focus [title="preview-tui"]
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -307,7 +320,7 @@ exec_always --no-startup-id fix_xcursor
 # Change the variable name at the place you want to match the color
 # of your terminal like this:
 # [example]
-# If you want your bar to have the same background color as your 
+# If you want your bar to have the same background color as your
 # terminal background change the line 362 from:
 # background #14191D
 # to:
@@ -337,6 +350,7 @@ bar {
     i3bar_command i3bar
     status_command i3status
     position top
+    modifier Mod1
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
 #   tray_output primary
