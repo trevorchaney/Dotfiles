@@ -31,6 +31,8 @@ set autowrite           "
 set backspace=2         " More powerful backspacing
 set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
+set cinkeys-=0#         " Stop vim from treating # indentation different.
+set cinoptions+=#1s     " Indent with c-macros one s-width. used with cinkeys.
 set colorcolumn=80      " Add a colored column at 80.
 set complete+=kspell    "
 set cursorline
@@ -188,9 +190,6 @@ nnoremap <silent> <F7> :cn<cr>
 " Jump to previous item in quickfix after :make.
 nnoremap <silent> <s-F7> :cp<cr>
 
-" Open Quickfix drawer.
-nnoremap <silent> <c-F7> :call g:ToggleQuickfix()<cr>
-
 " Run gdb with an a.out executable.
 nnoremap <silent> <F8> :term gdb a.out<cr>
 
@@ -208,8 +207,11 @@ nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
 "       to defined in order for stuff like this to work.
 "nnoremap <silent> <leader><F7> <F6><F7>
 
-" Custom Function Mappings
+" Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
+
+" Open Quickfix drawer.
+nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
 
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
@@ -498,52 +500,18 @@ let g:cpp_concepts_highlight = 1
 
 "___Gutentags___
 let g:gutentags_ctags_exclude = [
-      \ '*.git', '*.svg', '*.hg',
-      \ '*/tests/*',
-      \ 'build',
-      \ 'dist',
-      \ '*sites/*/files/*',
-      \ 'bin',
-      \ 'node_modules',
-      \ 'bower_components',
-      \ 'cache',
-      \ 'compiled',
-      \ 'docs',
-      \ 'example',
-      \ 'bundle',
-      \ 'vendor',
-      \ '*.md',
-      \ '*-lock.json',
-      \ '*.lock',
-      \ '*bundle*.js',
-      \ '*build*.js',
-      \ '.*rc*',
-      \ '*.json',
-      \ '*.min.*',
-      \ '*.map',
-      \ '*.bak',
-      \ '*.zip',
-      \ '*.pyc',
-      \ '*.class',
-      \ '*.sln',
-      \ '*.Master',
-      \ '*.csproj',
-      \ '*.tmp',
-      \ '*.csproj.user',
-      \ '*.cache',
-      \ '*.pdb',
-      \ 'tags*',
-      \ 'cscope.*',
-      \ '*.css',
-      \ '*.less',
-      \ '*.scss',
-      \ '*.exe', '*.dll',
-      \ '*.mp3', '*.ogg', '*.flac',
-      \ '*.swp', '*.swo',
-      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
-      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
-      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
-      \ ]
+            \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
+            \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components', 'cache',
+            \ 'compiled', 'docs', 'example', 'bundle', 'vendor', '*.md',
+            \ '*-lock.json', '*.lock', '*bundle*.js', '*build*.js', '.*rc*',
+            \ '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc', '*.class',
+            \ '*.sln', '*.Master', '*.csproj', '*.tmp', '*.csproj.user', '*.cache',
+            \ '*.pdb', 'tags*', 'cscope.*', '*.css', '*.less', '*.scss', '*.exe',
+            \ '*.dll', '*.mp3', '*.ogg', '*.flac', '*.swp', '*.swo', '*.bmp',
+            \ '*.gif', '*.ico', '*.jpg', '*.png', '*.rar', '*.zip', '*.tar',
+            \ '*.tar.gz', '*.tar.xz', '*.tar.bz2', '*.pdf', '*.doc', '*.docx',
+            \ '*.ppt', '*.pptx'
+            \ ]
 
 "========================================================
 " Plugins will be downloaded under the specified directory.
@@ -582,5 +550,6 @@ Plug 'vim-airline/vim-airline'              " Adds styled statusbars.
 Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
+Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
