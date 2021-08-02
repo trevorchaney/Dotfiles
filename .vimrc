@@ -528,8 +528,8 @@ Plug 'SirVer/ultisnips'
 "Plug 'Valloric/YouCompleteMe'               " Completion engine, needs config.
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
 Plug 'junegunn/fzf.vim'                     " Fuzzy searching of files.
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
