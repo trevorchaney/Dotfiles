@@ -1,12 +1,8 @@
 # Use an escaping backslash '\' to use command without alias.
 
-# Always show the contents after a change directory
-cd() {
-    builtin cd "$@" && ls --color=auto;
-}
-
 alias ard="arduino-cli"         # Tired of writing this out.
 alias cp="cp -ir"               # Recursive copy, Confirm before overwriting.
+alias cls="clear"               # Too much DOS, try Ctrl-l.
 alias df="df -h"                # Human-readable sizes.
 alias dir='dir --color=auto'    # Add color to dir command.
 alias egrep='egrep --color=auto' # Add color to egrep command.
@@ -23,12 +19,13 @@ alias ls="ls -a --color=auto"      # Add color to ls command.
 alias mkdir="mkdir -p"          # Create parent directories.
 alias more=less                 # Use less instead of more.
 alias mv="mv -i"                # Confirm before overwriting.
-alias neo="nvim"                # Just an abbreviation for neovim
-alias nnn="nnn -e"              # Always open text documents in $EDITOR
+alias nnn="nnn -ea"             # Always open text documents in $EDITOR
 alias py="python3"              # Python abbreviation.
+alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-alias sudo="doas"               # YAGNI
+#alias sudo="doas"               # YAGNI
 alias vdir='vdir --color=auto'  # Add color to vdir command.
+#alias vim="nvim"                # Just an abbreviation for neovim
 alias wtr="curl wttr.in"        # Get the local weather.
 alias xo="xdg-open"             # Open with system preferred application.
 
@@ -38,3 +35,6 @@ alias xo="xdg-open"             # Open with system preferred application.
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# UC2
+alias msg="cd ~/adsi/src/userlib/source/uc2/MessageFactory"
