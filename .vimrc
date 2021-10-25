@@ -62,7 +62,8 @@ set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
 set scrolloff=5         " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
-set smartcase           " '' excepted if an uppercase letter is used.
+set showcmd             " show number of visually selected lines.
+set smartcase           " '', except if an uppercase letter is used.
 set softtabstop=4       "
 set spelllang=en_us     "
 set tabstop=4           "      " [] Add context to these.
@@ -72,11 +73,17 @@ set undofile            " Maintain undo history between sessions.
 set updatetime=300      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
 
-" Cursor Related settings.
-hi CursorLine term=NONE cterm=NONE ctermbg=black
-hi CursorLine term=NONE cterm=NONE ctermbg=236
-hi VertSplit term=NONE cterm=NONE ctermbg=NONE ctermfg=white
+" Cursor & Color Related settings.
+" hi CursorLine term=NONE cterm=NONE ctermbg=black
+hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
+hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
+hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
+hi Folded ctermfg=darkblue ctermbg=black
+hi Search ctermfg=black ctermbg=yellow cterm=bold
+hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
+hi Todo ctermfg=green ctermbg=NONE cterm=bold
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
 
@@ -93,7 +100,7 @@ autocmd FileType html,css,javascript setlocal tabstop=2 softtabstop=2 shiftwidth
 autocmd BufEnter *.tpp :setlocal filetype=cpp
 
 " Set proper tab character for make.
-autocmd FileType make setlocal noexpandtab
+autocmd FileType make,xml setlocal noexpandtab
 
 "=__==__===================_===================
 "|  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___  |
@@ -107,6 +114,9 @@ let mapleader=" "
 " (n)ormal-mode (no)n-(re)cursive (map).
 " Remove search highlighting till next search.
 nnoremap <silent> <leader><esc> :noh<cr>
+
+" Use visual selection for search and replace.
+vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 
 " Build tags.
 nnoremap <silent> <leader>t :!ctags &<cr>
@@ -167,7 +177,7 @@ nnoremap gp `[v`]
 " You could use ".hpp" or ".c" filename endings by changing it in the
 " replacement statements. (see COC Plugin)
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
-nnoremap <silent> <leader>e :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<cr>
+nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
 
 " VimGrep the open buffers
 nnoremap <silent> <leader>v :GrepBufs<c-l><space>
@@ -181,14 +191,20 @@ nnoremap <silent> <leader>4 :Files<cr>
 " Repeat lost entered colon command
 nnoremap <silent> <leader>2 @:
 
+" Run :make clean.
+nnoremap <silent> <F2> :silent make clean<cr>
+
+" Run :make and then run the a.out program.
+nnoremap <silent> <F3> :silent make clean<cr>:silent make<cr>:copen<cr>
+
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
 
 " Jump to next item in quickfix after :make.
-nnoremap <silent> <F7> :cn<cr>
+nnoremap <silent> <F6> :cn<cr>
 
 " Jump to previous item in quickfix after :make.
-nnoremap <silent> <s-F7> :cp<cr>
+nnoremap <silent> <F7> :cp<cr>
 
 " Run gdb with an a.out executable.
 nnoremap <silent> <F8> :term gdb a.out<cr>
@@ -197,10 +213,10 @@ nnoremap <silent> <F8> :term gdb a.out<cr>
 nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
 
 " Run :make clean.
-nnoremap <silent> <c-F9> :make clean<cr>
+"nnoremap <silent> <c-F9> :make clean<cr>
 
 " Run :make and then run the a.out program.
-nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
+"nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
 
 " Run :make clean && make, aka. rebuild and open the Quickfix menu.
 " NOTE: Figure out how to call remapped keys, I'd guess that they would have
@@ -528,8 +544,8 @@ Plug 'SirVer/ultisnips'
 "Plug 'Valloric/YouCompleteMe'               " Completion engine, needs config.
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
-Plug 'junegunn/fzf.vim'                     " Fuzzy searching of files.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
+Plug 'junegunn/fzf.vim'                     " Fuzzy searching of files.
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
@@ -551,5 +567,6 @@ Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
+Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
