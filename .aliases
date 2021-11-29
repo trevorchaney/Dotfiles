@@ -37,4 +37,7 @@ alias xo="xdg-open"             # Open with system preferred application.
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # UC2
+alias adsi="cd ~/adsi"
 alias msg="cd ~/adsi/src/userlib/source/uc2/MessageFactory"
+alias wiz="cd ~/adsi/src/configwiz/cfgwiz"
+alias trk="cd ~/adsi/src/userlibs/source/UC2_TN_Map"

@@ -93,10 +93,10 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 " Don't write backup file if vim is being called by "chpass"
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
-" Set proper indentation for html, css, & javascript.
-autocmd FileType html,css,javascript setlocal tabstop=2 softtabstop=2 shiftwidth=2
+" Set 2 space indentation for certain file formats.
+autocmd FileType html,css,javascript,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
-" Set syntax highlighting for misc. c++ file extentions.
+" Set syntax highlighting for misc. C++ file extensions.
 autocmd BufEnter *.tpp :setlocal filetype=cpp
 
 " Set proper tab character for make.
@@ -190,6 +190,9 @@ nnoremap <silent> <leader>4 :Files<cr>
 
 " Repeat lost entered colon command
 nnoremap <silent> <leader>2 @:
+
+" Run :make
+nnoremap <silent> <leader>m :silent make -j4<cr>
 
 " Run :make clean.
 nnoremap <silent> <F2> :silent make clean<cr>

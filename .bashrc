@@ -37,12 +37,6 @@ fi
 # ~/.aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-## Include common shell settings for bash and zsh.
-if [ -f ~/.shell_commons ]; then
-    . ~/.shell_commons
-fi
-
-## MERGED
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
@@ -53,6 +47,13 @@ fi
 
 # Set PATH variable
 export PATH=$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin
+
+# Enter vi mode with <escape>.
+set -o vi
+bind -m vi-insert "\C-l":clear-screen
+
+# Sets Ctrl-s incremental search.
+stty -ixon
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -91,127 +92,6 @@ colors() {
         echo; echo
     done
 }
-
-# Color man pages
-export LESS_TERMCAP_mb=$'\e[01;32m'
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;47;30m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;36m'
-export LESS=-r
-
-# Don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-# NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
-HISTSIZE=10000000
-HISTFILESIZE=10000000
-
-#
-## ex - archive extractor
-## usage: ex <file>
-ex ()
-{
-  if [ -f $1 ] ; then
-    case $1 in
-      *.tar.bz2)   tar xjf $1   ;;
-      *.tar.gz)    tar xzf $1   ;;
-      *.bz2)       bunzip2 $1   ;;
-      *.rar)       unrar x $1     ;;
-      *.gz)        gunzip $1    ;;
-      *.tar)       tar xf $1    ;;
-      *.tbz2)      tar xjf $1   ;;
-      *.tgz)       tar xzf $1   ;;
-      *.zip)       unzip $1     ;;
-      *.Z)         uncompress $1;;
-      *.7z)        7z x $1      ;;
-      *)           echo "'$1' cannot be extracted via ex()" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
-# Diff whole directories with vim
-function dirdiff() {
-    # Shell-escape each path
-    DIR1=$(printf '%q' "$1"); shift
-    DIR2=$(printf '%q' "$1"); shift
-    vim $@ -c "DirDiff $DIR1 $DIR2"
-}
-
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
-
-# User specific aliases and functions
-echo "using user $USERNAME bashrc"
-if [ ${APC_HOME:-null}=null ]; then
-    export APC_HOME=/home/tlc/adsi/current
-fi
-if [ ${ATS_HOME:-null}=null ]; then
-    export ATS_HOME=/home/tlc/adsi/current
-fi
-if [ ${ADSI_HOME:-null}=null ]; then
-    export ADSI_HOME=/home/tlc/adsi/current
-fi
-
-dev_branch() {
-    export APC_HOME=/home/tlc/UC2_dev/current
-    export ATS_HOME=/home/tlc/UC2_dev/current
-    export UC2_dev_HOME=/home/tlc/adsi/current
-}
-
-colorgrid() {
-    iter=16
-    while [ $iter -lt 52 ]
-    do
-        second=$[$iter+36]
-        third=$[$second+36]
-        four=$[$third+36]
-        five=$[$four+36]
-        six=$[$five+36]
-        seven=$[$six+36]
-        if [ $seven -gt 250 ];then seven=$[$seven-251]; fi
-
-        echo -en "\033[38;5;$(echo $iter)m█ "
-        printf "%03d" $iter
-        echo -en "\033[38;5;$(echo $second)m█ "
-        printf "%03d" $second
-        echo -en "\033[38;5;$(echo $third)m█ "
-        printf "%03d" $third
-        echo -en "\033[38;5;$(echo $four)m█ "
-        printf "%03d" $four
-        echo -en "\033[38;5;$(echo $five)m█ "
-        printf "%03d" $five
-        echo -en "\033[38;5;$(echo $six)m█ "
-        printf "%03d" $six
-        echo -en "\033[38;5;$(echo $seven)m█ "
-        printf "%03d" $seven
-
-        iter=$[$iter+1]
-        printf '\r\n'
-    done
-}
-
-## END MERGE
-
-HISTFILE=~/.bash_history
-
-# Enter vi mode with <escape>.
-set -o vi
-bind -m vi-insert "\C-l":clear-screen
-
-# Sets Ctrl-s incremental search.
-stty -ixon
-
-# FZF settings.
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/fzf/completion.bash
-export FZF_COMPLETION_TRIGGER="**"
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
@@ -300,6 +180,24 @@ shopt -s cdspell
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# Color man pages
+export LESS_TERMCAP_mb=$'\e[01;32m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;47;30m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;36m'
+export LESS=-r
+
+# Don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
+
+# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+# NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
+HISTSIZE=10000000
+HISTFILESIZE=10000000
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -312,8 +210,95 @@ if ! shopt -oq posix; then
   fi
 fi
 
+#
+## ex - archive extractor
+## usage: ex <file>
+ex ()
+{
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xjf $1   ;;
+      *.tar.gz)    tar xzf $1   ;;
+      *.bz2)       bunzip2 $1   ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1    ;;
+      *.tar)       tar xf $1    ;;
+      *.tbz2)      tar xjf $1   ;;
+      *.tgz)       tar xzf $1   ;;
+      *.zip)       unzip $1     ;;
+      *.Z)         uncompress $1;;
+      *.7z)        7z x $1      ;;
+      *)           echo "'$1' cannot be extracted via ex()" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
 # Enable jump command for directory jumping
 #eval "$(jump shell)"
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+# Diff whole directories with vim
+function dirdiff() {
+    # Shell-escape each path
+    DIR1=$(printf '%q' "$1"); shift
+    DIR2=$(printf '%q' "$1"); shift
+    vim $@ -c "DirDiff $DIR1 $DIR2"
+}
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+
+# User specific aliases and functions
+echo "using user $USERNAME bashrc"
+if [ ${APC_HOME:-null}=null ]; then
+    export APC_HOME=/home/tlc/adsi/current
+fi
+if [ ${ATS_HOME:-null}=null ]; then
+    export ATS_HOME=/home/tlc/adsi/current
+fi
+if [ ${ADSI_HOME:-null}=null ]; then
+    export ADSI_HOME=/home/tlc/adsi/current
+fi
+
+dev_branch() {
+    export APC_HOME=/home/tlc/UC2_dev/current
+    export ATS_HOME=/home/tlc/UC2_dev/current
+    export UC2_dev_HOME=/home/tlc/adsi/current
+}
+
+colorgrid() {
+    iter=16
+    while [ $iter -lt 52 ]
+    do
+        second=$[$iter+36]
+        third=$[$second+36]
+        four=$[$third+36]
+        five=$[$four+36]
+        six=$[$five+36]
+        seven=$[$six+36]
+        if [ $seven -gt 250 ];then seven=$[$seven-251]; fi
+
+        echo -en "\033[38;5;$(echo $iter)m█ "
+        printf "%03d" $iter
+        echo -en "\033[38;5;$(echo $second)m█ "
+        printf "%03d" $second
+        echo -en "\033[38;5;$(echo $third)m█ "
+        printf "%03d" $third
+        echo -en "\033[38;5;$(echo $four)m█ "
+        printf "%03d" $four
+        echo -en "\033[38;5;$(echo $five)m█ "
+        printf "%03d" $five
+        echo -en "\033[38;5;$(echo $six)m█ "
+        printf "%03d" $six
+        echo -en "\033[38;5;$(echo $seven)m█ "
+        printf "%03d" $seven
+
+        iter=$[$iter+1]
+        printf '\r\n'
+    done
+}
