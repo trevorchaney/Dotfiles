@@ -2,24 +2,29 @@
 # .bashrc
 #
 
-# Show banner if it exsists
+# Show banner if it exsists.
 if [ -f $HOME/.banner ]; then
     . /$HOME/.banner
 fi
 
-# Source global definitions
+# Source global definitions if it exists.
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
-## Include common shell settings for bash and zsh.
-if [ -f ~/.shell_commons ]; then
-    . ~/.shell_commons
+## Include common shell settings for bash and zsh if it exists.
+if [ -f $HOME/.shell_commons ]; then
+    . $HOME/.shell_commons
 fi
 
-# Aliases
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
+# Include .profile if it exists.
+# if [ -f $HOME/.profile ]; then
+#     . $HOME/.profile
+# fi
+
+# Include .aliases if it exists.
+if [ -f $HOME/.aliases ]; then
+    . $HOME/.aliases
 fi
 
 # If not running interactively, don't do anything.

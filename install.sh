@@ -10,7 +10,6 @@ curl -L https://nixos.org/nix/install | sh
 
 # Install packages
 nix-env -iA \
-    nixpkgs.alacritty \
     nixpkgs.antibody \
     nixpkgs.bat \
     nixpkgs.clang \
@@ -51,4 +50,6 @@ ln -s $HOME/.vimrc $HOME/.config/nvim/init.vim
 nvim --headless +PlugInstall +qall
 
 # Install terminal dotfiles
-#[ `uname -s` == 'Linux' ] && stow alacritty
+# if [ `uname -s` == 'Linux' ]; then
+#     stow alacritty
+# fi

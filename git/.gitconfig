@@ -1,0 +1,10 @@
+[user]
+    name = Trevor Chaney
+    email = trevorchaney@gmail.com
+[core]
+    exlcudesfile = ~/.global_gitignore
+    editor = nvim
+[pull]
+    ; ff = only
+[init]
+    defaultBranch = main
