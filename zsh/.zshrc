@@ -2,11 +2,6 @@
 # ~/.zshrc
 #
 
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
 ## Include common shell settings for bash and zsh.
 if [ -f ~/.shell_commons ]; then
     . ~/.shell_commons
@@ -194,3 +189,5 @@ esac
 
 # Enable jump command for directory jumping
 eval "$(jump shell)"
+
+if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
