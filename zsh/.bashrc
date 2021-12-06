@@ -1,6 +1,8 @@
+#
 # .bashrc
+#
 
-if [ -f $HOME/.banner ]
+if [ -f $HOME/.banner ]; then
     . /$HOME/.banner
 fi
 
@@ -15,6 +17,12 @@ fi
 # ~/.aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+## Include common shell settings for bash and zsh.
+if [ -f ~/.shell_commons ]; then
+    . ~/.shell_commons
+fi
+
+# Aliases
 if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
@@ -248,25 +256,6 @@ function dirdiff() {
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
-
-# User specific aliases and functions
-echo "using user $USERNAME bashrc"
-if [ ${APC_HOME:-null}=null ]; then
-    export APC_HOME=/home/tlc/adsi/current
-fi
-if [ ${ATS_HOME:-null}=null ]; then
-    export ATS_HOME=/home/tlc/adsi/current
-fi
-if [ ${ADSI_HOME:-null}=null ]; then
-    export ADSI_HOME=/home/tlc/adsi/current
-fi
-
-dev_branch() {
-    export APC_HOME=/home/tlc/UC2_dev/current
-    export ATS_HOME=/home/tlc/UC2_dev/current
-    export UC2_dev_HOME=/home/tlc/adsi/current
-}
-
 colorgrid() {
     iter=16
     while [ $iter -lt 52 ]
@@ -297,4 +286,22 @@ colorgrid() {
         iter=$[$iter+1]
         printf '\r\n'
     done
+}
+
+# User specific aliases and functions
+echo "using user $USERNAME bashrc"
+if [ ${APC_HOME:-null}=null ]; then
+    export APC_HOME=/home/tlc/adsi/current
+fi
+if [ ${ATS_HOME:-null}=null ]; then
+    export ATS_HOME=/home/tlc/adsi/current
+fi
+if [ ${ADSI_HOME:-null}=null ]; then
+    export ADSI_HOME=/home/tlc/adsi/current
+fi
+
+dev_branch() {
+    export APC_HOME=/home/tlc/UC2_dev/current
+    export ATS_HOME=/home/tlc/UC2_dev/current
+    export UC2_dev_HOME=/home/tlc/adsi/current
 }

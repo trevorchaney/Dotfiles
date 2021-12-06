@@ -23,9 +23,9 @@ alias nnn="nnn -ea"             # Always open text documents in $EDITOR
 alias py="python3"              # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-#alias sudo="doas"               # YAGNI
+alias sudo="doas"               # YAGNI
 alias vdir='vdir --color=auto'  # Add color to vdir command.
-#alias vim="nvim"                # Just an abbreviation for neovim
+alias vim="nvim"                # Just an abbreviation for neovim
 alias wtr="curl wttr.in"        # Get the local weather.
 alias xo="xdg-open"             # Open with system preferred application.
 
