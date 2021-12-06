@@ -7,6 +7,22 @@ if [ -f ~/.shell_commons ]; then
     . ~/.shell_commons
 fi
 
+# Show banner if it exsists
+if [ -f $HOME/.banner ]; then
+    . /$HOME/.banner
+fi
+
+# Aliases
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
+fi
+
+# If not running interactively, don't do anything.
+[[ $- != *i* ]] && return
+
+# Set PATH variable
+export PATH="$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin;/usr/local/bin"
+
 HISTFILE=~/.zsh_history
 
 ## Keybindings section
@@ -26,6 +42,10 @@ colors
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 export FZF_COMPLETION_TRIGGER="<>"
+
+# Source nix
+. ~/.nix-profile/etc/profile.d/nix.sh
+
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/tlc/.zshrc'
 
