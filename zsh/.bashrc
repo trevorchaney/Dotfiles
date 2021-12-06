@@ -2,20 +2,15 @@
 # .bashrc
 #
 
+# Show banner if it exsists
 if [ -f $HOME/.banner ]; then
     . /$HOME/.banner
 fi
 
-export PATH="$PATH;/usr/local/bin"
 # Source global definitions
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
-
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 ## Include common shell settings for bash and zsh.
 if [ -f ~/.shell_commons ]; then
@@ -30,9 +25,8 @@ fi
 # If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
-
 # Set PATH variable
-export PATH=$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin
+export PATH="$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin;/usr/local/bin"
 
 # Enter vi mode with <escape>.
 set -o vi
@@ -253,9 +247,6 @@ function dirdiff() {
     vim $@ -c "DirDiff $DIR1 $DIR2"
 }
 
-# Uncomment the following line if you don't like systemctl's auto-paging feature:
-# export SYSTEMD_PAGER=
-
 colorgrid() {
     iter=16
     while [ $iter -lt 52 ]
@@ -288,6 +279,9 @@ colorgrid() {
     done
 }
 
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
 # User specific aliases and functions
 echo "using user $USERNAME bashrc"
 if [ ${APC_HOME:-null}=null ]; then
@@ -299,9 +293,3 @@ fi
 if [ ${ADSI_HOME:-null}=null ]; then
     export ADSI_HOME=/home/tlc/adsi/current
 fi
-
-dev_branch() {
-    export APC_HOME=/home/tlc/UC2_dev/current
-    export ATS_HOME=/home/tlc/UC2_dev/current
-    export UC2_dev_HOME=/home/tlc/adsi/current
-}
