@@ -19,8 +19,7 @@
 
 " Set vim colors.
 syntax enable
-"set background=dark
-"colorscheme solarized
+set background=dark
 
 "" Enable transparency set by emulator. Must be after colorscheme.
 "hi Normal guibg=NONE ctermbg=NONE
@@ -101,6 +100,10 @@ autocmd BufEnter *.tpp :setlocal filetype=cpp
 " Set proper tab character for make.
 autocmd FileType make,xml setlocal noexpandtab
 
+" Set Rmarkdown render command
+autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+
+
 "=__==__===================_===================
 "|  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___  |
 "| |\/| |/ _` | '_ \| '_ \| | '_ \ / _` / __| |
@@ -110,6 +113,7 @@ autocmd FileType make,xml setlocal noexpandtab
 "==============================================
 " Set <leader> to <space>.
 let mapleader=" "
+
 " (n)ormal-mode (no)n-(re)cursive (map).
 " Remove search highlighting till next search.
 nnoremap <silent> <leader><esc> :noh<cr>
@@ -336,56 +340,53 @@ endfunc
 "================================
 " Plugins installed with vimplug.
 
-" ___COC.nvim___
-"source ~/.vim/coc-config.vim
+" " ___COC.nvim___
+" source ~/.vim/coc-config.vim
 
-" Disable python2 support, python2 is deprecated.
-let g:loaded_python_provider = 0
+" " Disable python2 support, python2 is deprecated.
+" let g:loaded_python_provider = 0
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+" " Always show the signcolumn, otherwise it would shift the text each time
+" " diagnostics appear/become resolved.
+" if has("patch-8.1.1564")
+"   " Recently vim can merge signcolumn and number column into one
+"   set signcolumn=number
+" else
+"   set signcolumn=yes
+" endif
 
-" Use K to show documentation in preview window.
-nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+" " Use K to show documentation in preview window.
+" nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
+" function! s:show_documentation()
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   elseif (coc#rpc#ready())
+"     call CocActionAsync('doHover')
+"   else
+"     execute '!' . &keywordprg . " " . expand('<cword>')
+"   endif
+" endfunction
 
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+" " Symbol renaming.
+" nmap <leader>rn <Plug>(coc-rename)
 
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" " GoTo code navigation.
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
 
-nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+" nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
 
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
+" " Add `:Format` command to format current buffer.
+" command! -nargs=0 Format :call CocAction('format')
 
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+" " Add `:Fold` command to fold current buffer.
+" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" ___Rmarkdown___
-autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+" " Add `:OR` command for organize imports of the current buffer.
+" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " ___NERDTree___
 let NERDTreeShowHidden=1
@@ -411,13 +412,14 @@ if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
 
-" --------------
+" ----------------------------------------------------------------------------
 "NOTE: If you cant see some of the following symbols then either your terminal
 "      doesn't render them or your font doesn't support them. Try using a
 "      different terminal and if it still doesn't work then its your font and
 "      you need to install a font that supports powerline fonts. Try a font
 "      from the NerdFonts collection of patched fonts. Otherwise, uncomment
 "      the fonts symbols that aren't broken below.
+" ----------------------------------------------------------------------------
 
 " unicode symbols
 let g:airline_left_sep = '»'
@@ -463,19 +465,6 @@ let g:airline_symbols.whitespace = 'Ξ'
 "let g:airline_symbols.readonly = '⭤'
 "let g:airline_symbols.linenr = '⭡'
 " --------------
-
-" vv Replaced with COC.nvim vv
-" ___YouCompleteMe___
-" Set path for ycm's C autocompletion.
-"let g:ycm_global_ycm_extra_conf = "$HOME/.vim/.ycm_extra_conf.py"
-"" Set path for python autocompleteion
-"let g:ymc_python_binary_path = "/usr/bin/python3"
-"let g:ycm_show_diagnostics_ui = 0 " Needs to be off to use syntastic properly.
-"let g:jedi#force_py_version = 3
-"let g:ycm_register_as_syntastic_checker=0
-"let g:ycm_add_preview_to_completeopt=1
-"let g:ycm_autoclose_preview_window_after_completion=1
-"let g:ycm_autoclose_preview_window_after_insertion=1
 
 "___LimeLight___
 " Color name (:help cterm-colors) or ANSI code
@@ -535,23 +524,21 @@ let g:gutentags_ctags_exclude = [
 " Plugins will be downloaded under the specified directory.
 call plug#begin('$HOME/.vim/plugged')
 
-" NOTE: Anything to do with tags and youcompleteme in specific require
-"       configuration. Be sure that they are properly configured or they wont
-"       work. Other plugins that are commented out here are things I use only
-"       on occasion to better fit the work I am doing. (non-code based
-"       writing).
+" NOTE: Anything to do with tags in specific require configuration. Be sure
+"       that they are properly configured or they wont work. Other plugins
+"       that are commented out here are things I use only on occasion to
+"       better fit the work I am doing. (non-code based writing).
 
 " Declare the list of plugins.
-"Plug 'Valloric/YouCompleteMe'               " Completion engine, needs config.
-"Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
-"Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+" Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " ^     ^       ^
-Plug 'junegunn/fzf.vim'                     " Fuzzy searching of files.
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
+Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
@@ -559,8 +546,6 @@ Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'

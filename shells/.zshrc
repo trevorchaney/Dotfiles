@@ -1,27 +1,12 @@
 #
-# ~/.zshrc
+# .zshrc
 #
-
-## Include common shell settings for bash and zsh.
-if [ -f ~/.shell_commons ]; then
-    . ~/.shell_commons
-fi
-
-# Show banner if it exsists
-if [ -f $HOME/.banner ]; then
-    . /$HOME/.banner
-fi
-
-# Aliases
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
 
 # If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
-# Set PATH variable
-export PATH="$PATH:$HOME/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin;/usr/local/bin"
+# Include common shell settings for bash and zsh if it exists.
+[ -f $HOME/.shell_commons ] && . $HOME/.shell_commons
 
 HISTFILE=~/.zsh_history
 
@@ -36,15 +21,11 @@ bindkey -v '^S' history-incremental-pattern-search-forward
 # Theming section
 autoload -U compinit colors zcalc
 compinit -d
-colors
 
 # FZF settings.
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 export FZF_COMPLETION_TRIGGER="<>"
-
-# Source nix
-. ~/.nix-profile/etc/profile.d/nix.sh
 
 # The following lines were added by compinstall
 zstyle :compinstall filename '/home/tlc/.zshrc'
@@ -207,7 +188,7 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
         ;;
 esac
 
-# Enable jump command for directory jumping
-eval "$(jump shell)"
-
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+# Enable jump command for directory jumping
+eval "$(jump shell zsh)"

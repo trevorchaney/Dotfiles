@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-set -xi
+set -xe
 
 # Install nix
 curl -L https://nixos.org/nix/install | sh
@@ -19,10 +19,12 @@ nix-env -iA \
     nixpkgs.gcc \
     nixpkgs.git \
     nixpkgs.gnumake \
+    nixpkgs.jump \
     nixpkgs.neovim \
     nixpkgs.ripgrep \
     nixpkgs.stow \
     nixpkgs.tmux \
+    nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh
 
@@ -31,22 +33,24 @@ stow git
 stow nvim
 stow tmux
 stow vim
-stow zsh
+stow shells
 
-if [ `$TERM` == 'bash' ]; then
-    . $HOME/.bashrc
-elif [ `$TERM` == 'zsh' ]; then
-    . $HOME/.zshrc
+# Add nix.zsh shell to login shells
+if [ ! -z $(grep "$STRING" "$FILE") ]; then
+    echo "zsh was found in shells";
+    command -v zsh | sudo tee -a /etc/shells;
 fi
 
-# Make zsh the login shell
-command -v zsh | sudo tee -a /etc/shells
+# Run the following to make zsh the user's login shell
+#$ sudo chsh -s `which zsh` $USER
 
 # Install zsh plugins
-#antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
+# antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
+
+# Make a symbolic link to vim config for neovim config
+ln -s $HOME/.vimrc $HOME/.config/nvim/init.vim
 
 # Install neovim plugins
-ln -s $HOME/.vimrc $HOME/.config/nvim/init.vim
 nvim --headless +PlugInstall +qall
 
 # Install terminal dotfiles
