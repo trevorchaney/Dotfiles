@@ -23,7 +23,7 @@ alias nnn="nnn -ea"             # Always open text documents in $EDITOR
 alias py="python3"              # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-alias sudo="doas"               # YAGNI
+# alias sudo="doas"               # YAGNI
 alias vdir='vdir --color=auto'  # Add color to vdir command.
 alias vim="nvim"                # Just an abbreviation for neovim
 alias wtr="curl wttr.in"        # Get the local weather.
@@ -37,7 +37,10 @@ alias xo="xdg-open"             # Open with system preferred application.
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # UC2
-alias adsi="cd ~/adsi"
-alias msg="cd ~/adsi/src/userlib/source/uc2/MessageFactory"
-alias wiz="cd ~/adsi/src/configwiz/cfgwiz"
-alias trk="cd ~/adsi/src/userlibs/source/UC2_TN_Map"
+alias adsi="cd ~/adsi/MADIS-UC2"
+alias msg="cd ~/adsi/MADIS-UC2/src/userlibs/source/uc2/MessageFactory"
+alias trk="cd ~/adsi/MADIS-UC2/src/userlibs/source/UC2_TN_Map"
+alias uc2="cd ~/adsi/MADIS-UC2/src/r_uc2"
+alias wiz="cd ~/adsi/MADIS-UC2/src/configwiz/cfgwiz"
+
+alias logout="gnome-session-quit --logout"
