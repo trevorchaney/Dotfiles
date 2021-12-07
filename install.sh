@@ -36,8 +36,10 @@ stow vim
 stow shells
 
 # Add nix.zsh shell to login shells
-if [ ! -z $(grep "$STRING" "$FILE") ]; then
-    echo "zsh was found in shells";
+if [ ! -z $(grep "zsh" "/etc/shells") ]; then
+    echo "zsh was found in /etc/shells";
+else
+    echo "Adding zsh to /etc/shells"
     command -v zsh | sudo tee -a /etc/shells;
 fi
 
