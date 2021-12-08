@@ -6,7 +6,7 @@
 [ -f $HOME/.banner ] && . /$HOME/.banner
 
 # Include .profile if it exists.
-[ -f $HOME/.profile ] && . $HOME/.profile
+#[ -f $HOME/.profile ] && . $HOME/.profile
 
 # Aliases
 [ -f $HOME/.aliases ] && . $HOME/.aliases
@@ -55,8 +55,7 @@ export TERMINAL="gnome-terminal"
 
 # ex - archive extractor
 # usage: ex <file>
-ex ()
-{
+ex() {
   if [ -f $1 ] ; then
     case $1 in
       *.tar.bz2)   tar xjf $1   ;;
@@ -86,7 +85,7 @@ dirdiff() {
 }
 
 # Print terminal colors
-function colors() {
+colors() {
     local fgc bgc vals seq0
 
     printf "Color escapes are %s\n" '\e[${value};...;${value}m'

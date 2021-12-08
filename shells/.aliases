@@ -1,8 +1,11 @@
 # Use an escaping backslash '\' to use command without alias.
 
+alias sudo="doas"               # YAGNI
 alias ard="arduino-cli"         # Tired of writing this out.
-alias cp="cp -ir"               # Recursive copy, Confirm before overwriting.
 alias cls="clear"               # Too much DOS, try Ctrl-l.
+alias cmd="cmd.exe /c"
+alias cp="cp -ir"               # Recursive copy, Confirm before overwriting.
+alias devenv="devenv.exe"
 alias df="df -h"                # Human-readable sizes.
 alias dir='dir --color=auto'    # Add color to dir command.
 alias egrep='egrep --color=auto' # Add color to egrep command.
@@ -23,7 +26,6 @@ alias nnn="nnn -ea"             # Always open text documents in $EDITOR
 alias py="python3"              # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-# alias sudo="doas"               # YAGNI
 alias vdir='vdir --color=auto'  # Add color to vdir command.
 alias vim="nvim"                # Just an abbreviation for neovim
 alias wtr="curl wttr.in"        # Get the local weather.
