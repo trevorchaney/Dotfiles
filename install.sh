@@ -21,11 +21,15 @@ nix-env -iA \
     nixpkgs.jump \
     nixpkgs.neovim \
     nixpkgs.ripgrep \
+    nixpkgs.silver-searcher \
     nixpkgs.stow \
     nixpkgs.tmux \
     nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh
+
+## Install Oh-My-Zsh
+sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 # Install dotfiles with gnu stow
 stow git
@@ -42,17 +46,20 @@ else
     command -v zsh | sudo tee -a /etc/shells;
 fi
 
-## Install Oh-My-Zsh
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-
-# Run the following to make zsh the user's login shell
-#$ sudo chsh -s `which zsh` $USER
-
 # Install zsh plugins
 # antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
 
+# Install vim/neovim plugin manager
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 # Make a symbolic link to vim config for neovim config
-ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
+mkdir -p "$HOME/.config/nvim"
+[ ! -f $HOME/.config/nvim/init.vim ] && ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
+
+# Make a symbolic link to vim-plugs install in vim directory
+mkdir -p "$HOME/.local/share/nvim/site/autoload"
+[ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ] && ln -s "$HOME/.vim/autoload/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
 
 # Install neovim plugins
 nvim --headless +PlugInstall +qall
