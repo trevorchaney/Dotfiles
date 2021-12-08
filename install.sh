@@ -24,6 +24,7 @@ nix-env -iA \
     nixpkgs.silver-searcher \
     nixpkgs.stow \
     nixpkgs.tmux \
+    nixpkgs.toilet \
     nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh

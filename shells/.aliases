@@ -1,35 +1,35 @@
 # Use an escaping backslash '\' to use command without alias.
 
-alias sudo="doas"               # YAGNI
-alias ard="arduino-cli"         # Tired of writing this out.
-alias cls="clear"               # Too much DOS, try Ctrl-l.
+# alias sudo="doas"                 # YAGNI
+# alias ard="arduino-cli"             # Tired of writing this out.
+alias cls="clear"                   # Too much DOS, try Ctrl-l.
 alias cmd="cmd.exe /c"
-alias cp="cp -ir"               # Recursive copy, Confirm before overwriting.
+alias cp="cp -ir"                   # Recursive copy, Confirm before overwriting.
 alias devenv="devenv.exe"
-alias df="df -h"                # Human-readable sizes.
-alias dir='dir --color=auto'    # Add color to dir command.
-alias egrep='egrep --color=auto' # Add color to egrep command.
-alias fgrep='fgrep --color=auto' # Add color to fgrep command.
-alias free="free -m"            # Show sizes in MB.
+alias df="df -h"                    # Human-readable sizes.
+alias dir='dir --color=auto'        # Add color to dir command.
+alias egrep='egrep --color=auto'    # Add color to egrep command.
+alias fgrep='fgrep --color=auto'    # Add color to fgrep command.
+alias free="free -m"                # Show sizes in MB.
 alias gitu="git add . && git commit && git push"  # Quick git add, commit, push.
-alias grep='grep --color=auto'  # Add color to grep commnad.
-alias info="info --vi-keys"     # Set vi-key bindings for the info command.
+alias grep='grep --color=auto'      # Add color to grep command.
+alias info="info --vi-keys"         # Set vi-key bindings for the info command.
 alias l="ls -CF --color=auto"
 alias la="ls -A --color=auto"
 alias ll="ls -halF --color=auto"
 alias lr="ls -thral --color=auto"
-alias ls="ls -a --color=auto"      # Add color to ls command.
-alias mkdir="mkdir -p"          # Create parent directories.
-alias more=less                 # Use less instead of more.
-alias mv="mv -i"                # Confirm before overwriting.
-alias nnn="nnn -ea"             # Always open text documents in $EDITOR
-alias py="python3"              # Python abbreviation.
+alias ls="ls -a --color=auto"       # Add color to ls command.
+alias mkdir="mkdir -p"              # Create parent directories.
+alias more=less                     # Use less instead of more.
+alias mv="mv -i"                    # Confirm before overwriting.
+alias nnn="nnn -ea"                 # Always open text documents in $EDITOR
+alias py="python3"                  # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-alias vdir='vdir --color=auto'  # Add color to vdir command.
-alias vim="nvim"                # Just an abbreviation for neovim
-alias wtr="curl wttr.in"        # Get the local weather.
-alias xo="xdg-open"             # Open with system preferred application.
+alias vdir='vdir --color=auto'      # Add color to vdir command.
+alias vim="nvim"                    # Just an abbreviation for neovim
+alias wtr="curl wttr.in"            # Get the local weather.
+alias xo="xdg-open"                 # Open with system preferred application.
 
 # Always start 'nnn' in a tmux session.
 #alias nnn="tmux new-session -ds 'temp' nnn -ea; tmux attach-session -t 'temp'"
@@ -44,5 +44,5 @@ alias msg="cd ~/adsi/MADIS-UC2/src/userlibs/source/uc2/MessageFactory"
 alias trk="cd ~/adsi/MADIS-UC2/src/userlibs/source/UC2_TN_Map"
 alias uc2="cd ~/adsi/MADIS-UC2/src/r_uc2"
 alias wiz="cd ~/adsi/MADIS-UC2/src/configwiz/cfgwiz"
-
+alias goq="export ATS_HOME="/opt/ats/adsi/current" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && popd"
 alias logout="gnome-session-quit --logout"
