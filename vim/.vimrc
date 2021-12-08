@@ -8,24 +8,17 @@
 "               Trevor's configuration
 "                file for Vim & NeoVim.
 
-
-"=____=======_===_===_===================
-"/ ___|  ___| |_| |_(_)_ __   __ _ ___  |
-"\___ \ / _ \ __| __| | '_ \ / _` / __| |
-" ___) |  __/ |_| |_| | | | | (_| \__ \ |
-"|____/ \___|\__|\__|_|_| |_|\__, |___/ |
-"                            |___/      |
-"========================================
-
+" ============================================================================
+" ░█▀▀░█▀▀░▀█▀░▀█▀░▀█▀░█▀█░█▀▀░█▀▀
+" ░▀▀█░█▀▀░░█░░░█░░░█░░█░█░█░█░▀▀█
+" ░▀▀▀░▀▀▀░░▀░░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀
+" ============================================================================
 " Set vim colors.
 syntax enable
 set background=dark
 
-"" Enable transparency set by emulator. Must be after colorscheme.
-"hi Normal guibg=NONE ctermbg=NONE
-
 " Set vim behavior.
-"set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
+" set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
 set autoindent          "
 set autowrite           "
 set backspace=2         " More powerful backspacing
@@ -40,6 +33,7 @@ set directory=$HOME/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
 set expandtab           "
+set foldcolumn=1        " Makes folds visable in the sidebar
 set foldlevel=2         "
 set foldmethod=indent   " Allows indented code folding.
 set foldnestmax=10      "
@@ -48,6 +42,7 @@ set history=500         " Sets how many lines of history VIM has to remember.
 set hlsearch            " Highlight search.
 set ignorecase          " Ignore case in searches.
 set incsearch           " Incremental search.
+set lazyredraw          " Don't redraw the screen during application of macros
 set list                " This and the above expose whitespace characters.
 set listchars=tab:o-,nbsp:_,trail:- " Exposes whitespace characters.
 set modelines=0         " CVE-2007-2438
@@ -68,11 +63,12 @@ set tabstop=4           "      " [] Add context to these.
 set tags+=/usr/local/include/tags "
 set undodir=$HOME/.vim/undodir  " Directory to vim undo files.
 set undofile            " Maintain undo history between sessions.
-set updatetime=300      " Faster refresh rate.
+set updatetime=500      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
+set signcolumn=number   " Put signs in the number column instead of sign column.
 
 " Cursor & Color Related settings.
-" hi CursorLine term=NONE cterm=NONE ctermbg=black
+" hi CursorLine term=NONE cterm=NONE ctermbg=black    "old
 hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
@@ -82,6 +78,9 @@ hi Search ctermfg=black ctermbg=yellow cterm=bold
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
 hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
+hi SignColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
 
@@ -104,13 +103,11 @@ autocmd FileType make,xml setlocal noexpandtab
 autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
 
-"=__==__===================_===================
-"|  \/  | __ _ _ __  _ __ (_)_ __   __ _ ___  |
-"| |\/| |/ _` | '_ \| '_ \| | '_ \ / _` / __| |
-"| |  | | (_| | |_) | |_) | | | | | (_| \__ \ |
-"|_|  |_|\__,_| .__/| .__/|_|_| |_|\__, |___/ |
-"             |_|   |_|            |___/      |
-"==============================================
+" ============================================================================
+" ░█▄█░█▀█░█▀█░█▀█░▀█▀░█▀█░█▀▀░█▀▀
+" ░█░█░█▀█░█▀▀░█▀▀░░█░░█░█░█░█░▀▀█
+" ░▀░▀░▀░▀░▀░░░▀░░░▀▀▀░▀░▀░▀▀▀░▀▀▀
+" ============================================================================
 " Set <leader> to <space>.
 let mapleader=" "
 
@@ -248,12 +245,11 @@ nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 
 
-"==__==================_===_===================
-" / _|_   _ _ __   ___| |_(_) ___  _ __  ___  |
-"| |_| | | | '_ \ / __| __| |/ _ \| '_ \/ __| |
-"|  _| |_| | | | | (__| |_| | (_) | | | \__ \ |
-"|_|  \__,_|_| |_|\___|\__|_|\___/|_| |_|___/ |
-"==============================================
+" ============================================================================
+" ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
+" ░█▀▀░█░█░█░█░█░░░░█░░░█░░█░█░█░█░▀▀█
+" ░▀░░░▀▀▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
+" ============================================================================
 " Sets <leader>n to toggle between absolute, relative,
 " and no line numbers.
 function! g:ToggleNuMode()
@@ -320,13 +316,11 @@ function! ExecuteMacroOverVisualRange()
 endfunc
 
 
-""=_==========================
-""| |_ __ _  __ _  __ _ ___  |
-""| __/ _` |/ _` |/ _` / __| |
-""| || (_| | (_| | (_| \__ \ |
-"" \__\__,_|\__, |\__, |___/ |
-""          |___/ |___/      |
-""============================
+" ============================================================================
+" ░▀█▀░█▀█░█▀▀░█▀▀
+" ░░█░░█▀█░█░█░▀▀█
+" ░░▀░░▀░▀░▀▀▀░▀▀▀
+" ============================================================================
 
 "" Set tagging for source code of file type.
 "autocmd Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
@@ -335,12 +329,11 @@ endfunc
 ""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tags
 ""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/tags
 
-"==___=_===========_=============
-" | _ \ |_  _ __ _(_)_ _  ___   |
-" |  _/ | || / _` | | ' \(_-<   |
-" |_| |_|\_,_\__, |_|_||_/__/   |
-"            |___/              |
-"================================
+" ============================================================================
+" ░█▀█░█░░░█░█░█▀▀░▀█▀░█▀█░█▀▀
+" ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
+" ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
+" ============================================================================
 " Plugins installed with vimplug.
 
 " " ___COC.nvim___
@@ -403,9 +396,9 @@ let g:ale_lint_on_insert_leave = 1
 "___airline___
 " Set the theme for airline.
 let g:airline_theme='luna'
-"let g:airline_theme='base16_grayscale'
-"let g:airline_theme='minimalist'
-"let g:airline_theme='monochrome'
+" let g:airline_theme='base16_grayscale'
+" let g:airline_theme='minimalist'
+" let g:airline_theme='monochrome'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#hunks#enabled=0
@@ -436,37 +429,37 @@ let g:airline_symbols.linenr = '☰'
 let g:airline_symbols.linenr = ' ␊:'
 let g:airline_symbols.linenr = ' ␤:'
 let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.maxlinenr = ''
-let g:airline_symbols.maxlinenr = '㏑'
+" let g:airline_symbols.maxlinenr = ''
+" let g:airline_symbols.maxlinenr = '㏑'
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
-let g:airline_symbols.spell = 'Ꞩ'
+" let g:airline_symbols.spell = 'Ꞩ'
 let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = 'Ξ'
 
-"" powerline symbols
-"let g:airline_left_sep = ''
-"let g:airline_left_alt_sep = ''
-"let g:airline_right_sep = ''
-"let g:airline_right_alt_sep = ''
-"let g:airline_symbols.branch = ''
-"let g:airline_symbols.colnr = ' :'
-"let g:airline_symbols.readonly = ''
-"let g:airline_symbols.linenr = ' :'
-"let g:airline_symbols.maxlinenr = '☰ '
-"let g:airline_symbols.dirty='⚡'
+" powerline symbols
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.colnr = ' :'
+" let g:airline_symbols.readonly = ''
+" let g:airline_symbols.linenr = ' :'
+let g:airline_symbols.maxlinenr = '☰ '
+let g:airline_symbols.dirty='⚡'
 
-"" old vim-powerline symbols
-"let g:airline_left_sep = '⮀'
-"let g:airline_left_alt_sep = '⮁'
-"let g:airline_right_sep = '⮂'
-"let g:airline_right_alt_sep = '⮃'
-"let g:airline_symbols.branch = '⭠'
-"let g:airline_symbols.readonly = '⭤'
-"let g:airline_symbols.linenr = '⭡'
+" " old vim-powerline symbols
+" let g:airline_left_sep = '⮀'
+" let g:airline_left_alt_sep = '⮁'
+" let g:airline_right_sep = '⮂'
+" let g:airline_right_alt_sep = '⮃'
+" let g:airline_symbols.branch = '⭠'
+" let g:airline_symbols.readonly = '⭤'
+" let g:airline_symbols.linenr = '⭡'
 " --------------
 
 "___LimeLight___
@@ -510,18 +503,23 @@ let g:cpp_concepts_highlight = 1
 
 "___Gutentags___
 let g:gutentags_ctags_exclude = [
-            \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
-            \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components', 'cache',
-            \ 'compiled', 'docs', 'example', 'bundle', 'vendor', '*.md',
-            \ '*-lock.json', '*.lock', '*bundle*.js', '*build*.js', '.*rc*',
-            \ '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc', '*.class',
-            \ '*.sln', '*.Master', '*.csproj', '*.tmp', '*.csproj.user', '*.cache',
-            \ '*.pdb', 'tags*', 'cscope.*', '*.css', '*.less', '*.scss', '*.exe',
-            \ '*.dll', '*.mp3', '*.ogg', '*.flac', '*.swp', '*.swo', '*.bmp',
-            \ '*.gif', '*.ico', '*.jpg', '*.png', '*.rar', '*.zip', '*.tar',
-            \ '*.tar.gz', '*.tar.xz', '*.tar.bz2', '*.pdf', '*.doc', '*.docx',
-            \ '*.ppt', '*.pptx'
-            \ ]
+             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
+             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
+             \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor',
+             \ '*.md', '*-lock.json', '*.lock', '*bundle*.js', '*build*.js',
+             \ '.*rc*', '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc',
+             \ '*.class', '*.sln', '*.Master', '*.csproj', '*.tmp',
+             \ '*.csproj.user', '*.cache', '*.pdb', 'tags*', 'cscope.*',
+             \ '*.css', '*.less', '*.scss', '*.exe', '*.dll', '*.mp3', '*.ogg',
+             \ '*.flac', '*.swp', '*.swo', '*.bmp', '*.gif', '*.ico', '*.jpg',
+             \ '*.png', '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz',
+             \ '*.tar.bz2', '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx'
+             \ ]
+
+"___GitGutter___
+hi GitGutterAdd ctermfg=green ctermbg=NONE guifg=#009900
+hi GitGutterChange ctermfg=yellow ctermbg=NONE guifg=#bbbb00
+hi GitGutterDelete ctermfg=red ctermbg=NONE guifg=#ff2222
 
 "========================================================
 " Plugins will be downloaded under the specified directory.
@@ -534,7 +532,6 @@ call plug#begin('$HOME/.vim/plugged')
 
 " Declare the list of plugins.
 " Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-" Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
@@ -549,6 +546,7 @@ Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
+Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
