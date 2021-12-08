@@ -25,6 +25,7 @@ set background=dark
 "hi Normal guibg=NONE ctermbg=NONE
 
 " Set vim behavior.
+"set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
 set autoindent          "
 set autowrite           "
 set backspace=2         " More powerful backspacing
@@ -49,7 +50,6 @@ set ignorecase          " Ignore case in searches.
 set incsearch           " Incremental search.
 set list                " This and the above expose whitespace characters.
 set listchars=tab:o-,nbsp:_,trail:- " Exposes whitespace characters.
-set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
 set modelines=0         " CVE-2007-2438
 set mouse=a             " Enable mouse support for gui and term with support.
 set nocompatible        " Use Vim defaults instead of 100% vi compatibility
@@ -143,6 +143,9 @@ inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Trigger Codi scratchpad.
 nnoremap <silent> <leader>c :Codi!!<cr>
+
+" Allow gf to open non-existing files.
+nmap gf :e <cfile><cr>
 
 " Place fill character.
 nmap <C-h> i<##><esc>

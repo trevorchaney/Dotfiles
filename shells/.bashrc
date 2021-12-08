@@ -107,6 +107,7 @@ complete -cf sudo
 # it regains control.  #65623
 # http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
 shopt -s checkwinsize
+
 shopt -s expand_aliases
 
 # export QT_SELECT=4
