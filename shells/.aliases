@@ -40,9 +40,11 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # UC2
 alias adsi="cd ~/adsi/MADIS-UC2"
+alias goq="export ATS_HOME=\"/opt/ats/adsi/current\" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && popd"
+alias gw="cd ~/Desktop/UC2\ Gateway\ v6.1/bin"
+alias gwp="cd ~/adsi/MADIS-UC2/src/GatewayProxy"
+alias logout="gnome-session-quit --logout"
 alias msg="cd ~/adsi/MADIS-UC2/src/userlibs/source/uc2/MessageFactory"
 alias trk="cd ~/adsi/MADIS-UC2/src/userlibs/source/UC2_TN_Map"
 alias uc2="cd ~/adsi/MADIS-UC2/src/r_uc2"
 alias wiz="cd ~/adsi/MADIS-UC2/src/configwiz/cfgwiz"
-alias goq="export ATS_HOME="/opt/ats/adsi/current" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && popd"
-alias logout="gnome-session-quit --logout"

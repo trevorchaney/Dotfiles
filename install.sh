@@ -25,6 +25,7 @@ nix-env -iA \
     nixpkgs.stow \
     nixpkgs.tmux \
     nixpkgs.toilet \
+    nixpkgs.valgrind \
     nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh

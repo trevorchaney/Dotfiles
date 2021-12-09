@@ -532,8 +532,8 @@ call plug#begin('$HOME/.vim/plugged')
 
 " Declare the list of plugins.
 " Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+" Plug 'SirVer/ultisnips'
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
-Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
