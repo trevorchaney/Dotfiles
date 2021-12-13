@@ -12,10 +12,10 @@
 " ░█▀▀░█▀▀░▀█▀░▀█▀░▀█▀░█▀█░█▀▀░█▀▀
 " ░▀▀█░█▀▀░░█░░░█░░░█░░█░█░█░█░▀▀█
 " ░▀▀▀░▀▀▀░░▀░░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀
-" ============================================================================
+" settings====================================================================
 " Set vim colors.
 syntax enable
-set background=dark
+" set background=dark
 
 " Set vim behavior.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
@@ -23,13 +23,13 @@ set autoindent          "
 set autowrite           "
 set backspace=2         " More powerful backspacing
 set backup              " Enable backups
-set backupdir=$HOME/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
+set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one s-width. used with cinkeys.
 set colorcolumn=80      " Add a colored column at 80.
 set complete+=kspell    "
 set cursorline
-set directory=$HOME/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
+set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
 set expandtab           "
@@ -44,42 +44,46 @@ set ignorecase          " Ignore case in searches.
 set incsearch           " Incremental search.
 set lazyredraw          " Don't redraw the screen during application of macros
 set list                " This and the above expose whitespace characters.
-set listchars=tab:o-,nbsp:_,trail:- " Exposes whitespace characters.
+set listchars=tab:o—,nbsp:_,trail:– " Exposes whitespace characters.
 set modelines=0         " CVE-2007-2438
 set mouse=a             " Enable mouse support for gui and term with support.
 set nocompatible        " Use Vim defaults instead of 100% vi compatibility
 set nofixendofline      " Do not add or remove final end of line.
 set nofoldenable        "
 set nrformats+=alpha    " Make letters increment and decrement able.
-set nu                  " Enable line numbers at startup.
+set number              " Enable line numbers at startup.
+set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=5         " Keep at least 5 lines above and below the cursor.
+set scrolloff=10        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
+set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
 set spelllang=en_us     "
 set tabstop=4           "      " [] Add context to these.
 set tags+=/usr/local/include/tags "
-set undodir=$HOME/.vim/undodir  " Directory to vim undo files.
+set undodir=~/.vim/undodir  " Directory to vim undo files.
 set undofile            " Maintain undo history between sessions.
 set updatetime=500      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
-set signcolumn=number   " Put signs in the number column instead of sign column.
+
+" Allow specific filetype plugins for buffer only changes to settings.
+filetype plugin on
 
 " Cursor & Color Related settings.
 " hi CursorLine term=NONE cterm=NONE ctermbg=black    "old
-hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
-hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
+hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
+hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi Folded ctermfg=darkblue ctermbg=black
+hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
 hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
-hi SignColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
+hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
 
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -91,23 +95,23 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-autocmd FileType html,css,javascript,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,javascript,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++ file extensions.
-autocmd BufEnter *.tpp :setlocal filetype=cpp
+au BufEnter *.tpp :setlocal filetype=cpp
 
 " Set proper tab character for make.
-autocmd FileType make,xml setlocal noexpandtab
+au FileType make,xml setlocal noexpandtab
 
 " Set Rmarkdown render command
-autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+au Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
 
 " ============================================================================
 " ░█▄█░█▀█░█▀█░█▀█░▀█▀░█▀█░█▀▀░█▀▀
 " ░█░█░█▀█░█▀▀░█▀▀░░█░░█░█░█░█░▀▀█
 " ░▀░▀░▀░▀░▀░░░▀░░░▀▀▀░▀░▀░▀▀▀░▀▀▀
-" ============================================================================
+" mappings====================================================================
 " Set <leader> to <space>.
 let mapleader=" "
 
@@ -117,6 +121,9 @@ nnoremap <silent> <leader><esc> :noh<cr>
 
 " Use visual selection for search and replace.
 vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
+
+" Sort words alphabetically using a visual selection.
+vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<cr>
 
 " Build tags.
 nnoremap <silent> <leader>t :!ctags &<cr>
@@ -128,12 +135,10 @@ nnoremap <silent> <leader><s-t> :TagbarToggle<cr>
 nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 
 " Brace completion.
-"inoremap {<cr> {<cr>}<esc>O<tab>       " Replaced with Auto-Pairs plugin
-inoremap {<cr> {<cr>}<esc>O
+"inoremap {<cr> {<cr>}<esc>O            " Replaced with Auto-Pairs plugin
 
 " Paren completion.
-"inoremap (<cr> (<cr>)<esc>O<tab>       " Replaced with Auto-Pairs plugin
-inoremap (<cr> (<cr>)<esc>O
+"inoremap (<cr> (<cr>)<esc>O            " Replaced with Auto-Pairs plugin
 
 " Move to next fill character, staying in insert mode and removing highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
@@ -146,6 +151,9 @@ nmap gf :e <cfile><cr>
 
 " Place fill character.
 nmap <C-h> i<##><esc>
+
+" Start fuzzy ripgrep file search
+nnoremap <c-p> :Rg<cr>
 
 " Move to next fill character, stay in insert mode, and remove highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
@@ -177,10 +185,17 @@ nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
 nnoremap gp `[v`]
 
 " Switch to corresponding header/source file.
-" You could use ".hpp" or ".c" filename endings by changing it in the
-" replacement statements. (see COC Plugin)
+" You could use ".h" or ".c" filename endings by changing it in the
+" replacement statements.
+" nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
-nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
+nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+
+" Jump to previous item in quickfix after :make.
+nnoremap <silent> <c-k> :cp<cr>
+
+" Jump to next item in quickfix after :make.
+nnoremap <silent> <c-j> :cn<cr>
 
 " VimGrep the open buffers
 nnoremap <silent> <leader>v :GrepBufs<c-l><space>
@@ -249,9 +264,7 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
 " ░█▀▀░█░█░█░█░█░░░░█░░░█░░█░█░█░█░▀▀█
 " ░▀░░░▀▀▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
-" ============================================================================
-" Sets <leader>n to toggle between absolute, relative,
-" and no line numbers.
+" functions===================================================================
 function! g:ToggleNuMode()
     if(&rnu == 1 && &nu == 1)
         set nornu
@@ -263,7 +276,6 @@ function! g:ToggleNuMode()
     endif
 endfunc
 
-" Sets <leader>s to toggle spelling markup.
 function! g:ToggleSpellMode()
     if(&spell == 1)
         set nospell
@@ -272,7 +284,6 @@ function! g:ToggleSpellMode()
     endif
 endfunc
 
-" Set <leader><tab> to open and close file browser.
 function! g:ToggelFileBrowser()
     if exists('g:NERDTree')
         :NERDTreeToggle
@@ -281,7 +292,6 @@ function! g:ToggelFileBrowser()
     endif
 endfunc
 
-" Set <control><f7> to open and close the quickfix.
 function! g:ToggleQuickfix()
     for i in range(1, winnr('$'))
         let bnum = winbufnr(i)
@@ -320,73 +330,136 @@ endfunc
 " ░▀█▀░█▀█░█▀▀░█▀▀
 " ░░█░░█▀█░█░█░▀▀█
 " ░░▀░░▀░▀░▀▀▀░▀▀▀
-" ============================================================================
+" tags========================================================================
 
 "" Set tagging for source code of file type.
-"autocmd Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
-
-"" TODO:[] Fix this shit.
-""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tags
-""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/tags
+"au Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
 
 " ============================================================================
 " ░█▀█░█░░░█░█░█▀▀░▀█▀░█▀█░█▀▀
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
-" ============================================================================
+" plugins=====================================================================
 " Plugins installed with vimplug.
 
-" " ___COC.nvim___
+" ___COC.nvim___
 " source ~/.vim/coc-config.vim
 
-" " Disable python2 support, python2 is deprecated.
-" let g:loaded_python_provider = 0
+" Disable python2 support, python2 is deprecated.
+let g:loaded_python_provider = 0
 
-" " Always show the signcolumn, otherwise it would shift the text each time
-" " diagnostics appear/become resolved.
-" if has("patch-8.1.1564")
-"   " Recently vim can merge signcolumn and number column into one
-"   set signcolumn=number
-" else
-"   set signcolumn=yes
-" endif
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
-" " Use K to show documentation in preview window.
-" nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+" Use K to show documentation in preview window.
+nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
 
-" function! s:show_documentation()
-"   if (index(['vim','help'], &filetype) >= 0)
-"     execute 'h '.expand('<cword>')
-"   elseif (coc#rpc#ready())
-"     call CocActionAsync('doHover')
-"   else
-"     execute '!' . &keywordprg . " " . expand('<cword>')
-"   endif
-" endfunction
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " . expand('<cword>')
+  endif
+endfunction
 
-" " Symbol renaming.
-" nmap <leader>rn <Plug>(coc-rename)
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rf <Plug>(coc-refactor)
+nmap <leader>ra <Plug>(coc-codeaction)
 
-" " GoTo code navigation.
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
-" nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
 
-" " Add `:Format` command to format current buffer.
-" command! -nargs=0 Format :call CocAction('format')
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-" " Add `:Fold` command to fold current buffer.
-" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" " Add `:OR` command for organize imports of the current buffer.
-" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " ___NERDTree___
-let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeQuitOnOpen = 1
+let g:NERDTreeMinimalUI = 1 " hide helper
+let g:NERDTreeIgnore = ['^node_modules$']
+let g:NERDTreeStatusline = '' " set to empty to use lightline
+
+" Close window if NERDTree is the last one
+au BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" Map to open current file in NERDTree and set size
+nnoremap <leader>pv :NERDTreeFind<bar> :vertical resize 45<CR>
+
+" Enables folder icon highlighting using exact match
+let g:NERDTreeHighlightFolders = 1
+
+" Highlights the folder name
+let g:NERDTreeHighlightFoldersFullName = 1
+
+" Color customization
+let s:brown = "905532"
+let s:aqua =  "3AFFDB"
+let s:blue = "689FB6"
+let s:darkBlue = "44788E"
+let s:purple = "834F79"
+let s:lightPurple = "834F79"
+let s:red = "AE403F"
+let s:beige = "F5C06F"
+let s:yellow = "F09F17"
+let s:orange = "D4843E"
+let s:darkOrange = "F16529"
+let s:pink = "CB6F6F"
+let s:salmon = "EE6E73"
+let s:green = "8FAA54"
+let s:lightGreen = "31B53E"
+let s:white = "FFFFFF"
+let s:rspec_red = 'FE405F'
+let s:git_orange = 'F54D27'
+
+" This line is needed to avoid error
+let g:NERDTreeExtensionHighlightColor = {}
+
+" Sets the color of css files to blue
+let g:NERDTreeExtensionHighlightColor['css'] = s:blue
+
+" This line is needed to avoid error
+let g:NERDTreeExactMatchHighlightColor = {}
+
+" Sets the color for .gitignore files
+let g:NERDTreeExactMatchHighlightColor['.gitignore'] = s:git_orange
+
+" This line is needed to avoid error
+let g:NERDTreePatternMatchHighlightColor = {}
+
+" Sets the color for files ending with _spec.rb
+let g:NERDTreePatternMatchHighlightColor['.*_spec\.rb$'] = s:rspec_red
+
+" Sets the color for folders that did not match any rule
+let g:WebDevIconsDefaultFolderSymbolColor = s:beige
+
+" Sets the color for files that did not match any rule
+let g:WebDevIconsDefaultFileSymbolColor = s:blue
+
+" NERDTree Git Plugin
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹", "Staged"    : "✚", "Untracked" : "✭",
+    \ "Renamed"   : "➜", "Unmerged"  : "═", "Deleted"   : "✖",
+    \ "Dirty"     : "✗", "Clean"     : "✔︎", 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
 
 "___ale___
 " Set ale to lint only in normal mode.
@@ -396,13 +469,13 @@ let g:ale_lint_on_insert_leave = 1
 "___airline___
 " Set the theme for airline.
 let g:airline_theme='luna'
-" let g:airline_theme='base16_grayscale'
-" let g:airline_theme='minimalist'
-" let g:airline_theme='monochrome'
+" let g:airline_theme = 'base16_grayscale'
+" let g:airline_theme = 'minimalist'
+" let g:airline_theme = 'monochrome'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffer_nr_show=1
-let g:airline#extensions#hunks#enabled=0
-let g:airline#extensions#branch#enabled=1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -418,39 +491,39 @@ endif
 " ----------------------------------------------------------------------------
 
 " unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.colnr = ' ㏇:'
+" let g:airline_left_sep = '»'
+" let g:airline_left_sep = '▶'
+" let g:airline_right_sep = '«'
+" let g:airline_right_sep = '◀'
+" let g:airline_symbols.colnr = ' ㏇:'
 let g:airline_symbols.colnr = ' ℅:'
 let g:airline_symbols.crypt = '🔒'
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.linenr = ' ␊:'
-let g:airline_symbols.linenr = ' ␤:'
-let g:airline_symbols.linenr = '¶'
+" let g:airline_symbols.linenr = '☰'
+" let g:airline_symbols.linenr = ' ␊:'
+" let g:airline_symbols.linenr = ' ␤:'
+" let g:airline_symbols.linenr = '¶'
 " let g:airline_symbols.maxlinenr = ''
 " let g:airline_symbols.maxlinenr = '㏑'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
+" let g:airline_symbols.branch = '⎇'
+" let g:airline_symbols.paste = 'ρ'
+" let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-" let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.spell = ''
+let g:airline_symbols.spell = 'Ꞩ'
+" let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
-let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_symbols.whitespace = '∥'
 
 " powerline symbols
-" let g:airline_left_sep = ''
-" let g:airline_left_alt_sep = ''
-" let g:airline_right_sep = ''
-" let g:airline_right_alt_sep = ''
-" let g:airline_symbols.branch = ''
-" let g:airline_symbols.colnr = ' :'
-" let g:airline_symbols.readonly = ''
-" let g:airline_symbols.linenr = ' :'
-let g:airline_symbols.maxlinenr = '☰ '
-let g:airline_symbols.dirty='⚡'
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.colnr = ' :'
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ' :'
+let g:airline_symbols.maxlinenr = 'Ξ'
+let g:airline_symbols.dirty = '⚡'
 
 " " old vim-powerline symbols
 " let g:airline_left_sep = '⮀'
@@ -488,8 +561,8 @@ let g:limelight_eop = '\ze\n^\s'
 let g:limelight_priority = -1
 
 " Have Goyo start/stop Limelight whenever Goyo is entered/left.
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+au! User GoyoEnter Limelight
+au! User GoyoLeave Limelight!
 
 "___Vim-Cpp-Enhanced-Highlight___"
 let g:cpp_class_scope_highlight = 1
@@ -503,38 +576,47 @@ let g:cpp_concepts_highlight = 1
 
 "___Gutentags___
 let g:gutentags_ctags_exclude = [
-             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
-             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
-             \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor',
-             \ '*.md', '*-lock.json', '*.lock', '*bundle*.js', '*build*.js',
-             \ '.*rc*', '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc',
-             \ '*.class', '*.sln', '*.Master', '*.csproj', '*.tmp',
-             \ '*.csproj.user', '*.cache', '*.pdb', 'tags*', 'cscope.*',
-             \ '*.css', '*.less', '*.scss', '*.exe', '*.dll', '*.mp3', '*.ogg',
-             \ '*.flac', '*.swp', '*.swo', '*.bmp', '*.gif', '*.ico', '*.jpg',
-             \ '*.png', '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz',
-             \ '*.tar.bz2', '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx'
-             \ ]
+            \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
+            \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
+            \ 'cache', 'compiled', 'docs', 'example', 'bundle', 'vendor',
+            \ '*.md', '*-lock.json', '*.lock', '*bundle*.js', '*build*.js',
+            \ '.*rc*', '*.json', '*.min.*', '*.map', '*.bak', '*.zip', '*.pyc',
+            \ '*.class', '*.sln', '*.Master', '*.csproj', '*.tmp',
+            \ '*.csproj.user', '*.cache', '*.pdb', 'tags*', 'cscope.*', '*.css',
+            \ '*.less', '*.scss', '*.exe', '*.dll', '*.mp3', '*.ogg', '*.flac',
+            \ '*.swp', '*.swo', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+            \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+            \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx'
+            \ ]
+
+"___vimwiki___
+let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
+
+"___fzf___
+" set silversearche-ag be the default searching command, by file name
+let $FZF_DEFAULT_COMMAND = 'ag -g ""'
+let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
 
 "___GitGutter___
-hi GitGutterAdd ctermfg=green ctermbg=NONE guifg=#009900
-hi GitGutterChange ctermfg=yellow ctermbg=NONE guifg=#bbbb00
-hi GitGutterDelete ctermfg=red ctermbg=NONE guifg=#ff2222
+hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
+hi GitGutterChange ctermfg=yellow ctermbg=black guifg=#bbbb00
+hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
 "========================================================
 " Plugins will be downloaded under the specified directory.
-call plug#begin('$HOME/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 
-" NOTE: Anything to do with tags in specific require configuration. Be sure
-"       that they are properly configured or they wont work. Other plugins
-"       that are commented out here are things I use only on occasion to
-"       better fit the work I am doing. (non-code based writing).
+" NOTE: Anything to do with tags and language servers in specific require
+"       configuration. Be sure that they are properly configured or they wont
+"       work.  Other plugins that are commented out here are things I use only
+"       on occasion to better fit the work I am doing. (non-code based
+"       writing).
 
 " Declare the list of plugins.
-" Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-" Plug 'SirVer/ultisnips'
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
+Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
@@ -544,12 +626,15 @@ Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
+Plug 'mhinz/vim-startify'                   " Add vim home screen.
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -557,6 +642,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'vim-airline/vim-airline'              " Adds styled statusbars.
 Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
+Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
 " List ends here. Plugins become visible to Vim after this call.
