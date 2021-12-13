@@ -12,14 +12,17 @@ curl -L https://nixos.org/nix/install | sh
 nix-env -iA \
     nixpkgs.antibody \
     nixpkgs.bat \
+    nixpkgs.bpytop \
     nixpkgs.clang_13 \
     nixpkgs.direnv \
     nixpkgs.doas \
     nixpkgs.fzf \
     nixpkgs.git \
     nixpkgs.gnumake \
+    nixpkgs.htop \
     nixpkgs.jump \
     nixpkgs.neovim \
+    nixpkgs.ranger \
     nixpkgs.ripgrep \
     nixpkgs.silver-searcher \
     nixpkgs.stow \
@@ -29,9 +32,6 @@ nix-env -iA \
     nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh
-
-## Install Oh-My-Zsh
-sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
 # Install dotfiles with gnu stow
 stow git
