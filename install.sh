@@ -1,15 +1,19 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 
 # set -xe
 
-# Install nix
-curl -L https://nixos.org/nix/install | sh
+# Install packages if the development environment is not manjaro/arch
+# looking at you RHEL.
+if ! grep -qE "manjaro|arch" "/etc/os-release"; then
+  echo "I guess we are doing this the hard way"
+  echo "Installing nix package manager and packages"
+  # Install nix
+  curl -L https://nixos.org/nix/install | sh
 
-# Source nix
-. $HOME/.nix-profile/etc/profile.d/nix.sh
+  # Source nix
+  . ~/.nix-profile/etc/profile.d/nix.sh
 
-# Install packages
-nix-env -iA \
+  nix-env -iA \
     nixpkgs.antibody \
     nixpkgs.bat \
     nixpkgs.clang_13 \
@@ -29,6 +33,19 @@ nix-env -iA \
     nixpkgs.vim \
     nixpkgs.yarn \
     nixpkgs.zsh
+else
+  echo "Thank goodness, I thought you were a troglodyte"
+fi
+
+# Install vim-plug if it isn't already installed
+if [ -f ~/.vim/autoload/plug.vim ]; then
+  echo "Installing vim-plug"
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+else
+  echo "Found vim-plug, already installed"
+fi
+
 
 ## Install Oh-My-Zsh
 # sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
@@ -39,6 +56,12 @@ stow nvim
 #stow tmux
 stow vim
 stow shells
+
+# Make the undo and tmp directories for both vim and neovim if they do not exist
+[ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
+[ -d ~/.vim/tmp ] && mkdir -p ~/.vim/tmp
+[ -d ~/.config/nvim/undodir ] && mkdir -p ~/.config/nvim/undodir
+[ -d ~/.config/nvim/tmp ] && mkdir -p ~/.config/nvim/tmp
 
 # Add nix.zsh shell to login shells
 if grep -q "zsh" "/etc/shells"; then
@@ -54,10 +77,6 @@ fi
 # Install vim/neovim plugin manager
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# Make a symbolic link to vim config for neovim config
-# mkdir -p "$HOME/.config/nvim"
-# [ ! -f $HOME/.config/nvim/init.vim ] && ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
 
 # Install neovim plugins
 nvim --headless +PlugInstall +qall

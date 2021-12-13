@@ -15,7 +15,7 @@
 " settings====================================================================
 " Set vim colors.
 syntax enable
-set background=dark
+" set background=dark
 
 " Set vim behavior.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
@@ -23,13 +23,13 @@ set autoindent          "
 set autowrite           "
 set backspace=2         " More powerful backspacing
 set backup              " Enable backups
-set backupdir=$HOME/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
+set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one s-width. used with cinkeys.
 set colorcolumn=80      " Add a colored column at 80.
 set complete+=kspell    "
 set cursorline
-set directory=$HOME/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
+set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
 set expandtab           "
@@ -55,7 +55,7 @@ set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=5         " Keep at least 5 lines above and below the cursor.
+set scrolloff=10        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
@@ -63,7 +63,7 @@ set softtabstop=4       "
 set spelllang=en_us     "
 set tabstop=4           "      " [] Add context to these.
 set tags+=/usr/local/include/tags "
-set undodir=$HOME/.vim/undodir  " Directory to vim undo files.
+set undodir=~/.vim/undodir  " Directory to vim undo files.
 set undofile            " Maintain undo history between sessions.
 set updatetime=500      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
@@ -73,17 +73,17 @@ filetype plugin on
 
 " Cursor & Color Related settings.
 " hi CursorLine term=NONE cterm=NONE ctermbg=black    "old
-hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
-hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
+hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
+hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi Folded ctermfg=darkblue ctermbg=black
+hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
 hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
-hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
+hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
 
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -95,16 +95,16 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-autocmd FileType html,css,javascript,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,javascript,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++ file extensions.
-autocmd BufEnter *.tpp :setlocal filetype=cpp
+au BufEnter *.tpp :setlocal filetype=cpp
 
 " Set proper tab character for make.
-autocmd FileType make,xml setlocal noexpandtab
+au FileType make,xml setlocal noexpandtab
 
 " Set Rmarkdown render command
-autocmd Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+au Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
 
 " ============================================================================
@@ -265,8 +265,6 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 " ░█▀▀░█░█░█░█░█░░░░█░░░█░░█░█░█░█░▀▀█
 " ░▀░░░▀▀▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
 " functions===================================================================
-" Sets <leader>n to toggle between absolute, relative,
-" and no line numbers.
 function! g:ToggleNuMode()
     if(&rnu == 1 && &nu == 1)
         set nornu
@@ -278,7 +276,6 @@ function! g:ToggleNuMode()
     endif
 endfunc
 
-" Sets <leader>s to toggle spelling markup.
 function! g:ToggleSpellMode()
     if(&spell == 1)
         set nospell
@@ -287,7 +284,6 @@ function! g:ToggleSpellMode()
     endif
 endfunc
 
-" Set <leader><tab> to open and close file browser.
 function! g:ToggelFileBrowser()
     if exists('g:NERDTree')
         :NERDTreeToggle
@@ -296,7 +292,6 @@ function! g:ToggelFileBrowser()
     endif
 endfunc
 
-" Set <control><f7> to open and close the quickfix.
 function! g:ToggleQuickfix()
     for i in range(1, winnr('$'))
         let bnum = winbufnr(i)
@@ -338,11 +333,7 @@ endfunc
 " tags========================================================================
 
 "" Set tagging for source code of file type.
-"autocmd Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
-
-"" TODO:[] Fix this shit.
-""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/tags
-""autocmd Filetype py setlocal tags+=/usr/local/Cellar/python3/3.6.4_2/Frameworks/Python.framework/Versions/3.6/lib/python3.6/tags
+"au Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
 
 " ============================================================================
 " ░█▀█░█░░░█░█░█▀▀░▀█▀░█▀█░█▀▀
@@ -407,7 +398,7 @@ let g:NERDTreeIgnore = ['^node_modules$']
 let g:NERDTreeStatusline = '' " set to empty to use lightline
 
 " Close window if NERDTree is the last one
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+au BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " Map to open current file in NERDTree and set size
 nnoremap <leader>pv :NERDTreeFind<bar> :vertical resize 45<CR>
@@ -570,8 +561,8 @@ let g:limelight_eop = '\ze\n^\s'
 let g:limelight_priority = -1
 
 " Have Goyo start/stop Limelight whenever Goyo is entered/left.
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
+au! User GoyoEnter Limelight
+au! User GoyoLeave Limelight!
 
 "___Vim-Cpp-Enhanced-Highlight___"
 let g:cpp_class_scope_highlight = 1
@@ -613,7 +604,7 @@ hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
 "========================================================
 " Plugins will be downloaded under the specified directory.
-call plug#begin('$HOME/.vim/plugged')
+call plug#begin('~/.vim/plugged')
 
 " NOTE: Anything to do with tags and language servers in specific require
 "       configuration. Be sure that they are properly configured or they wont
@@ -643,6 +634,7 @@ Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
