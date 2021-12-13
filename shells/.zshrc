@@ -35,7 +35,7 @@ bindkey -v '^S' history-incremental-pattern-search-forward
 autoload -U compinit colors zcalc
 compinit -d
 
-# FZF settings.
+# FZF settings
 source /usr/share/fzf/key-bindings.zsh
 source /usr/share/fzf/completion.zsh
 export FZF_COMPLETION_TRIGGER="<>"
@@ -78,7 +78,14 @@ zstyle ':completion:*' rehash true                              # automatically 
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
-
+# ---new---
+# zstyle ':completion:*' add-space true
+# zstyle ':completion:*' completer _list _oldlist _expand _complete _ignored _match _correct _approximate _prefix
+# zstyle ':completion:*' max-errors 3
+# zstyle ':completion:*' old-list always
+# zstyle ':completion:*' old-menu false
+# zstyle ':completion:*' prompt '>>>'
+# zstyle ':completion:*' word true
 
 ## Plugins section: Enable fish style features
 # Use syntax highlighting
@@ -99,10 +106,11 @@ if [[ -r /usr/share/zsh/functions/command-not-found.zsh ]]; then
 fi
 
 # Prompt (on left side) similar to default bash prompt, or redhat zsh prompt with colors
-#PROMPT="%(!.%{$fg[red]%}[%n@%m %1~]%{$reset_color%}# .%{$fg[green]%}[%n@%m %1~]%{$reset_color%}$ "
+PROMPT="%(!.%{$fg[red]%}[%n@%m %1~]%{$reset_color%}# .%{$fg[green]%}[%n@%m %1~]%{$reset_color%}$ "
 
-# Maia prompt
-PROMPT="%B%{$fg[cyan]%}%(4~|%-1~/.../%2~|%~)%u%b >%{$fg[cyan]%}>%B%(?.%{$fg[cyan]%}.%{$fg[red]%})>%{$reset_color%}%b " # Print some system information when the shell is first started
+## Maia prompt
+# Print some system information when the shell is first started
+PROMPT="%B%{$fg[cyan]%}%(4~|%-1~/.../%2~|%~)%u%b >%{$fg[cyan]%}>%B%(?.%{$fg[cyan]%}.%{$fg[red]%})>%{$reset_color%}%b "
 # Print a greeting message when shell is started
 echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
 ## Prompt on right side:
@@ -167,9 +175,9 @@ git_prompt_string() {
 }
 
 # Right prompt with exit status of previous command if not successful
- #RPROMPT="%{$fg[red]%} %(?..[%?])"
+RPROMPT="%{$fg[red]%} %(?..[%?])"
 # Right prompt with exit status of previous command marked with ✓ or ✗
- #RPROMPT="%(?.%{$fg[green]%}✓ %{$reset_color%}.%{$fg[red]%}✗ %{$reset_color%})"
+RPROMPT="%(?.%{$fg[green]%}✓ %{$reset_color%}.%{$fg[red]%}✗ %{$reset_color%})"
 
 # Apply different settings for different terminals
 case $(basename "$(cat "/proc/$PPID/comm")") in
@@ -203,6 +211,11 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
         ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
         ;;
 esac
+
+# source ~/.zsh_plugins.sh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 

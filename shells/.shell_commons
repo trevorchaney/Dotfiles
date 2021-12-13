@@ -7,7 +7,7 @@
 [[ $- != *i* ]] && return
 
 # Show banner if it exsists
-[ -f ~/.banner ] && . /~/.banner
+[ -f ~/.banner ] && . ~/.banner
 
 # Include .profile if it exists.
 #[ -f ~/.profile ] && . ~/.profile
