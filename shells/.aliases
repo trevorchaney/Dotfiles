@@ -24,10 +24,9 @@ alias mv="mv -i"                    # Confirm before overwriting.
 alias ne="nnn -ea"                 # Open txt docs in  $EDITOR and auto start NNN_FIFO
 alias nnn="nnn -e"                  # Always open text documents in $EDITOR
 alias py="python3"                  # Python abbreviation.
-alias rm="rm i"                     # Always verify
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
-alias sudo="doas"                   # YAGNI
+# alias sudo="doas"                   # YAGNI
 alias tem="trash-empty"             # Empty the trash, found in ~/.local/share/Trash
 alias tls="trash-list"              # List the files in the trash directory
 alias trest="trash-restore"         # Restore a file in the trash directory
@@ -35,7 +34,7 @@ alias vdir='vdir --color=auto'      # Add color to vdir command.
 alias vim="nvim"                    # Just an abbreviation for neovim
 alias wtr="curl wttr.in"            # Get the local weather.
 alias xo="xdg-open"                 # Open with system preferred application.
-alias cat="bat"                     # Bat, a better cat
+alias bat="bat -A"                  # Bat, a cat clone with wings
 alias antiup="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh" # Update zsh plugins
 
 # Always start 'nnn' in a tmux session.
@@ -43,12 +42,14 @@ alias antiup="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh" # Update
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # UC2
 alias adsi="cd ~/adsi/MADIS-UC2"
-alias goq="export ATS_HOME=\"/opt/ats/adsi/current\" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && popd"
-alias gw="cd ~/Desktop/UC2\ Gateway\ v6.1/bin"
+alias goq="export ATS_HOME=\"/opt/ats/adsi/current\" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && notify-send --urgency=low \"ADSI/GOQ has been stopped\" && popd"
+alias gw="cd ~/Desktop/UC2_Gateway*/bin"
+alias gwrun="pushd ~/Desktop/UC2_Gateway*/bin && ./start_gateway; notify-send --urgency=critical \"Gateway has stopped\" && popd"
+alias gwlog="pushd ~/Desktop/UC2_Gateway*/bin/log && tail -f `ls -tA | head -n1` && popd"
 alias gwp="cd ~/adsi/MADIS-UC2/src/GatewayProxy"
 alias logout="gnome-session-quit --logout"
 alias msg="cd ~/adsi/MADIS-UC2/src/userlibs/source/uc2/MessageFactory"

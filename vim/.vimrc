@@ -178,7 +178,7 @@ nnoremap <silent> <leader>z ]s1z=
 
 " Close all but the current buffer.
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
-nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
+nnoremap <silent> <leader>dd :CloseAllButCurrent<cr>
 
 " Visually select last changed or put text.
 "nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'<Paste>
@@ -340,8 +340,14 @@ endfunc
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 " plugins=====================================================================
-" Plugins installed with vimplug.
+"" Plugins install with packadd
+packadd! termdebug
+" Evaluate the expression under the cursor, you can also use K by default.
+nnoremap <RightClick> :Evaluate<cr>
+" Open vim terminal debugger
+nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
 
+"" Plugins installed with vimplug.
 " ___COC.nvim___
 " source ~/.vim/coc-config.vim
 
@@ -491,14 +497,14 @@ endif
 " ----------------------------------------------------------------------------
 
 " unicode symbols
-" let g:airline_left_sep = '»'
-" let g:airline_left_sep = '▶'
-" let g:airline_right_sep = '«'
-" let g:airline_right_sep = '◀'
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
 " let g:airline_symbols.colnr = ' ㏇:'
 let g:airline_symbols.colnr = ' ℅:'
 let g:airline_symbols.crypt = '🔒'
-" let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = '☰'
 " let g:airline_symbols.linenr = ' ␊:'
 " let g:airline_symbols.linenr = ' ␤:'
 " let g:airline_symbols.linenr = '¶'
@@ -509,19 +515,18 @@ let g:airline_symbols.crypt = '🔒'
 " let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.spell = 'Ꞩ'
-" let g:airline_symbols.spell = ''
+let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = '∥'
 
 " powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.colnr = ' :'
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ' :'
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.colnr = ' :'
+
 let g:airline_symbols.maxlinenr = 'Ξ'
 let g:airline_symbols.dirty = '⚡'
 
