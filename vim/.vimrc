@@ -342,10 +342,16 @@ endfunc
 " plugins=====================================================================
 "" Plugins install with packadd
 packadd! termdebug
+
+" ___Termdebug
 " Evaluate the expression under the cursor, you can also use K by default.
 nnoremap <RightClick> :Evaluate<cr>
+
 " Open vim terminal debugger
 nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
+
+" Set window layout for Termdebug
+let g:termdebug_wide=1
 
 "" Plugins installed with vimplug.
 " ___COC.nvim___
