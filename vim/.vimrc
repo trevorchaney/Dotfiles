@@ -209,14 +209,21 @@ nnoremap <silent> <leader>4 :Files<cr>
 " Repeat lost entered colon command
 nnoremap <silent> <leader>2 @:
 
-" Run :make
-nnoremap <silent> <leader>m :silent make -j4<cr>
-
-" Run :make clean.
-nnoremap <silent> <F2> :silent make clean<cr>
-
-" Run :make and then run the a.out program.
-nnoremap <silent> <F3> :silent make clean<cr>:silent make<cr>:copen<cr>
+if exists('g:AsyncRun')
+    " Run :make
+    nnoremap <silent> <leader>m :silent make -j4<cr>
+    " Run :make clean.
+    nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
+    " Run :make and open the Quickfix menu.
+    nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
+else
+    " Run :make
+    nnoremap <silent> <leader>m :AsyncRun make -j4<cr>
+    " Run :make clean.
+    nnoremap <silent> <F4> :AsyncRun make clean<cr><c-w><c-w>
+    " Run :make and open the Quickfix menu.
+    nnoremap <silent> <F9> :AsyncRun make rebuild<cr>:copen<cr><c-w><c-w>
+endif
 
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
@@ -229,20 +236,6 @@ nnoremap <silent> <F7> :cp<cr>
 
 " Run gdb with an a.out executable.
 nnoremap <silent> <F8> :term gdb a.out<cr>
-
-" Run :make and open the Quickfix menu.
-nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
-
-" Run :make clean.
-"nnoremap <silent> <c-F9> :make clean<cr>
-
-" Run :make and then run the a.out program.
-"nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
-
-" Run :make clean && make, aka. rebuild and open the Quickfix menu.
-" NOTE: Figure out how to call remapped keys, I'd guess that they would have
-"       to defined in order for stuff like this to work.
-"nnoremap <silent> <leader><F7> <F6><F7>
 
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
