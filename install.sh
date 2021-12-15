@@ -21,6 +21,7 @@ if ! grep -qE "manjaro|arch" "/etc/os-release"; then
     nixpkgs.direnv \
     nixpkgs.doas \
     nixpkgs.fzf \
+    nixpkgs.gdb \
     nixpkgs.git \
     nixpkgs.gnumake \
     nixpkgs.htop \
@@ -51,11 +52,12 @@ fi
 
 
 # Install dotfiles with gnu stow
+stow gdb
 stow git
 stow nvim
-#stow tmux
-stow vim
 stow shells
+stow tmux
+stow vim
 
 # Make the undo and tmp directories for both vim and neovim if they do not exist
 [ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
@@ -72,14 +74,14 @@ else
 fi
 
 # Install zsh plugins
-# antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
-
-# Install vim/neovim plugin manager
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
 
 # Install neovim plugins
 nvim --headless +PlugInstall +qall
+
+# Instal NvChad
+git clone https://github.com/NvChad/NvChad ~/.config/nvim
+nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
 
 # Install terminal dotfiles
 # if [ `uname -s` == 'Linux' ]; then
