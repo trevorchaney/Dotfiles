@@ -178,7 +178,7 @@ nnoremap <silent> <leader>z ]s1z=
 
 " Close all but the current buffer.
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
-nnoremap <silent> <leader>d :CloseAllButCurrent<cr>
+nnoremap <silent> <leader>dd :CloseAllButCurrent<cr>
 
 " Visually select last changed or put text.
 "nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'<Paste>
@@ -209,14 +209,21 @@ nnoremap <silent> <leader>4 :Files<cr>
 " Repeat lost entered colon command
 nnoremap <silent> <leader>2 @:
 
-" Run :make
-nnoremap <silent> <leader>m :silent make -j4<cr>
-
-" Run :make clean.
-nnoremap <silent> <F2> :silent make clean<cr>
-
-" Run :make and then run the a.out program.
-nnoremap <silent> <F3> :silent make clean<cr>:silent make<cr>:copen<cr>
+if exists('g:AsyncRun')
+    " Run :make
+    nnoremap <silent> <leader>m :silent make -j4<cr>
+    " Run :make clean.
+    nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
+    " Run :make and open the Quickfix menu.
+    nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
+else
+    " Run :make
+    nnoremap <silent> <leader>m :AsyncRun make -j4<cr>
+    " Run :make clean.
+    nnoremap <silent> <F4> :AsyncRun make clean<cr><c-w><c-w>
+    " Run :make and open the Quickfix menu.
+    nnoremap <silent> <F9> :AsyncRun make rebuild<cr>:copen<cr><c-w><c-w>
+endif
 
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
@@ -229,20 +236,6 @@ nnoremap <silent> <F7> :cp<cr>
 
 " Run gdb with an a.out executable.
 nnoremap <silent> <F8> :term gdb a.out<cr>
-
-" Run :make and open the Quickfix menu.
-nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
-
-" Run :make clean.
-"nnoremap <silent> <c-F9> :make clean<cr>
-
-" Run :make and then run the a.out program.
-"nnoremap <silent> <s-F9> :silent make<cr>:copen<cr>:term ./a.out<cr>
-
-" Run :make clean && make, aka. rebuild and open the Quickfix menu.
-" NOTE: Figure out how to call remapped keys, I'd guess that they would have
-"       to defined in order for stuff like this to work.
-"nnoremap <silent> <leader><F7> <F6><F7>
 
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
@@ -340,8 +333,20 @@ endfunc
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 " plugins=====================================================================
-" Plugins installed with vimplug.
+"" Plugins install with packadd
+packadd! termdebug
 
+" ___Termdebug
+" Evaluate the expression under the cursor, you can also use K by default.
+nnoremap <RightClick> :Evaluate<cr>
+
+" Open vim terminal debugger
+nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
+
+" Set window layout for Termdebug
+let g:termdebug_wide=1
+
+"" Plugins installed with vimplug.
 " ___COC.nvim___
 " source ~/.vim/coc-config.vim
 
@@ -491,14 +496,14 @@ endif
 " ----------------------------------------------------------------------------
 
 " unicode symbols
-" let g:airline_left_sep = '»'
-" let g:airline_left_sep = '▶'
-" let g:airline_right_sep = '«'
-" let g:airline_right_sep = '◀'
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
 " let g:airline_symbols.colnr = ' ㏇:'
 let g:airline_symbols.colnr = ' ℅:'
 let g:airline_symbols.crypt = '🔒'
-" let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.linenr = '☰'
 " let g:airline_symbols.linenr = ' ␊:'
 " let g:airline_symbols.linenr = ' ␤:'
 " let g:airline_symbols.linenr = '¶'
@@ -509,19 +514,18 @@ let g:airline_symbols.crypt = '🔒'
 " let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.spell = 'Ꞩ'
-" let g:airline_symbols.spell = ''
+let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = '∥'
 
 " powerline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.colnr = ' :'
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ' :'
+" let g:airline_left_sep = ''
+" let g:airline_left_alt_sep = ''
+" let g:airline_right_sep = ''
+" let g:airline_right_alt_sep = ''
+" let g:airline_symbols.branch = ''
+" let g:airline_symbols.colnr = ' :'
+
 let g:airline_symbols.maxlinenr = 'Ξ'
 let g:airline_symbols.dirty = '⚡'
 

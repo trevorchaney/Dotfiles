@@ -4,7 +4,7 @@ echo ---Loading ~/.gdbinit---\n
 # Better GDB defaults --------------------------------------------------------
 set history save on
 set history filename ~/.gdb_history
-set history remove-duplicates unlimited
+#set history remove-duplicates unlimited
 set python print-stack full
 set print pretty on
 set print array off
