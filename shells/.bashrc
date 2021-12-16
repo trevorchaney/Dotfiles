@@ -17,9 +17,9 @@ bind -m vi-insert "\C-l":clear-screen
 # Sets Ctrl-s incremental search.
 stty -ixon
 
-# FZF settings.
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/fzf/completion.bash
+# FZF settings, sourec if found
+[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
+[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 

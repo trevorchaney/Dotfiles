@@ -35,9 +35,9 @@ bindkey -v '^S' history-incremental-pattern-search-forward
 autoload -U compinit colors zcalc
 compinit -d
 
-# FZF settings
-source /usr/share/fzf/key-bindings.zsh
-source /usr/share/fzf/completion.zsh
+# FZF settings, source if found
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 export FZF_COMPLETION_TRIGGER="<>"
 
 # The following lines were added by compinstall
@@ -89,9 +89,11 @@ zstyle ':completion:*' cache-path ~/.zsh/cache
 
 ## Plugins section: Enable fish style features
 # Use syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] \
+    && source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Use history substring search
-source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+[ -f /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh ] \
+    && source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 # bind UP and DOWN arrow keys to history substring search
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
@@ -205,8 +207,9 @@ case $(basename "$(cat "/proc/$PPID/comm")") in
         ;;
     *)
         RPROMPT='$(git_prompt_string)'
-        # Use autosuggestion
-        source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+        # Use autosuggestion, if it exists
+        [ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] \
+            && source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
         ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
         ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
         ;;
