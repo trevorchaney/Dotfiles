@@ -67,6 +67,15 @@ term_colors() {
     done
 }
 
+# Open gdb in split tmux windows
+gdb-tmux() {
+    local id="$(tmux split-pane -hPF "#D" "tail -f /dev/null")"
+    tmux last-pane
+    local tty="$(tmux display-message -p -t "$id" '#{pane_tty}')"
+    gdb -ex "dashboard -output $tty" "$@"
+    tmux kill-pane -t "$id"
+}
+
 # ex - archive extractor
 # usage: ex <file>
 ex() {
@@ -129,6 +138,17 @@ colorgrid() {
         printf '\r\n'
     done
 }
+
+proctimer() {
+    if [ ! $1 ]; then
+        echo "Usage: proctimer <process-name>";
+    else
+      date;
+      while [ `pgrep $1`> /dev/null ]; do; done;
+      ;echo "$1 finished at `date`";
+    fi
+}
+
 
 ## Exports
 
