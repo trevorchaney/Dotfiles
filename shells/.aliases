@@ -21,13 +21,9 @@ alias ls="ls -a --color=auto"       # Add color to ls command.
 alias mkdir="mkdir -p"              # Create parent directories.
 alias more=less                     # Use less instead of more.
 alias mv="mv -i"                    # Confirm before overwriting.
-alias ne="nnn -ea"                  # Open txt docs in  $EDITOR and auto start NNN_FIFO
+alias ne="nnn -ea"                  # Open txt docs in $EDITOR and auto start NNN_FIFO
 alias nnn="nnn -e"                  # Always open text documents in $EDITOR
 alias py="python3"                  # Python abbreviation.
-<<<<<<< HEAD
-alias rm="rm -i"                    # Always verify
-=======
->>>>>>> 9bb0e989f3c584421094f886f0c12c3700831c83
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
 # alias sudo="doas"                   # YAGNI
