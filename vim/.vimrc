@@ -25,7 +25,7 @@ set backspace=2         " More powerful backspacing
 set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
-set cinoptions+=#1s     " Indent with c-macros one s-width. used with cinkeys.
+set cinoptions+=#1s     " Indent with c-macros one shiftwidth. Used with cinkeys.
 set colorcolumn=80      " Add a colored column at 80.
 set complete+=kspell    "
 set cursorline
@@ -115,7 +115,9 @@ au Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>r
 " Set <leader> to <space>.
 let mapleader=" "
 
-" (n)ormal-mode (no)n-(re)cursive (map).
+" Open split files vertically.
+map <c-w>gf <c-w>vgf
+
 " Remove search highlighting till next search.
 nnoremap <silent> <leader><esc> :noh<cr>
 
@@ -187,9 +189,9 @@ nnoremap gp `[v`]
 " Switch to corresponding header/source file.
 " You could use ".h" or ".c" filename endings by changing it in the
 " replacement statements.
-" nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
+nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
-nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+" nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
 
 " Jump to previous item in quickfix after :make.
 nnoremap <silent> <c-k> :cp<cr>
@@ -217,12 +219,12 @@ if exists('g:AsyncRun')
     " Run :make and open the Quickfix menu.
     nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
 else
-    " Run :make
-    nnoremap <silent> <leader>m :AsyncRun make -j4<cr>
-    " Run :make clean.
-    nnoremap <silent> <F4> :AsyncRun make clean<cr><c-w><c-w>
-    " Run :make and open the Quickfix menu.
-    nnoremap <silent> <F9> :AsyncRun make rebuild<cr>:copen<cr><c-w><c-w>
+    " Run make asynchronously
+    nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j4<cr><c-w><c-w>
+    " Run make clean asynchronously.
+    nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr><c-w><c-w>
+    " Run make asynchronously and open the Quickfix menu.
+    nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w><c-w>
 endif
 
 " Run an a.out program.
@@ -336,7 +338,7 @@ endfunc
 "" Plugins install with packadd
 packadd! termdebug
 
-" ___Termdebug
+" ___Termdebug___
 " Evaluate the expression under the cursor, you can also use K by default.
 nnoremap <RightClick> :Evaluate<cr>
 
@@ -347,53 +349,53 @@ nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
 let g:termdebug_wide=1
 
 "" Plugins installed with vimplug.
-" ___COC.nvim___
-" source ~/.vim/coc-config.vim
-
-" Disable python2 support, python2 is deprecated.
-let g:loaded_python_provider = 0
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Use K to show documentation in preview window.
-nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " . expand('<cword>')
-  endif
-endfunction
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-nmap <leader>rf <Plug>(coc-refactor)
-nmap <leader>ra <Plug>(coc-codeaction)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+"" ___COC.nvim___
+"" source ~/.vim/coc-config.vim
+"
+"" Disable python2 support, python2 is deprecated.
+"let g:loaded_python_provider = 0
+"
+"" Always show the signcolumn, otherwise it would shift the text each time
+"" diagnostics appear/become resolved.
+"if has("patch-8.1.1564")
+"  " Recently vim can merge signcolumn and number column into one
+"  set signcolumn=number
+"else
+"  set signcolumn=yes
+"endif
+"
+"" Use K to show documentation in preview window.
+"nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+"
+"function! s:show_documentation()
+"  if (index(['vim','help'], &filetype) >= 0)
+"    execute 'h '.expand('<cword>')
+"  elseif (coc#rpc#ready())
+"    call CocActionAsync('doHover')
+"  else
+"    execute '!' . &keywordprg . " . expand('<cword>')
+"  endif
+"endfunction
+"
+"" Symbol renaming.
+"nmap <leader>rn <Plug>(coc-rename)
+"nmap <leader>rf <Plug>(coc-refactor)
+"nmap <leader>ra <Plug>(coc-codeaction)
+"
+"" GoTo code navigation.
+"nmap <silent> gd <Plug>(coc-definition)
+"nmap <silent> gy <Plug>(coc-type-definition)
+"nmap <silent> gi <Plug>(coc-implementation)
+"nmap <silent> gr <Plug>(coc-references)
+"
+"" Add `:Format` command to format current buffer.
+"command! -nargs=0 Format :call CocAction('format')
+"
+"" Add `:Fold` command to fold current buffer.
+"command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+"
+"" Add `:OR` command for organize imports of the current buffer.
+"command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 " ___NERDTree___
 let g:NERDTreeShowHidden = 1
@@ -632,8 +634,7 @@ Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
-Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
-Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+" Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
