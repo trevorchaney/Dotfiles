@@ -610,6 +610,9 @@ hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
 hi GitGutterChange ctermfg=yellow ctermbg=black guifg=#bbbb00
 hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
+"___Vimspector___
+" let g:vimspector_enable_mappings = 'HUMAN'
+
 "========================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
@@ -639,6 +642,7 @@ Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
+" Plug 'puremourning/vimspector'              " Vim graphical debugger
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
 Plug 'skywind3000/asyncrun.vim'
