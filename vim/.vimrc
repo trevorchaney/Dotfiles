@@ -75,15 +75,16 @@ filetype plugin on
 " hi CursorLine term=NONE cterm=NONE ctermbg=black    "old
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi FoldColumn ctermfg=darkyellow ctermbg=NONE cterm=bold guibg=darkgrey
 hi Folded ctermfg=darkblue ctermbg=black
 hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
 hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi SignColumn ctermfg=darkyellow ctermbg=black cterm=bold guibg=darkgrey
 hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+hi debugPC ctermfg=black ctermbg=darkblue cterm=bold
 
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -339,8 +340,9 @@ endfunc
 packadd! termdebug
 
 " ___Termdebug___
-" Evaluate the expression under the cursor, you can also use K by default.
-nnoremap <RightClick> :Evaluate<cr>
+" Evaluate the expression under the cursor, you can also use K by default or
+" use balloon_eval on hover.
+nnoremap <RightMouse> :Evaluate<cr>
 
 " Open vim terminal debugger
 nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
