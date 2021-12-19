@@ -170,14 +170,20 @@ nmap <silent> <leader>o o<esc>
 " Place blank line above. (stays in normal mode)
 nmap <silent> <leader>O O<esc>
 
-" List available buffers
-nnoremap <silent> <leader>b :ls<cr>:b<space>
-
 " Make the current file into a pdf.
 nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 
 " Autocorrect next misspelled word.
 nnoremap <silent> <leader>z ]s1z=
+
+" Go to the next buffer
+nnoremap <silent> <tab> :bn<cr>
+
+" Go to the previous buffer
+nnoremap <silent> <s-tab> :bp<cr>
+
+" List available buffers
+nnoremap <silent> <leader>b :ls<cr>:b<space>
 
 " Close all but the current buffer.
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
@@ -255,6 +261,8 @@ nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
 " Execute a macro over a visually selected range.
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 
+" Escape terminal command instert mode
+tnoremap <esc> <c-\><c-n>
 
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀

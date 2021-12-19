@@ -2330,6 +2330,17 @@ end
 python Dashboard.start()
 
 # Profiles ---------------------------------------------------------------------
+dashboard -layout assembly registers expressions history threads memory stack source breakpoints variables
+dashboard variables -style compact False
+dashboard variables -style align True
+dashboard variables -style sort True
+dashboard expressions -style align True
+
+define vimdb
+    dashboard assembly
+    dashboard registers
+    dashboard source
+end
 
 # File variables ---------------------------------------------------------------
 
