@@ -128,11 +128,11 @@ vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 " Sort words alphabetically using a visual selection.
 vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<cr>
 
-" Build tags.
-nnoremap <silent> <leader>t :!ctags &<cr>
+" Build ctags and cscope.
+nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
 
 " Open and close tags drawer.
-nnoremap <silent> <leader><s-t> :TagbarToggle<cr>
+nnoremap <silent> <leader>T :TagbarToggle<cr>
 
 " Compile latex (.tex) documents from normal mode.
 nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
@@ -147,7 +147,7 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Trigger Codi scratchpad.
-nnoremap <silent> <leader>c :Codi!!<cr>
+nnoremap <silent> <leader>x :Codi!!<cr>
 
 " Allow gf to open non-existing files.
 nmap gf :e <cfile><cr>
@@ -200,12 +200,6 @@ nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
 " nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
 
-" Jump to previous item in quickfix after :make.
-nnoremap <silent> <c-k> :cp<cr>
-
-" Jump to next item in quickfix after :make.
-nnoremap <silent> <c-j> :cn<cr>
-
 " VimGrep the open buffers
 nnoremap <silent> <leader>v :GrepBufs<c-l><space>
 
@@ -215,8 +209,8 @@ nnoremap <silent> <leader>V :call GrepBuffers("<C-R><C-W>")<cr>
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
 
-" Repeat lost entered colon command
-nnoremap <silent> <leader>2 @:
+" Repeat last entered colon command
+nnoremap <silent> <leader>; @:
 
 if exists('g:AsyncRun')
     " Run :make
@@ -237,20 +231,27 @@ endif
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
 
-" Jump to next item in quickfix after :make.
-nnoremap <silent> <F6> :cn<cr>
-
-" Jump to previous item in quickfix after :make.
-nnoremap <silent> <F7> :cp<cr>
-
 " Run gdb with an a.out executable.
-nnoremap <silent> <F8> :term gdb a.out<cr>
+nnoremap <silent> <F8> :Termdebug a.out<cr>
 
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
-" Open Quickfix drawer.
+" Jump to previous item in location list.
+nnoremap <silent> <c-A> :lprev<cr>
+
+" Jump to next item in location list.
+nnoremap <silent> <c-O> :lnext<cr>
+
+" Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
+
+
+" Jump to previous item in quickfix.
+nnoremap <silent> <c-k> :cprev<cr>
+
+" Jump to next item in quickfix.
+nnoremap <silent> <c-j> :cnext<cr>
 
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
@@ -591,6 +592,28 @@ let g:cpp_concepts_highlight = 1
 "let g:cpp_no_function_highlight = 1
 
 "___Gutentags___
+" Enable gtags module
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
+" Config project root markers.
+let g:gutentags_project_root = ['.root', '.svn', '.git', 'package.json']
+
+" Generate datebases in my cache directory, prevent gtags files polluting my project
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" Change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
+
+" Specify when to generate tags
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+
+" Let Gutentags generate more info for tags
+let g:gutentags_ctags_extra_args = [ '--tag-relative=yes', '--fields=+ailmnS' ]
+
+" Ignored files and extentions.
 let g:gutentags_ctags_exclude = [
             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
@@ -642,7 +665,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'ludovicchabant/vim-gutentags'         " Provides ctag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
