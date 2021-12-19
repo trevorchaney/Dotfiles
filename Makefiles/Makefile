@@ -57,6 +57,7 @@ CXXFLAGS += $(OPTIMIZATION)
 #==============================================================================
 
 all: project
+	echo $(MAKEFLAGS)
 
 project: $(OBJECTS)
 	$(CXX) $(OBJECTS) $(CXXFLAGS) $(LDFLAGS) $(LDLIBS)
