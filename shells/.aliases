@@ -46,7 +46,7 @@ alias alert='notify-send --urgency=critical -i "$([ $? = 0 ] && echo terminal ||
 
 # UC2
 alias adsi="cd ~/adsi/MADIS-UC2"
-alias goq="export ATS_HOME=\"/opt/ats/adsi/current\" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z && notify-send --urgency=low \"ADSI/GOQ has been stopped\" && popd"
+alias goq="export ATS_HOME=\"/opt/ats/adsi/current\" && pushd /opt/ats/adsi/current/config && ../goq -i -v && ../goq -i -z; notify-send --urgency=low \"ADSI/GOQ has been stopped\" && popd"
 alias gw="cd ~/Desktop/UC2_Gateway*/bin"
 alias gwrun="pushd ~/Desktop/UC2_Gateway*/bin && ./start_gateway; notify-send --urgency=critical \"Gateway has stopped\" && popd"
 alias gwlog="pushd ~/Desktop/UC2_Gateway*/bin/log && tail -f `ls -tA | head -n1` && popd"

@@ -144,13 +144,15 @@ proctimer() {
         echo "Usage: proctimer <process-name>";
     else
       date;
-      while [ `pgrep $1`> /dev/null ]; do; done;
-      ;echo "$1 finished at `date`";
+      while [ `pgrep $1`> /dev/null ]; do sleep 1; done;
+      echo "$1 finished at `date`";
     fi
 }
 
 
 ## Exports
+#
+export LS_COLORS='ow=33;42'
 
 # Set PATH variable
 export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/share/gem/ruby/3.0.0/bin"
