@@ -84,6 +84,7 @@ hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+hi debugPC ctermfg=black ctermbg=darkblue cterm=bold
 
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -127,11 +128,13 @@ vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 " Sort words alphabetically using a visual selection.
 vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<cr>
 
-" Build tags.
-nnoremap <silent> <leader>t :!ctags &<cr>
+" Build ctags and cscope.
+" nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
+" Just create a .root in the current folder and have Gutentags do the rest.
+nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
 
 " Open and close tags drawer.
-nnoremap <silent> <leader><s-t> :TagbarToggle<cr>
+nnoremap <silent> <leader>T :TagbarToggle<cr>
 
 " Compile latex (.tex) documents from normal mode.
 nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
@@ -146,7 +149,7 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Trigger Codi scratchpad.
-nnoremap <silent> <leader>c :Codi!!<cr>
+nnoremap <silent> <leader>x :Codi!!<cr>
 
 " Allow gf to open non-existing files.
 nmap gf :e <cfile><cr>
@@ -173,10 +176,19 @@ nmap <silent> <leader>O O<esc>
 nnoremap <silent> <leader>b :ls<cr>:b<space>
 
 " Make the current file into a pdf.
-nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
+nnoremap <silent> <leader>pd :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 
 " Autocorrect next misspelled word.
 nnoremap <silent> <leader>z ]s1z=
+
+" Go to the next buffer
+nnoremap <silent> <tab> :bn<cr>
+
+" Go to the previous buffer
+nnoremap <silent> <s-tab> :bp<cr>
+
+" List available buffers
+nnoremap <silent> <leader>b :ls<cr>:b<space>
 
 " Close all but the current buffer.
 command CloseAllButCurrent silent! execute "%bd|e#|bd#"
@@ -208,8 +220,8 @@ nnoremap <silent> <leader>V :call GrepBuffers("<C-R><C-W>")<cr>
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
 
-" Repeat lost entered colon command
-nnoremap <silent> <leader>2 @:
+" Repeat last entered colon command
+nnoremap <silent> <leader>; @:
 
 if exists('g:AsyncRun')
     " Run :make
@@ -230,20 +242,20 @@ endif
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
 
-" Jump to next item in quickfix after :make.
-nnoremap <silent> <F6> :cn<cr>
-
-" Jump to previous item in quickfix after :make.
-nnoremap <silent> <F7> :cp<cr>
-
 " Run gdb with an a.out executable.
-nnoremap <silent> <F8> :term gdb a.out<cr>
+nnoremap <silent> <F8> :Termdebug a.out<cr>
 
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
-" Open Quickfix drawer.
+" Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
+
+" Jump to previous item in quickfix.
+nnoremap <silent> <c-k> :cprev<cr>
+
+" Jump to next item in quickfix.
+nnoremap <silent> <c-j> :cnext<cr>
 
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
@@ -254,6 +266,11 @@ nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
 " Execute a macro over a visually selected range.
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 
+" Toggle Markdown Preview
+nmap <leader>pm <Plug>MarkdownPreviewToggle
+
+" Escape terminal command instert mode
+tnoremap <esc> <c-\><c-n>
 
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
@@ -339,11 +356,12 @@ endfunc
 packadd! termdebug
 
 " ___Termdebug___
-" Evaluate the expression under the cursor, you can also use K by default.
-nnoremap <RightClick> :Evaluate<cr>
+" Evaluate the expression under the cursor, you can also use K by default or
+" use balloon_eval on hover.
+nnoremap <RightMouse> :Evaluate<cr>
 
 " Open vim terminal debugger
-nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
+nnoremap <silent> <leader>db :Termdebug a.out<cr><c-w><c-h>
 
 " Set window layout for Termdebug
 let g:termdebug_wide=1
@@ -581,6 +599,28 @@ let g:cpp_concepts_highlight = 1
 "let g:cpp_no_function_highlight = 1
 
 "___Gutentags___
+" Enable gtags module
+let g:gutentags_modules = ['ctags', 'gtags_cscope']
+
+" Config project root markers.
+let g:gutentags_project_root = ['.root', '.svn', '.git', 'package.json']
+
+" Generate datebases in my cache directory, prevent gtags files polluting my project
+let g:gutentags_cache_dir = expand('~/.cache/tags')
+
+" Change focus to quickfix window after search (optional).
+let g:gutentags_plus_switch = 1
+
+" Specify when to generate tags
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+
+" Let Gutentags generate more info for tags
+let g:gutentags_ctags_extra_args = [ '--tag-relative=yes', '--fields=+ailmnS' ]
+
+" Ignored files and extentions.
 let g:gutentags_ctags_exclude = [
             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
@@ -608,6 +648,71 @@ hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
 hi GitGutterChange ctermfg=yellow ctermbg=black guifg=#bbbb00
 hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
+"___Vimspector___
+" let g:vimspector_enable_mappings = 'HUMAN'
+
+"___Markdown-Preview___
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0 " by default, the server listens on localhost (127.0.0.1)
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = 'firefox'
+let g:mkdp_echo_preview_url = 1
+
+" a custom vim function name to open preview page
+" this function will receive url as param
+" default is empty
+let g:mkdp_browserfunc = ''
+
+" options for markdown render
+" mkit: markdown-it options for render
+" katex: katex options for math
+" uml: markdown-it-plantuml options
+" maid: mermaid options
+" disable_sync_scroll: if disable sync scroll, default 0
+" sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+"   middle: mean the cursor position alway show at the middle of the preview page
+"   top: mean the vim top viewport alway show at the top of the preview page
+"   relative: mean the cursor position alway show at the relative positon of the preview page
+" hide_yaml_meta: if hide yaml metadata, default is 1
+" sequence_diagrams: js-sequence-diagrams options
+" content_editable: if enable content editable for preview page, default: v:false
+" disable_filename: if disable filename header for preview page, default: 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+
+" use a custom markdown style must be absolute path
+" like '/Users/username/markdown.css' or expand('~/markdown.css')
+let g:mkdp_markdown_css = ''
+
+" use a custom highlight style must absolute path
+" like '/Users/username/highlight.css' or expand('~/highlight.css')
+let g:mkdp_highlight_css = ''
+
+" use a custom port to start server or random for empty
+let g:mkdp_port = ''
+
+" preview page title
+" ${name} will be replace with the file name
+let g:mkdp_page_title = '「${name}」'
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown']
+
 "========================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
@@ -619,22 +724,24 @@ call plug#begin('~/.vim/plugged')
 "       writing).
 
 " Declare the list of plugins.
+" Plug 'puremourning/vimspector'              " Vim graphical debugger
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'ludovicchabant/vim-gutentags'         " Provides ctag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
-" Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher

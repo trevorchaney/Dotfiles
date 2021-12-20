@@ -38,7 +38,7 @@ python
 #
 # https://github.com/cyrus-and/gdb-dashboard
 
-# License ----------------------------------------------------------------------
+# License --------------------------------------------------------------------
 
 # Copyright (c) 2015-2021 Andrea Cardaci <cyrus.and@gmail.com>
 #
@@ -60,7 +60,7 @@ python
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Imports ----------------------------------------------------------------------
+# Imports --------------------------------------------------------------------
 
 import ast
 import io
@@ -71,7 +71,7 @@ import re
 import struct
 import traceback
 
-# Common attributes ------------------------------------------------------------
+# Common attributes ----------------------------------------------------------
 
 class R():
 
@@ -221,7 +221,7 @@ See the `prompt` attribute. This value is used as a Python format string.''',
             }
         }
 
-# Common -----------------------------------------------------------------------
+# Common ---------------------------------------------------------------------
 
 class Beautifier():
 
@@ -426,7 +426,7 @@ def fetch_breakpoints(watchpoints=False, pending=False):
         breakpoints.append(breakpoint)
     return breakpoints
 
-# Dashboard --------------------------------------------------------------------
+# Dashboard ------------------------------------------------------------------
 
 class Dashboard(gdb.Command):
     '''Redisplay the dashboard.'''
@@ -604,7 +604,7 @@ class Dashboard(gdb.Command):
                 if fs and fs is not gdb:
                     fs.close()
 
-# Utility methods --------------------------------------------------------------
+# Utility methods ------------------------------------------------------------
 
     @staticmethod
     def start():
@@ -734,7 +734,7 @@ class Dashboard(gdb.Command):
         # ANSI: disable alternative screen buffer and show cursor
         return '\x1b[?1049l\x1b[?25h'
 
-# Module descriptor ------------------------------------------------------------
+# Module descriptor ----------------------------------------------------------
 
     class ModuleInfo:
 
@@ -797,7 +797,7 @@ class Dashboard(gdb.Command):
             prefix = '{} {}'.format(self.prefix, name)
             Dashboard.create_command(prefix, invoke, doc, False, complete)
 
-# GDB commands -----------------------------------------------------------------
+# GDB commands ---------------------------------------------------------------
 
     # handler for the `dashboard` command itself
     def invoke(self, arg, from_tty):
@@ -1102,7 +1102,7 @@ literals and converted to the proper type. '''
                 value = getattr(self.obj, attr_name)
                 print('{} = {!r}'.format(name, value))
 
-# Base module ------------------------------------------------------------------
+# Base module ----------------------------------------------------------------
 
     # just a tag
     class Module():
@@ -1178,7 +1178,7 @@ literals and converted to the proper type. '''
               (https://sourceware.org/gdb/onlinedocs/gdb/Commands-In-Python.html).'''
             return {}
 
-# Default modules --------------------------------------------------------------
+# Default modules ------------------------------------------------------------
 
 class Source(Dashboard.Module):
     '''Show the program source code, if available.'''
@@ -2325,13 +2325,24 @@ class Breakpoints(Dashboard.Module):
 # XXX traceback line numbers in this Python block must be increased by 1
 end
 
-# Start ------------------------------------------------------------------------
+# Start ----------------------------------------------------------------------
 
 python Dashboard.start()
 
-# Profiles ---------------------------------------------------------------------
+# Profiles -------------------------------------------------------------------
+dashboard -layout assembly registers expressions history threads memory stack source breakpoints variables
+dashboard variables -style compact False
+dashboard variables -style align True
+dashboard variables -style sort True
+dashboard expressions -style align True
 
-# File variables ---------------------------------------------------------------
+define vimdb
+    dashboard assembly
+    dashboard registers
+    dashboard source
+end
+
+# File variables -------------------------------------------------------------
 
 # vim: filetype=python
 # Local Variables:

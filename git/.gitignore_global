@@ -66,3 +66,9 @@ TODO.md
 ### C ###
 tags
 .ctags
+cscope.out
+.root
+
+# Vim/Neovim
+undodir
+tmp

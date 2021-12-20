@@ -67,6 +67,15 @@ term_colors() {
     done
 }
 
+# Open gdb in split tmux windows
+gdb-tmux() {
+    local id="$(tmux split-pane -hPF "#D" "tail -f /dev/null")"
+    tmux last-pane
+    local tty="$(tmux display-message -p -t "$id" '#{pane_tty}')"
+    gdb -ex "dashboard -output $tty" "$@"
+    tmux kill-pane -t "$id"
+}
+
 # ex - archive extractor
 # usage: ex <file>
 ex() {
@@ -95,7 +104,7 @@ dirdiff() {
     # Shell-escape each path
     DIR1=$(printf '%q' "$1"); shift
     DIR2=$(printf '%q' "$1"); shift
-    vim $@ -c "DirDiff $DIR1 $DIR2"
+    \vim $@ -c "DirDiff $DIR1 $DIR2"
 }
 
 colorgrid() {
@@ -130,7 +139,20 @@ colorgrid() {
     done
 }
 
+proctimer() {
+    if [ ! $1 ]; then
+        echo "Usage: proctimer <process-name>";
+    else
+      date;
+      while [ `pgrep $1`> /dev/null ]; do sleep 1; done;
+      echo "$1 finished at `date`";
+    fi
+}
+
+
 ## Exports
+#
+export LS_COLORS='ow=33;42'
 
 # Set PATH variable
 export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/share/gem/ruby/3.0.0/bin"
