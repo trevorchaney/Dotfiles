@@ -59,11 +59,12 @@ stow shells
 stow tmux
 stow vim
 
-# Make the undo and tmp directories for both vim and neovim if they do not exist
+# Make important directories
 [ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
 [ -d ~/.vim/tmp ] && mkdir -p ~/.vim/tmp
 [ -d ~/.config/nvim/undodir ] && mkdir -p ~/.config/nvim/undodir
 [ -d ~/.config/nvim/tmp ] && mkdir -p ~/.config/nvim/tmp
+[ -d ~/.cache/vim/ctags ] && mkdir -p ~/.cache/vim/ctags
 
 # Add nix.zsh shell to login shells
 if grep -q "zsh" "/etc/shells"; then
