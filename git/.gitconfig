@@ -13,6 +13,6 @@
 [push]
     default = matching
 [merge]
-	tool = vimdiff
-	conflictstyle = diff3
-	prompt = false
+    tool = vimdiff
+    conflictstyle = diff3
+    prompt = false

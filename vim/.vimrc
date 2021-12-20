@@ -129,7 +129,9 @@ vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<cr>
 
 " Build ctags and cscope.
-nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
+" nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
+" Just create a .root in the current folder and have Gutentags do the rest.
+nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
 
 " Open and close tags drawer.
 nnoremap <silent> <leader>T :TagbarToggle<cr>
@@ -171,7 +173,7 @@ nmap <silent> <leader>o o<esc>
 nmap <silent> <leader>O O<esc>
 
 " Make the current file into a pdf.
-nnoremap <silent> <leader>p :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
+nnoremap <silent> <leader>pd :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 
 " Autocorrect next misspelled word.
 nnoremap <silent> <leader>z ]s1z=
@@ -237,15 +239,8 @@ nnoremap <silent> <F8> :Termdebug a.out<cr>
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
-" Jump to previous item in location list.
-nnoremap <silent> <c-A> :lprev<cr>
-
-" Jump to next item in location list.
-nnoremap <silent> <c-O> :lnext<cr>
-
 " Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
-
 
 " Jump to previous item in quickfix.
 nnoremap <silent> <c-k> :cprev<cr>
@@ -261,6 +256,9 @@ nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
 
 " Execute a macro over a visually selected range.
 xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
+
+" Toggle Markdown Preview
+nmap <leader>pm <Plug>MarkdownPreviewToggle
 
 " Escape terminal command instert mode
 tnoremap <esc> <c-\><c-n>
@@ -354,7 +352,7 @@ packadd! termdebug
 nnoremap <RightMouse> :Evaluate<cr>
 
 " Open vim terminal debugger
-nnoremap <silent> <leader>db :Termdebug<cr><c-w><c-h>
+nnoremap <silent> <leader>db :Termdebug a.out<cr><c-w><c-h>
 
 " Set window layout for Termdebug
 let g:termdebug_wide=1
@@ -644,6 +642,68 @@ hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 "___Vimspector___
 " let g:vimspector_enable_mappings = 'HUMAN'
 
+"___Markdown-Preview___
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0 " by default, the server listens on localhost (127.0.0.1)
+let g:mkdp_open_ip = ''
+let g:mkdp_browser = 'firefox'
+let g:mkdp_echo_preview_url = 1
+
+" a custom vim function name to open preview page
+" this function will receive url as param
+" default is empty
+let g:mkdp_browserfunc = ''
+
+" options for markdown render
+" mkit: markdown-it options for render
+" katex: katex options for math
+" uml: markdown-it-plantuml options
+" maid: mermaid options
+" disable_sync_scroll: if disable sync scroll, default 0
+" sync_scroll_type: 'middle', 'top' or 'relative', default value is 'middle'
+"   middle: mean the cursor position alway show at the middle of the preview page
+"   top: mean the vim top viewport alway show at the top of the preview page
+"   relative: mean the cursor position alway show at the relative positon of the preview page
+" hide_yaml_meta: if hide yaml metadata, default is 1
+" sequence_diagrams: js-sequence-diagrams options
+" content_editable: if enable content editable for preview page, default: v:false
+" disable_filename: if disable filename header for preview page, default: 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false,
+    \ 'disable_filename': 0
+    \ }
+
+" use a custom markdown style must be absolute path
+" like '/Users/username/markdown.css' or expand('~/markdown.css')
+let g:mkdp_markdown_css = ''
+
+" use a custom highlight style must absolute path
+" like '/Users/username/highlight.css' or expand('~/highlight.css')
+let g:mkdp_highlight_css = ''
+
+" use a custom port to start server or random for empty
+let g:mkdp_port = ''
+
+" preview page title
+" ${name} will be replace with the file name
+let g:mkdp_page_title = '「${name}」'
+
+" recognized filetypes
+" these filetypes will have MarkdownPreview... commands
+let g:mkdp_filetypes = ['markdown']
+
 "========================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
@@ -687,5 +747,6 @@ Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
 Plug 'vimwiki/vimwiki'
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
