@@ -23,6 +23,7 @@ if ! grep -qE "manjaro|arch" "/etc/os-release"; then
     nixpkgs.fzf \
     nixpkgs.gdb \
     nixpkgs.git \
+    nixpkgs.global \
     nixpkgs.gnumake \
     nixpkgs.htop \
     nixpkgs.jump \
