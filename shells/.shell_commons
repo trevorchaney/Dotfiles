@@ -15,6 +15,10 @@
 # Include aliases definitions if they exist.
 [ -f ~/.aliases ] && . ~/.aliases
 
+# Allow core files, they output wherever the executable is located. Remember to
+# clean them up when you aren't using them.
+ulimit -c unlimited
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
