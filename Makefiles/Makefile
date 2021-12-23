@@ -81,6 +81,6 @@ mem_analysis: project
 reports: profiles mem_analysis
 
 clean:
-	rm -rf *out* *.o Logs/* html latex *.so *.gch core.* obj-lin-opt
+	rm -rf *.out *.o Logs/* html latex *.so *.gch core.* obj-lin-*
 
 rebuild: clean all

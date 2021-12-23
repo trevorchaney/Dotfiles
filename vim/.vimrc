@@ -84,7 +84,7 @@ hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
-hi debugPC ctermfg=black ctermbg=darkblue cterm=bold
+hi debugPC ctermfg=darkyellow ctermbg=darkblue cterm=bold
 
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
@@ -127,6 +127,9 @@ vnoremap <C-r> "hy:%s/<C-r>h//g<left><left>
 
 " Sort words alphabetically using a visual selection.
 vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"'))), ' ')<cr>
+
+" Ag search for visually selected.
+vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 
 " Build ctags and cscope.
 " nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
