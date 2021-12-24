@@ -1,9 +1,8 @@
 ##
 # @file Makefile
-# @author Trevor Chaney (tlc) (trevor.chaney@ultra-ats.com)
-# @version 0.1
-# @date Mon  19 13:19:42 CDT 2021
-# @brief Gnu Make variables and targets for building the UC2 MessageFactory.
+# @author Trevor Chaney (tlc) (trevorchaney@gmail.com)
+# @date
+# @brief
 
 .SILENT: clean
 .PHONY: all clean
@@ -11,17 +10,17 @@
 ## Make flags
 # MAKEFLAGS := --jobs=$(shell nproc) --output-sync=target --load-average
 
-# Default CXX is g++
+## Default CXX is g++
 # CXX = clang
 CXXSPEC = c++03
 SHELL = bash
 
 ## Use '-m32' to build 32-bit binaries.
-CXXFLAGS =-Wall -pipe -std=$(CXXSPEC)
+CXXFLAGS =-Wall -pipe -std=$(CXXSPEC) #-m32
 CFLAGS = $(CXXFLAGS)
 LDFLAGS =
-LDLIBS =
-OPTIMIZATION = -O3 -march=native -mtune=native -flto -fuse-linker-plugin -fdata-sections -ffunction-sections -Wl,--gc-sections
+LDLIBS = -lstdc++
+OPTIMIZATION = -O2 -march=native -mtune=native -flto -fuse-linker-plugin -fdata-sections -ffunction-sections -Wl,--gc-sections
 
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -31,6 +30,7 @@ DEBUG = yes
 DEBUGVERBOSE = no
 PEDANTIC = yes
 PROFILE = yes
+PGO = yes
 
 ifeq ($(DEBUG), yes)
 ifeq ($(DEBUGVERBOSE), yes)
@@ -45,13 +45,14 @@ ifeq ($(PEDANTIC), yes)
 endif
 
 ifeq ($(PROFILE), yes)
+ifeq ($(PGO), yes)
 ifneq ($(wildcard *.gcda), )
 	CXXFLAGS += -fprofile-use
 else
 	CXXFLAGS += -fprofile-generate
 endif
 endif
-	# CXXFLAGS += -p # Use '-p' for prof and '-pg' for gprof
+## Use '-p' for prof and '-pg' for gprof
 	CXXFLAGS += -pg
 endif
 
@@ -90,9 +91,9 @@ mem_analysis: project
 static_analysis: project
 	cppcheck --enable=all -i $(EXCLUDES) -j $(shell nproc) --std=$(CXXSPEC)
 
-reports: profiles mem_analysis static_analysis
+reports: profile static_analysis mem_analysis
 
 clean:
-	rm -rf *.out *.o Logs/* html latex *.so *.gch core.* obj-lin-*
+	rm -rf *.out *.gcda *.xml $(OBJECTS) logs dox *.so *.gch core.* obj-lin-*
 
 rebuild: clean all
