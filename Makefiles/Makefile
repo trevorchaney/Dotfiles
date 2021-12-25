@@ -10,6 +10,8 @@
 ## Make flags
 # MAKEFLAGS := --jobs=$(shell nproc) --output-sync=target --load-average
 
+## Run 'make -p -f /dev/null' to get the implicit rules and variables that make is using.
+
 ## Default CXX is g++
 # CXX = clang
 CXXSPEC = c++03
