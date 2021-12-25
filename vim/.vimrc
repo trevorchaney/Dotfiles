@@ -533,8 +533,8 @@ call plug#begin('$HOME/.vim/plugged')
 "       better fit the work I am doing. (non-code based writing).
 
 " Declare the list of plugins.
-" Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-" Plug 'octol/vim-cpp-enhanced-highlight'
+" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
@@ -544,15 +544,15 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
+Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
-Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
