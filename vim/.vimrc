@@ -727,12 +727,6 @@ call plug#begin('~/.vim/plugged')
 "       writing).
 
 " Declare the list of plugins.
-<<<<<<< HEAD
-" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
-" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
-=======
-" Plug 'puremourning/vimspector'              " Vim graphical debugger
->>>>>>> fa33cc5f19456b6ae40d5acf58f278fcd2bde46c
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
@@ -744,28 +738,20 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-<<<<<<< HEAD
-=======
 Plug 'ludovicchabant/vim-gutentags'         " Provides ctag management.
->>>>>>> fa33cc5f19456b6ae40d5acf58f278fcd2bde46c
+Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
-<<<<<<< HEAD
-Plug 'nathanaelkane/vim-indent-guides'      " Indent Guides
-=======
->>>>>>> fa33cc5f19456b6ae40d5acf58f278fcd2bde46c
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
+" Plug 'puremourning/vimspector'              " Vim graphical debugger
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'
-<<<<<<< HEAD
-=======
 Plug 'skywind3000/asyncrun.vim'
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
->>>>>>> fa33cc5f19456b6ae40d5acf58f278fcd2bde46c
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
