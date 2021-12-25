@@ -1,6 +1,8 @@
 [user]
     name = Trevor Chaney
     email = trevorchaney@gmail.com
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
 [core]
     exlcudesfile = ~/.global_gitignore
     editor = nvim
@@ -10,3 +12,7 @@
     defaultBranch = main
 [push]
     default = matching
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+    prompt = false
