@@ -1,13 +1,7 @@
 # Use an escaping backslash '\' to use command without alias.
 
-<<<<<<< HEAD
-# alias sudo="doas"               # YAGNI
-alias ard="arduino-cli"         # Tired of writing this out.
-alias cls="clear"               # Too much DOS, try Ctrl-l.
-=======
 alias ard="arduino-cli"             # Tired of writing this out.
 alias cls="clear"                   # Too much DOS, try Ctrl-l.
->>>>>>> fa33cc5f19456b6ae40d5acf58f278fcd2bde46c
 alias cmd="cmd.exe /c"
 alias cp="cp -ir"                   # Recursive copy, Confirm before overwriting.
 alias devenv="devenv.exe"
