@@ -2,17 +2,13 @@
 # .bashrc
 #
 
-# If not running interactively, don't do anything.
-[[ $- != *i* ]] && return
-
 # Source global definitions if it exists.
-if [ -f /etc/bashrc ]; then
-    . /etc/bashrc
-fi
+[ -f /etc/bashrc ] && . /etc/bashrc
 
 # Include common shell settings for bash and zsh if it exists.
-[ -f $HOME/.shell_commons ] && . $HOME/.shell_commons
+[ -f ~/.shell_commons ] && . ~/.shell_commons
 
+HISTFILE=~/.bash_history
 
 # Enter vi mode with <escape>.
 set -o vi
@@ -21,29 +17,19 @@ bind -m vi-insert "\C-l":clear-screen
 # Sets Ctrl-s incremental search.
 stty -ixon
 
-# FZF settings.
-source /usr/share/fzf/key-bindings.bash
-source /usr/share/fzf/completion.bash
-export FZF_COMPLETION_TRIGGER="<>"
-export FD_OPTIONS="--hidden --follow --exclude .git --exclude node_modules --exclude .vim"
-export FZF_DEFAULT_COMMAND="fd --type f --type l $FD_OPTIONS"
-export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
-export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
-
-
-export NNN_PLUG='f:finder;o:fzopen;i:preview-tui;d:diffs;t:nmount;v:imgview'
-
+# FZF settings, sourec if found
+[ -f /usr/share/fzf/key-bindings.bash ] && source /usr/share/fzf/key-bindings.bash
+[ -f /usr/share/fzf/completion.bash ] && source /usr/share/fzf/completion.bash
 
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
 # Change the window title of X terminals
 case ${TERM} in
     xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
+        PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#~/\~}\007"'
         ;;
     screen*)
-        PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
+        PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#~/\~}\033\\"'
         ;;
 esac
 
@@ -78,14 +64,6 @@ if ${use_color} ; then
     else
         PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
     fi
-
-    alias ls='ls -a --color=auto'
-    alias dir='dir --color=auto'
-    alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
 else
     if [[ ${EUID} == 0 ]] ; then
         # show root@ when we don't have colors
@@ -127,16 +105,6 @@ shopt -s dotglob
 
 # Enable spell checking.
 shopt -s cdspell
-
-# Don't put duplicate lines or lines starting with space in the history.
-# See bash(1) for more options
-HISTCONTROL=ignoreboth
-
-# For setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-# NOTE: Setting HISTSIZE to -1 may cause an issue with reverse-i-search.
-HISTSIZE=10000000
-HISTFILESIZE=10000000
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
