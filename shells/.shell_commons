@@ -19,6 +19,11 @@
 # clean them up when you aren't using them.
 ulimit -c unlimited
 
+# Configure keyboard bindings.
+# setxkbmap -options found in /usr/share/X11/xkb/rules/evdev.list
+setxkbmap -option 'caps:ctrl_modifier, shift:both_shiftlock'
+xcape -e 'Caps_Lock=Escape'
+
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 

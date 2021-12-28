@@ -36,6 +36,7 @@ alias wtr="curl wttr.in"            # Get the local weather.
 alias xo="xdg-open"                 # Open with system preferred application.
 alias bat="bat -A"                  # Bat, a cat clone with wings
 alias antiup="antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh" # Update zsh plugins
+alias dot="cd ~/Dotfiles"
 
 # Always start 'nnn' in a tmux session.
 #alias nnn="tmux new-session -ds 'temp' nnn -ea; tmux attach-session -t 'temp'"
