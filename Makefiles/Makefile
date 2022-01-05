@@ -18,11 +18,15 @@ CXXSPEC = c++03
 SHELL = bash
 
 ## Use '-m32' to build 32-bit binaries.
-CXXFLAGS =-Wall -pipe -std=$(CXXSPEC) #-m32
+CXXFLAGS = -Wall -Wextra -Wshadow -Wsign-conversion -pipe -std=$(CXXSPEC) #-m32
 CFLAGS = $(CXXFLAGS)
 LDFLAGS =
 LDLIBS = -lstdc++
 OPTIMIZATION = -O2 -march=native -mtune=native -flto -fuse-linker-plugin -fdata-sections -ffunction-sections -Wl,--gc-sections
+# SUPER_OPTIMIZE_GCC = -O3 -mavx2 -funsafe-math-optimization
+# SUPER_OPTIMIZE_CLANG = -O3 -march=core-avx2 -m64 -cl-fast-relaxed-math
+# SUPER_OPTIMIZE_INTEL = -Ofast -march=core-avx2 -m64
+# SUPER_OPTIMIZE_MSVC = -O3 /arch:AVX2 /Ox /fp:fast
 
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
@@ -32,7 +36,8 @@ DEBUG = yes
 DEBUGVERBOSE = no
 PEDANTIC = yes
 PROFILE = yes
-PGO = yes
+PROFILE_GUIDED_OPTIMIZATION = yes
+SUPER_OPTIMIZATION
 
 ifeq ($(DEBUG), yes)
 ifeq ($(DEBUGVERBOSE), yes)
@@ -47,7 +52,7 @@ ifeq ($(PEDANTIC), yes)
 endif
 
 ifeq ($(PROFILE), yes)
-ifeq ($(PGO), yes)
+ifeq ($(PROFILE_GUIDED_OPTIMIZATION), yes)
 ifneq ($(wildcard *.gcda), )
 	CXXFLAGS += -fprofile-use
 else
@@ -77,7 +82,7 @@ project: $(OBJECTS)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 shared: $(OBJECTS)
-	$(CXX) $(OBJECTS) $(CXXFLAGS) $(LDLIBS) -shared -o libuc2_msg_factory.so
+	$(CXX) $(OBJECTS) $(CXXFLAGS) $(LDLIBS) -shared -o libshared_lib_out.so
 
 dox: project
 	doxygen .
