@@ -4,7 +4,7 @@
 
 # Install packages if the development environment is not manjaro/arch
 # looking at you RHEL.
-if ! grep -qE "manjaro|arch" "/etc/os-release"; then
+if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
     echo "I guess we're doing this the hard way..."
     echo "Installing nix package manager and packages"
     # Install nix
@@ -17,7 +17,9 @@ if ! grep -qE "manjaro|arch" "/etc/os-release"; then
       nixpkgs.antibody \
       nixpkgs.bat \
       nixpkgs.bpytop \
+      nixpkgs.atool \
       nixpkgs.clang_13 \
+      nixpkgs.cppcheck \
       nixpkgs.direnv \
       nixpkgs.fzf \
       nixpkgs.gdb \
@@ -26,6 +28,8 @@ if ! grep -qE "manjaro|arch" "/etc/os-release"; then
       nixpkgs.gnumake \
       nixpkgs.htop \
       nixpkgs.jump \
+      nixpkgs.llvmPackages_13.libclang \
+      nixpkgs.neofetch \
       nixpkgs.neovim \
       nixpkgs.nodejs \
       nixpkgs.ranger \
