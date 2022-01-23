@@ -30,8 +30,8 @@ font xft:URWGothic-Book 11
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec terminal //defalut
-bindsym $mod+Return exec i3-sensible-terminal
+#bindsym $mod+Return exec terminal # defalut
+bindsym $mod+Return exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -50,7 +50,8 @@ bindsym XF86Calculator exec --no-startup-id qalculate-gtk
 ################################################################################################
 
 exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec i3-sensible-terminal -e 'alsamixer'
+# bindsym $mod+Ctrl+m exec i3-sensible-terminal -e 'alsamixer' # default
+bindsym $mod+Ctrl+m exec alacritty -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 #bindsym $mod+Ctrl+m exec pavucontrol
@@ -62,11 +63,13 @@ bindsym $mod+Ctrl+m exec i3-sensible-terminal -e 'alsamixer'
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Start Applications
-bindsym $mod+Ctrl+b exec i3-sensible-terminal -e 'bmenu'
+# bindsym $mod+Ctrl+b exec i3-sensible-terminal -e 'bmenu' # default
+bindsym $mod+Ctrl+b exec alacritty -e 'bmenu'
 bindsym $mod+F2 exec firefox
 bindsym $mod+F3 exec pcmanfm
 #bindsym $mod+F3 exec ranger
-bindsym $mod+F5 exec i3-sensible-terminal -e 'mocp'
+# bindsym $mod+F5 exec i3-sensible-terminal -e 'mocp' # default
+bindsym $mod+F5 exec alacritty -e 'mocp'
 bindsym $mod+t exec --no-startup-id pkill picom
 bindsym $mod+Ctrl+t exec --no-startup-id picom -b
 bindsym $mod+Shift+d --release exec "killall dunst; exec notify-send 'restart dunst'"
