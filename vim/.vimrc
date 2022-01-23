@@ -731,7 +731,7 @@ call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
