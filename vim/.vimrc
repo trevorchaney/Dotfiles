@@ -117,7 +117,7 @@ au Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>r
 let mapleader=" "
 
 " Open split files vertically.
-map <c-w>gf <c-w>vgf
+noremap <c-w>gf <c-w>vgf
 
 " Remove search highlighting till next search.
 nnoremap <silent> <leader><esc> :noh<cr>
@@ -204,9 +204,9 @@ nnoremap gp `[v`]
 " Switch to corresponding header/source file.
 " You could use ".h" or ".c" filename endings by changing it in the
 " replacement statements.
-nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
+" nnoremap <silent> <leader>e :e %:p:s,.hpp$,.X123X,:s,.cpp$,.hpp,:s,.X123X$,.cpp,<cr>
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
-" nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
+nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
 
 " Jump to previous item in quickfix after :make.
 nnoremap <silent> <c-k> :cp<cr>
@@ -370,34 +370,34 @@ nnoremap <silent> <leader>db :Termdebug a.out<cr><c-w><c-h>
 let g:termdebug_wide=1
 
 "" Plugins installed with vimplug.
-"" ___COC.nvim___
-"" source ~/.vim/coc-config.vim
-"
-"" Disable python2 support, python2 is deprecated.
-"let g:loaded_python_provider = 0
-"
-"" Always show the signcolumn, otherwise it would shift the text each time
-"" diagnostics appear/become resolved.
-"if has("patch-8.1.1564")
-"  " Recently vim can merge signcolumn and number column into one
-"  set signcolumn=number
-"else
-"  set signcolumn=yes
-"endif
-"
-"" Use K to show documentation in preview window.
-"nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
-"
-"function! s:show_documentation()
-"  if (index(['vim','help'], &filetype) >= 0)
-"    execute 'h '.expand('<cword>')
-"  elseif (coc#rpc#ready())
-"    call CocActionAsync('doHover')
-"  else
-"    execute '!' . &keywordprg . " . expand('<cword>')
-"  endif
-"endfunction
-"
+" ___COC.nvim___
+" source ~/.vim/coc-config.vim
+
+" Disable python2 support, python2 is deprecated.
+let g:loaded_python_provider = 0
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("patch-8.1.1564")
+    " Recently vim can merge signcolumn and number column into one
+    set signcolumn=number
+else
+    set signcolumn=yes
+endif
+
+" Use <F3> to show documentation in preview window.
+nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+        call CocActionAsync('doHover')
+    else
+        execute '!' . &keywordprg . " . expand('<cword>')
+    endif
+endfunction
+
 "" Symbol renaming.
 "nmap <leader>rn <Plug>(coc-rename)
 "nmap <leader>rf <Plug>(coc-refactor)
@@ -483,16 +483,19 @@ let g:WebDevIconsDefaultFileSymbolColor = s:blue
 
 " NERDTree Git Plugin
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹", "Staged"    : "✚", "Untracked" : "✭",
-    \ "Renamed"   : "➜", "Unmerged"  : "═", "Deleted"   : "✖",
-    \ "Dirty"     : "✗", "Clean"     : "✔︎", 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
-    \ }
+            \ "Modified"  : "✹", "Staged"    : "✚", "Untracked" : "✭",
+            \ "Renamed"   : "➜", "Unmerged"  : "═", "Deleted"   : "✖",
+            \ "Dirty"     : "✗", "Clean"     : "✔︎", 'Ignored'   : '☒',
+            \ "Unknown"   : "?"
+            \ }
 
 "___ale___
 " Set ale to lint only in normal mode.
 let g:ale_lint_on_text_changed = "normal"
 let g:ale_lint_on_insert_leave = 1
+let g:ale_set_balloons = 1
+let g:ale_c_clangd_options = "-stdlib=libc++"
+let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
 "___airline___
 " Set the theme for airline.
@@ -684,18 +687,18 @@ let g:mkdp_browserfunc = ''
 " content_editable: if enable content editable for preview page, default: v:false
 " disable_filename: if disable filename header for preview page, default: 0
 let g:mkdp_preview_options = {
-    \ 'mkit': {},
-    \ 'katex': {},
-    \ 'uml': {},
-    \ 'maid': {},
-    \ 'disable_sync_scroll': 0,
-    \ 'sync_scroll_type': 'middle',
-    \ 'hide_yaml_meta': 1,
-    \ 'sequence_diagrams': {},
-    \ 'flowchart_diagrams': {},
-    \ 'content_editable': v:false,
-    \ 'disable_filename': 0
-    \ }
+            \ 'mkit': {},
+            \ 'katex': {},
+            \ 'uml': {},
+            \ 'maid': {},
+            \ 'disable_sync_scroll': 0,
+            \ 'sync_scroll_type': 'middle',
+            \ 'hide_yaml_meta': 1,
+            \ 'sequence_diagrams': {},
+            \ 'flowchart_diagrams': {},
+            \ 'content_editable': v:false,
+            \ 'disable_filename': 0
+            \ }
 
 " use a custom markdown style must be absolute path
 " like '/Users/username/markdown.css' or expand('~/markdown.css')
