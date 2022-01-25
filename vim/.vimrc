@@ -340,6 +340,15 @@ function! ExecuteMacroOverVisualRange()
     execute ":'<, '>normal @".nr2char(getchar())
 endfunc
 
+" ============================================================================
+" file templates =============================================================
+au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp execute "normal ma"
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 " ============================================================================
 " ░▀█▀░█▀█░█▀▀░█▀▀
