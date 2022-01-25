@@ -2,9 +2,13 @@
 
 # set -xe
 
+
+troglodyte=0
+
 # Install packages if the development environment is not manjaro/arch
 # looking at you RHEL.
 if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
+    troglodyte=1
     echo "I guess we're doing this the hard way..."
     echo "Installing nix package manager and packages"
     # Install nix
@@ -83,33 +87,33 @@ stow vim
 # Install zsh plugins
 antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh
 
-# Create vim directories
-mkdir -p $HOME/.vim/undordir
-mkdir -p $HOME/.vim/tmp
-
 # Install vim/neovim plugin manager
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Make a symbolic link to vim config for neovim config
 mkdir -p "$HOME/.config/nvim"
-[ ! -f $HOME/.config/nvim/init.vim ] && ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
+if [ ! -f $HOME/.config/nvim/init.vim ]; then
+    ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
+else
+    echo "~/.config/nvim/init.vim already exists, skipping symbolic linking to .vimrc"
+fi
 
 # Make a symbolic link to vim-plug install in .vim directory
 mkdir -p "$HOME/.local/share/nvim/site/autoload"
-[ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ] \
-    && ln -s "$HOME/.vim/autoload/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
+if [ ! -f $HOME/.local/share/nvim/site/autoload/plug.vim ]; then
+    ln -s "$HOME/.vim/autoload/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
+else
+    echo "~/.local/share/nvim/site/autoload/plug.vim already exists, skipping symbolic linking to .vim/autoload/plug.vim"
+fi
 
 # Install neovim plugins
 nvim --headless +PlugInstall +qall
 
-# Instal NvChad
-git clone https://github.com/NvChad/NvChad ~/.config/nvim
-nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
-
-# Install terminal dotfiles
-# if [ `uname -s` == 'Linux' ]; then
-#     stow alacritty
-# fi
+# Install NvChad
+if [ $troglodyte = "1" ]; then
+    git clone https://github.com/NvChad/NvChad ~/.config/nvim
+    nvim +'hi NormalFloat guibg=#1e222a' +PackerSync
+fi
 
 echo
