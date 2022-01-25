@@ -61,8 +61,6 @@ set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
 set spelllang=en_us     "
-set splitbelow          "
-set splitright          "
 set tabstop=4           "      " [] Add context to these.
 set tags+=/usr/local/include/tags "
 set undodir=~/.vim/undodir  " Directory to vim undo files.
@@ -210,11 +208,13 @@ nnoremap gp `[v`]
 " coc-clangd "clangd.switchSourceHeader" can do this as well.
 nnoremap <silent> <leader>e :CocCommand clangd.switchSourceHeader<cr>
 
-" Jump to previous item in quickfix after :make.
-nnoremap <silent> <c-k> :cp<cr>
+" Jump to next item in quickfix.
+" nnoremap <silent> <c-j> :cn<cr>
+nnoremap <silent> <expr> <c-j> &diff ? ']c' : ':cn<cr>'
 
-" Jump to next item in quickfix after :make.
-nnoremap <silent> <c-j> :cn<cr>
+" Jump to previous item in quickfix.
+" nnoremap <silent> <c-k> :cprev<cr>
+nnoremap <silent> <expr> <c-k> &diff ? '[c' : ':cprev<cr>'
 
 " VimGrep the open buffers
 nnoremap <silent> <leader>v :GrepBufs<c-l><space>
@@ -260,10 +260,6 @@ nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
 
 " Jump to previous item in quickfix.
-nnoremap <silent> <c-k> :cprev<cr>
-
-" Jump to next item in quickfix.
-nnoremap <silent> <c-j> :cnext<cr>
 
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
@@ -670,6 +666,10 @@ hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
 "___Vimspector___
 " let g:vimspector_enable_mappings = 'HUMAN'
+
+"___DirDiff___
+nnoremap <silent> <leader>dn :DirDiffNext<cr>
+nnoremap <silent> <leader>dp :DirDiffPrevious<cr>
 
 "___Markdown-Preview___
 let g:mkdp_auto_start = 1
