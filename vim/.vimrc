@@ -61,6 +61,8 @@ set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
 set spelllang=en_us     "
+set splitbelow          "
+set splitright          "
 set tabstop=4           "      " [] Add context to these.
 set tags+=/usr/local/include/tags "
 set undodir=~/.vim/undodir  " Directory to vim undo files.
@@ -225,6 +227,9 @@ nnoremap <silent> <leader>4 :Files<cr>
 
 " Repeat last entered colon command
 nnoremap <silent> <leader>; @:
+
+" Automatically form current buffer
+nnoremap <silent> <F2> :Autoformat<cr>
 
 if exists('g:AsyncRun')
     " Run :make
