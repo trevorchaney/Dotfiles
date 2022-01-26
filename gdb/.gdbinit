@@ -26,6 +26,10 @@ set print sevenbit-strings off
 set follow-fork-mode child
 set detach-on-fork off
 
+#
+# Go related runtime
+#
+add-auto-load-safe-path /usr/lib/go/src/runtime/runtime-gdb.py
 
 #=====================================
 # ░█▀▀░█▀▄░█▀▄░█▀▄░█▀█░█▀▀░█░█
