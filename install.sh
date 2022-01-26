@@ -27,6 +27,7 @@ if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
       nixpkgs.direnv \
       nixpkgs.fzf \
       nixpkgs.gdb \
+      nixpkgs.gh \
       nixpkgs.git \
       nixpkgs.global \
       nixpkgs.gnumake \

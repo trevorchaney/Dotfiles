@@ -131,11 +131,6 @@ vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"')))
 " Ag search for visually selected.
 vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 
-" Build ctags and cscope.
-" nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
-" Just create a .root in the current folder and have Gutentags do the rest.
-nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
-
 " Open and close tags drawer.
 nnoremap <silent> <leader>T :TagbarToggle<cr>
 
@@ -231,26 +226,26 @@ nnoremap <silent> <leader>; @:
 " Automatically form current buffer
 nnoremap <silent> <F2> :Autoformat<cr>
 
-if exists('g:AsyncRun')
-    " Run :make
-    nnoremap <silent> <leader>m :silent make -j4<cr>
-    " Run :make clean.
-    nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
-    " Run :make and open the Quickfix menu.
-    nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
-    " Compile the current Scons sconstruct file if it exists
-    nnoremap <silent> <leader>C :!scons -uj6 --no-cache --type=debug<cr>
-else
-    " Run make asynchronously
-    nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j4<cr><c-w>p
-    " Run make clean asynchronously.
-    nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr><c-w>p
-    " Run make asynchronously and open the Quickfix menu.
-    nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w>p
-    " Compile the current Scons sconstruct file if it exists
-    nnoremap <silent> <leader>C :AsyncRun scons -uj6 --no-cache --type=debug<cr>:copen<cr><c-w>p
+" With AsyncRun plugin ------------------------------------------------------
+" Run make asynchronously
+nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j4<cr><c-w><c-w>
+" Run make clean asynchronously.
+nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr><c-w><c-w>
+" Run make asynchronously and open the Quickfix menu.
+nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w><c-w>
+" Build ctags and cscope.
+" nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
+" Just create a .root in the current folder and have Gutentags do the rest.
+nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
 
-endif
+" " Without asyncrun plugin ---------------------------------------------------
+" " Run :make
+" nnoremap <silent> <leader>m :silent make -j4<cr>
+" " Run :make clean.
+" nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
+" " Run :make and open the Quickfix menu.
+" nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
+" " ---------------------------------------------------------------------------
 
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
