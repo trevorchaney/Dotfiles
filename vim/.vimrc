@@ -12,13 +12,13 @@
 " ░█▀▀░█▀▀░▀█▀░▀█▀░▀█▀░█▀█░█▀▀░█▀▀
 " ░▀▀█░█▀▀░░█░░░█░░░█░░█░█░█░█░▀▀█
 " ░▀▀▀░▀▀▀░░▀░░░▀░░▀▀▀░▀░▀░▀▀▀░▀▀▀
-" settings====================================================================
+" settings ===================================================================
 " Set vim colors.
 syntax enable
 " set background=dark
 
-" Set vim behavior.
-" set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for tlcHandmadeHero
+" Set vim behavior. TODO(tlc): Add context to these.
+" set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
 set autoindent          "
 set autowrite           "
 set backspace=2         " More powerful backspacing
@@ -28,7 +28,7 @@ set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one shiftwidth. Used with cinkeys.
 set colorcolumn=80      " Add a colored column at 80.
 set complete+=kspell    "
-set cursorline
+set cursorline          "
 set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
 set errorformat^=%+Gmake%.%#    " Remove makefile errors from error jump list.
 set errorformat^=%-GIn\ file\ included\ %.%#   " General ignore format
@@ -61,20 +61,27 @@ set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
 set spelllang=en_us     "
-set tabstop=4           "      " [] Add context to these.
+set tabstop=4           "
 set tags+=/usr/local/include/tags "
 set undodir=~/.vim/undodir  " Directory to vim undo files.
 set undofile            " Maintain undo history between sessions.
-set updatetime=500      " Faster refresh rate.
+set updatetime=300      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
 
 " Allow specific filetype plugins for buffer only changes to settings.
 filetype plugin on
 
+" ============================================================================
+" ░█░█░▀█▀░█▀▀░█░█░█░░░▀█▀░█▀▀░█░█░▀█▀░▀█▀░█▀█░█▀▀
+" ░█▀█░░█░░█░█░█▀█░█░░░░█░░█░█░█▀█░░█░░░█░░█░█░█░█
+" ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀
+" Highlighting ===============================================================
 " Cursor & Color Related settings.
-" hi CursorLine term=NONE cterm=NONE ctermbg=black    "old
+hi CocCodeLens ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi CocHighlightText term=NONE ctermbg=236 ctermfg=NONE cterm=bold
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
+hi DebugPC ctermfg=darkyellow ctermbg=darkblue cterm=bold
 hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi Folded ctermfg=darkblue ctermbg=black
 hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
@@ -84,8 +91,12 @@ hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
-hi debugPC ctermfg=darkyellow ctermbg=darkblue cterm=bold
 
+" ============================================================================
+" ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
+" ░█▀█░█░█░░█░░█░█░█░░░█░█░█░█
+" ░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀░
+" Autocmd ====================================================================
 au WinEnter * setlocal cursorline
 au WinLeave * setlocal nocursorline
 
@@ -105,14 +116,24 @@ au BufEnter *.tpp :setlocal filetype=cpp
 au FileType make,xml setlocal noexpandtab
 
 " Set Rmarkdown render command
-au Filetype rmd map <silent> <leader>r :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+
+" File templates =============================================================
+au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 
 " ============================================================================
 " ░█▄█░█▀█░█▀█░█▀█░▀█▀░█▀█░█▀▀░█▀▀
 " ░█░█░█▀█░█▀▀░█▀▀░░█░░█░█░█░█░▀▀█
 " ░▀░▀░▀░▀░▀░░░▀░░░▀▀▀░▀░▀░▀▀▀░▀▀▀
-" mappings====================================================================
+" Mappings ===================================================================
 " Set <leader> to <space>.
 let mapleader=" "
 
@@ -147,7 +168,7 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Trigger Codi scratchpad.
-nnoremap <silent> <leader>x :Codi!!<cr>
+nnoremap <silent> <leader>is :Codi!!<cr>
 
 " Allow gf to open non-existing files.
 nmap gf :e <cfile><cr>
@@ -217,6 +238,13 @@ nnoremap <silent> <leader>v :GrepBufs<c-l><space>
 " VimGrep the word under the cursor within the open buffers.
 nnoremap <silent> <leader>V :call GrepBuffers("<C-R><C-W>")<cr>
 
+" diff mode mappings
+if &diff
+    map <leader>1 :diffget LOCAL<cr>
+    map <leader>2 :diffget BASE<cr>
+    map <leader>3 :diffget REMOTE<cr>
+endif
+
 " Open fuzzy file browser
 nnoremap <silent> <leader>4 :Files<cr>
 
@@ -284,7 +312,7 @@ tnoremap <esc> <c-\><c-n>
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
 " ░█▀▀░█░█░█░█░█░░░░█░░░█░░█░█░█░█░▀▀█
 " ░▀░░░▀▀▀░▀░▀░▀▀▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀
-" functions===================================================================
+" Functions ==================================================================
 function! g:ToggleNuMode()
     if(&rnu == 1 && &nu == 1)
         set nornu
@@ -346,20 +374,10 @@ function! ExecuteMacroOverVisualRange()
 endfunc
 
 " ============================================================================
-" file templates =============================================================
-au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp execute "normal ma"
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
-au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
-
-" ============================================================================
 " ░▀█▀░█▀█░█▀▀░█▀▀
 " ░░█░░█▀█░█░█░▀▀█
 " ░░▀░░▀░▀░▀▀▀░▀▀▀
-" tags========================================================================
+" Tags =======================================================================
 
 "" Set tagging for source code of file type.
 "au Filetype c,cpp,h,hpp setlocal tags+=/usr/local/include/tags
@@ -368,11 +386,11 @@ au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 " ░█▀█░█░░░█░█░█▀▀░▀█▀░█▀█░█▀▀
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
-" plugins=====================================================================
+" Plugins ====================================================================
 "" Plugins install with packadd
 packadd! termdebug
 
-" ___Termdebug___
+" Termdebug ==================================================================
 " Evaluate the expression under the cursor, you can also use K by default or
 " use balloon_eval on hover.
 nnoremap <RightMouse> :Evaluate<cr>
@@ -384,11 +402,15 @@ nnoremap <silent> <leader>db :Termdebug a.out<cr><c-w><c-h>
 let g:termdebug_wide=1
 
 "" Plugins installed with vimplug.
-" ___COC.nvim___
+" COC.nvim ===================================================================
 " source ~/.vim/coc-config.vim
 
 " Disable python2 support, python2 is deprecated.
 let g:loaded_python_provider = 0
+
+" Highlight the symbol and its references on cursor hover.
+au CursorHold * silent call CocActionAsync('highlight')
+inoremap <c-s> <c-r>=CocActionAsync('showSignatureHelp')<cr>
 
 " Always show the signcolumn, otherwise it would shift the text each time
 " diagnostics appear/become resolved.
@@ -399,8 +421,8 @@ else
     set signcolumn=yes
 endif
 
-" Use <F3> to show documentation in preview window.
-nnoremap <silent> <F3> :call <SID>show_documentation()<CR>
+" Use leader+K to show documentation in preview window.
+nnoremap <silent> <leader>k :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
@@ -412,27 +434,72 @@ function! s:show_documentation()
     endif
 endfunction
 
-"" Symbol renaming.
-"nmap <leader>rn <Plug>(coc-rename)
-"nmap <leader>rf <Plug>(coc-refactor)
-"nmap <leader>ra <Plug>(coc-codeaction)
-"
-"" GoTo code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-"
-"" Add `:Format` command to format current buffer.
-"command! -nargs=0 Format :call CocAction('format')
-"
-"" Add `:Fold` command to fold current buffer.
-"command! -nargs=? Fold :call     CocAction('fold', <f-args>)
-"
-"" Add `:OR` command for organize imports of the current buffer.
-"command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+" Jump to next and previous issue
+nmap <silent> <leader>a <Plug>(coc-diagnostics-next-error)
+nmap <silent> <leader>x <Plug>(coc-diagnostics-previous-error)
+nmap <silent> <leader>A <Plug>(coc-diagnostics-next)
+nmap <silent> <leader>X <Plug>(coc-diagnostics-previous)
 
-" ___NERDTree___
+" Formatting
+nmap <silent> <leader>fm <Plug>(coc-format)
+nmap <silent> <leader>fl <Plug>(coc-format-selected)
+xmap <silent> <leader>fl <Plug>(coc-format-selected)
+
+" Symbol navigation
+nmap <silent> <leader>dj :<c-u>CocCommand document.jumpToNextSymbol<cr>
+nmap <silent> <leader>dk :<c-u>CocCommand document.jumpToPrevSymbol<cr>
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rf <Plug>(coc-refactor)
+
+" List code actions
+nmap <leader>ra <Plug>(coc-codeaction)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Run the codelens action on the current line
+nmap <silent> <leader>cl <Plug>(coc-codelens-action)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mapping for CocList
+" Show all diagnostics.
+nnoremap <silent><nowait> <leader>da :<c-u>CocList diagnostics<cr>
+
+" Manage extensions.
+nnoremap <silent><nowait> <leader>cx :<c-u>CocList extensions<cr>
+
+" Show commands.
+nnoremap <silent><nowait> <leader>cm :<c-u>CocList commands<cr>
+
+" Find symbol of current document.
+nnoremap <silent><nowait> <leader>co :<c-u>CocList outline<cr>
+
+" Search airspace symbols.
+nnoremap <silent><nowait> <leader>cw :<c-u>CocList -I symbols<cr>
+
+" Do default action for next item.
+nnoremap <silent><nowait> <leader>cn :<c-u>CocNext<cr>
+
+" Do default action for previous item.
+nnoremap <silent><nowait> <leader>cp :<c-u>CocPrev<cr>
+
+" Resume fastest coc list.
+nnoremap <silent><nowait> <leader>re :<c-u>CocListResume<cr>
+
+" NERDTree ===================================================================
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeMinimalUI = 1 " hide helper
@@ -503,7 +570,7 @@ let g:NERDTreeIndicatorMapCustom = {
             \ "Unknown"   : "?"
             \ }
 
-"___ale___
+" ALE ========================================================================
 " Set ale to lint only in normal mode.
 let g:ale_lint_on_text_changed = "normal"
 let g:ale_lint_on_insert_leave = 1
@@ -511,7 +578,7 @@ let g:ale_set_balloons = 1
 let g:ale_c_clangd_options = "-stdlib=libc++"
 let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
-"___airline___
+" Airline ====================================================================
 " Set the theme for airline.
 let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
@@ -527,12 +594,13 @@ if !exists('g:airline_symbols')
 endif
 
 " ----------------------------------------------------------------------------
-"NOTE: If you cant see some of the following symbols then either your terminal
-"      doesn't render them or your font doesn't support them. Try using a
-"      different terminal and if it still doesn't work then its your font and
-"      you need to install a font that supports powerline fonts. Try a font
-"      from the NerdFonts collection of patched fonts. Otherwise, uncomment
-"      the fonts symbols that aren't broken below.
+" NOTE(tlc): If you cant see some of the following symbols then either your
+"            terminal doesn't render them or your font doesn't support them.
+"            Try using a different terminal and if it still doesn't work then
+"            its your font and you need to install a font that supports
+"            powerline fonts. Try a font from the NerdFonts collection of
+"            patched fonts. Otherwise, uncomment the fonts symbols that aren't
+"            broken below.
 " ----------------------------------------------------------------------------
 
 " unicode symbols
@@ -579,13 +647,13 @@ let g:airline_symbols.dirty = '⚡'
 " let g:airline_symbols.linenr = '⭡'
 " --------------
 
-"___LimeLight___
+" LimeLight ==================================================================
 " Color name (:help cterm-colors) or ANSI code
-let g:limelight_conceal_ctermfg = 'gray'
+" let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
 
 " Color name (:help gui-colors) or RGB color
-let g:limelight_conceal_guifg = 'DarkGray'
+" let g:limelight_conceal_guifg = 'DarkGray'
 let g:limelight_conceal_guifg = '#777777'
 
 " Default: 0.5
@@ -608,7 +676,7 @@ let g:limelight_priority = -1
 au! User GoyoEnter Limelight
 au! User GoyoLeave Limelight!
 
-"___Vim-Cpp-Enhanced-Highlight___"
+" Vim-Cpp-Enhanced-Highlight =================================================
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
@@ -618,7 +686,7 @@ let g:cpp_experimental_template_highlight = 1   " Faster than above
 let g:cpp_concepts_highlight = 1
 "let g:cpp_no_function_highlight = 1
 
-"___Gutentags___
+" Gutentags ==================================================================
 " Enable gtags module
 let g:gutentags_modules = ['ctags', 'gtags_cscope']
 
@@ -655,27 +723,27 @@ let g:gutentags_ctags_exclude = [
             \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx'
             \ ]
 
-"___vimwiki___
+" vimwiki ===================================================================
 let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
 
-"___fzf___
+" fzf =======================================================================
 " set silversearche-ag be the default searching command, by file name
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
 
-"___GitGutter___
+" GitGutter ==================================================================
 hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
 hi GitGutterChange ctermfg=yellow ctermbg=black guifg=#bbbb00
 hi GitGutterDelete ctermfg=red ctermbg=black guifg=#ff2222
 
-"___Vimspector___
+" Vimspector =================================================================
 " let g:vimspector_enable_mappings = 'HUMAN'
 
-"___DirDiff___
+" DirDiff ====================================================================
 nnoremap <silent> <leader>dn :DirDiffNext<cr>
 nnoremap <silent> <leader>dp :DirDiffPrevious<cr>
 
-"___Markdown-Preview___
+" Markdown-Preview ===========================================================
 let g:mkdp_auto_start = 1
 let g:mkdp_auto_close = 1
 let g:mkdp_refresh_slow = 0
@@ -737,21 +805,21 @@ let g:mkdp_page_title = '「${name}」'
 " these filetypes will have MarkdownPreview... commands
 let g:mkdp_filetypes = ['markdown']
 
-"========================================================
+" ============================================================================
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-" NOTE: Anything to do with tags and language servers in specific require
-"       configuration. Be sure that they are properly configured or they wont
-"       work.  Other plugins that are commented out here are things I use only
-"       on occasion to better fit the work I am doing. (non-code based
-"       writing).
+" NOTE(tlc): Anything to do with tags and language servers in specific require
+"            configuration. Be sure that they are properly configured or they
+"            wont work.  Other plugins that are commented out here are things
+"            I use only on occasion to better fit the work I am doing.
+"            (non-code based writing).
 
 " Declare the list of plugins.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'Matt-A-Bennett/vim-surround-funk'     " Surround function calls
-" Plug 'SirVer/ultisnips'
-Plug 'airblade/vim-gitgutter'
+" Plug 'SirVer/ultisnips'                   "
+Plug 'airblade/vim-gitgutter'               "
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
@@ -767,21 +835,26 @@ Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
 Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight'     "
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
 " Plug 'puremourning/vimspector'              " Vim graphical debugger
 Plug 'rking/ag.vim'                         " Silver file searcher
-Plug 'scrooloose/nerdtree'
-Plug 'skywind3000/asyncrun.vim'
+Plug 'scrooloose/nerdtree'                  "
+Plug 'skywind3000/asyncrun.vim'             "
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'                 "
+Plug 'tpope/vim-fugitive'                   "
+Plug 'tpope/vim-repeat'                     "
 Plug 'tpope/vim-surround'                   " Surround text objects.
-Plug 'vim-airline/vim-airline'              " Adds styled statusbars.
+Plug 'vim-airline/vim-airline'              " Adds styled status bars.
 Plug 'vim-airline/vim-airline-themes'       " Themes for airline.
-Plug 'vimwiki/vimwiki'
+Plug 'vimwiki/vimwiki'                      "
 Plug 'w0rp/ale'                             " Linting engine.
 Plug 'will133/vim-dirdiff'                  " Diff whole directories
+
+" Lue Plugins ================================================================
+" Plug 'danymat/neogen'                       " Annotation toolkit
+" Plug 'nvim-treesitter/nvim-treesitter'      " Interface to tree-sitter parser generator
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
