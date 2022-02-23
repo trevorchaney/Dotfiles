@@ -112,8 +112,8 @@ au FileType html,css,js,json,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth
 " Set syntax highlighting for misc. C++-like file extensions.
 au BufEnter *.tpp :setlocal filetype=cpp
 
-" Set proper tab character for make.
-au FileType make,xml setlocal noexpandtab
+" Specify filetypes that should use tabs instead of spaces.
+au FileType make setlocal noexpandtab
 
 " Set Rmarkdown render command
 au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
@@ -422,7 +422,7 @@ else
 endif
 
 " Use leader+K to show documentation in preview window.
-nnoremap <silent> <leader>k :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
