@@ -81,7 +81,7 @@ hi CocCodeLens ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi CocHighlightText term=NONE ctermbg=236 ctermfg=NONE cterm=bold
 hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
 hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi DebugPC ctermfg=darkyellow ctermbg=darkblue cterm=bold
+hi DebugPC ctermfg=darkyellow ctermbg=236 cterm=bold
 hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
 hi Folded ctermfg=darkblue ctermbg=black
 hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
@@ -282,9 +282,6 @@ nnoremap <silent> <leader>C :AsyncRun scons -uj6 --no-cache --type=debug<cr>:cop
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
 
-" Run gdb with an a.out executable.
-nnoremap <silent> <F8> :Termdebug a.out<cr>
-
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
@@ -395,8 +392,9 @@ packadd! termdebug
 " use balloon_eval on hover.
 nnoremap <RightMouse> :Evaluate<cr>
 
-" Open vim terminal debugger
-nnoremap <silent> <leader>db :Termdebug a.out<cr><c-w><c-h>
+" Start vim terminal debugger (gdb), load a.out if it exists, set cursor to
+" bottom of output pane so that it will follow the output properly.
+nnoremap <silent> <F8> :Termdebug a.out<cr>avimdb<cr><c-\><c-n><c-w>wG<c-w>pa
 
 " Set window layout for Termdebug
 let g:termdebug_wide=1
@@ -580,10 +578,10 @@ let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
 " Airline ====================================================================
 " Set the theme for airline.
-let g:airline_theme='luna'
+" let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
 " let g:airline_theme = 'minimalist'
-" let g:airline_theme = 'monochrome'
+let g:airline_theme = 'monochrome'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#hunks#enabled = 0
@@ -724,7 +722,7 @@ let g:gutentags_ctags_exclude = [
             \ ]
 
 " vimwiki ===================================================================
-let g:vimwiki_list = [{'path': '~/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
+let g:vimwiki_list = [{'path': '~/.vim/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
 
 " fzf =======================================================================
 " set silversearche-ag be the default searching command, by file name

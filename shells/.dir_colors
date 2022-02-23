@@ -13,6 +13,7 @@
 
 # Below, there should be one TERM entry for each termtype that is colorizable
 TERM Eterm
+TERM alacritty
 TERM ansi
 TERM color-xterm
 TERM con132x25
@@ -94,8 +95,8 @@ MISSING 01;05;37;41 # ... and the files they point to
 SETUID 37;41	# file that is setuid (u+s)
 SETGID 30;43	# file that is setgid (g+s)
 CAPABILITY 30;41	# file with capability
-STICKY_OTHER_WRITABLE 30;42 # dir that is sticky and other-writable (+t,o+w)
-OTHER_WRITABLE 34;42 # dir that is other-writable (o+w) and not sticky
+STICKY_OTHER_WRITABLE 30;45 # dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE 30;42 # dir that is other-writable (o+w) and not sticky
 STICKY 37;44	# dir with the sticky bit set (+t) and not other-writable
 
 # This is for files with execute permission:

@@ -8,26 +8,18 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# if running bash
+# If running bash, include .bashrc if it exists
 if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-        . "$HOME/.bashrc"
-    fi
+    [ -f "$HOME/.bashrc" ] && . "$HOME/.bashrc"
 fi
 
-# if running zsh
+# If running zsh, include .zshrc if it exists
 if [ -n "$ZSH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.zshrc" ]; then
-        . "$HOME/.zshrc"
-    fi
+    [ -f "$HOME/.zshrc" ] && . "$HOME/.zshrc"
 fi
 
 # set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
+[ -d "$HOME/bin" ] && PATH="$HOME/bin:$PATH"
 
 # Configure keyboard bindings.
 # setxkbmap -options found in /usr/share/X11/xkb/rules/evdev.list
@@ -41,5 +33,8 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
 # fix "xdg-open fork-bomb" export your preferred browser from here
 export BROWSER=/usr/bin/firefox
+
+# Mount external drive if this is a virtual machine.
+vmhgfs-fuse -o auto_unmount,allow_other .host:/ $HOME/Desktop/external
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
