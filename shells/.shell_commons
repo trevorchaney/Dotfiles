@@ -160,11 +160,11 @@ proctimer() {
 
 
 ## Exports
-#
-export LS_COLORS='ow=33;42'
+
+export LS_COLORS='ow=30;42'
 
 # Set PATH variable
-export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/share/gem/ruby/3.0.0/bin"
+export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin"
 
 # Set default text editor to vim.
 export VISUAL=nvim
