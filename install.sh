@@ -5,6 +5,14 @@
 
 troglodyte=0
 
+# Make important directories
+[ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
+[ -d ~/.vim/tmp ] && mkdir -p ~/.vim/tmp
+# [ -d ~/.vim/vimwiki ] && mkdir -p ~/.vim/vimwiki
+[ -d ~/.config/nvim/undodir ] && mkdir -p ~/.config/nvim/undodir
+[ -d ~/.config/nvim/tmp ] && mkdir -p ~/.config/nvim/tmp
+[ -d ~/.cache/vim/ctags ] && mkdir -p ~/.cache/vim/ctags
+
 # Install packages if the development environment is not manjaro/arch
 # looking at you RHEL.
 if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
@@ -75,15 +83,8 @@ stow gdb
 stow git
 stow nvim
 stow shells
-# stow tmux
+stow tmux
 stow vim
-
-# Make important directories
-[ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
-[ -d ~/.vim/tmp ] && mkdir -p ~/.vim/tmp
-[ -d ~/.config/nvim/undodir ] && mkdir -p ~/.config/nvim/undodir
-[ -d ~/.config/nvim/tmp ] && mkdir -p ~/.config/nvim/tmp
-[ -d ~/.cache/vim/ctags ] && mkdir -p ~/.cache/vim/ctags
 
 # Install zsh plugins
 antibody bundle < ~/.zsh_plugins.txt > ~/.zsh_plugins.sh

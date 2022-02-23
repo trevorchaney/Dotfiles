@@ -9,6 +9,9 @@
 # Show banner if it exsists
 [ -f ~/.banner ] && . ~/.banner
 
+# TODO(tlc): Is this necessary or does it just happen. My guess is that
+#            ~/.profile is source when you login and this would just resource
+#            the file which could make it recursive. Needs to be tested.
 # Include .profile if it exists.
 #[ -f ~/.profile ] && . ~/.profile
 
@@ -49,6 +52,7 @@ cd() {
 }
 
 # Print terminal colors
+# See console_codes manpage for more info on escape codes.
 term_colors() {
     local fgc bgc vals seq0
 
@@ -74,6 +78,18 @@ term_colors() {
         done
         echo
     done
+
+    echo "testng --------------------------------------------- ";
+
+    printf "\e[38;2;0;255;255mThis is a cyan\n"
+    printf "\e[38;2;255;0;255mThis is a magenta\n"
+    printf "\e[38;2;255;255;0mThis is a yellow\n"
+
+    printf "\e[39;49m - Reset colors\n"
+    printf "Shouldn't see this"
+    # printf "\e[2K\e[u - Clear Line\n"
+    # printf "\e[2K\r - Clear Line\n"
+    printf "\r - Clear Line\n"
 }
 
 # Open gdb in split tmux windows
@@ -161,6 +177,8 @@ proctimer() {
 
 ## Exports
 
+# Change mounted drive directory color. This is supposed to be set in
+# .dir_colors but some terminals don't load this file (such as alacritty);
 export LS_COLORS='ow=30;42'
 
 # Set PATH variable
