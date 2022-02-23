@@ -8,7 +8,7 @@ troglodyte=0
 # Make important directories
 [ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
 [ -d ~/.vim/tmp ] && mkdir -p ~/.vim/tmp
-# [ -d ~/.vim/vimwiki ] && mkdir -p ~/.vim/vimwiki
+[ -d ~/.vim/vimwiki ] && mkdir -p ~/.vim/vimwiki
 [ -d ~/.config/nvim/undodir ] && mkdir -p ~/.config/nvim/undodir
 [ -d ~/.config/nvim/tmp ] && mkdir -p ~/.config/nvim/tmp
 [ -d ~/.cache/vim/ctags ] && mkdir -p ~/.cache/vim/ctags
