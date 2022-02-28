@@ -119,6 +119,7 @@ au FileType make setlocal noexpandtab
 au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
 " File templates =============================================================
+" TODO(tlc): Make automatic inculed guards for header files.
 au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
@@ -199,6 +200,9 @@ nnoremap <silent> <leader>pd :w<cr>:ha>%.ps<cr>:!ps2pdf %.ps && rm %.ps<cr>
 
 " Autocorrect next misspelled word.
 nnoremap <silent> <leader>z ]s1z=
+
+" Autocorrect previous misspelled word.
+nnoremap <silent> <leader>Z [s1z=
 
 " Go to the next buffer
 nnoremap <silent> <tab> :bn<cr>
