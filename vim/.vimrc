@@ -727,6 +727,7 @@ let g:gutentags_ctags_exclude = [
 
 " vimwiki ===================================================================
 let g:vimwiki_list = [{'path': '~/.vim/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
+let g:vimwiki_toc_link_format = 1
 
 " fzf =======================================================================
 " set silversearche-ag be the default searching command, by file name
