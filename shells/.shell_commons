@@ -181,8 +181,9 @@ proctimer() {
 # .dir_colors but some terminals don't load this file (such as alacritty);
 export LS_COLORS='ow=30;42'
 
-# Set PATH variable
+# Set PATH variables
 export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
 # Set default text editor to vim.
 export VISUAL=nvim
