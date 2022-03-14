@@ -725,11 +725,27 @@ let g:gutentags_ctags_exclude = [
             \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx'
             \ ]
 
-" vimwiki ===================================================================
-let g:vimwiki_list = [{'path': '~/.vim/vimwiki', 'syntax:' : 'markdown', 'ext' : '.md'}]
+" vimwiki ====================================================================
 let g:vimwiki_toc_link_format = 1
+let g:vimwiki_list = [{
+            \ 'path': '~/.vim/vimwiki',
+            \ 'syntax:': 'markdown',
+            \ 'ext': '.md',
+            \ 'automatic_nested_syntaxes': 1,
+            \ 'list_margin': 0,
+            \ 'auto_toc': 1,
+            \ }]
+let g:tagbar_type_vimwiki = {
+            \   'ctagstype':'vimwiki'
+            \ , 'kinds':['h:header']
+            \ , 'sro':'&&&'
+            \ , 'kind2scope':{'h':'header'}
+            \ , 'sort':0
+            \ , 'ctagsbin':'~/.vim/vwtags.py'
+            \ , 'ctagsargs': 'markdown'
+            \ }
 
-" fzf =======================================================================
+" fzf ========================================================================
 " set silversearche-ag be the default searching command, by file name
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
@@ -802,7 +818,7 @@ let g:mkdp_port = ''
 
 " preview page title
 " ${name} will be replace with the file name
-let g:mkdp_page_title = '「${name}」'
+let g:mkdp_page_title = 'Preview 「${name}」'
 
 " recognized filetypes
 " these filetypes will have MarkdownPreview... commands
