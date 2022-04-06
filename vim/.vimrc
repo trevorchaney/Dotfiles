@@ -91,6 +91,10 @@ hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
 hi Todo ctermfg=green ctermbg=NONE cterm=bold
 hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
 hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
+"hi DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+"hi DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+"hi DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+"hi DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
 
 " ============================================================================
 " ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
