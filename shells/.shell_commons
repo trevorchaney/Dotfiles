@@ -220,13 +220,13 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # Work related enviornemnt settings
 if [ ${APC_HOME:-null}=null ]; then
-    export APC_HOME="/opt/ats/adsi/current"
+    export APC_HOME="/home/tlc/adsi/MADIS/current"
 fi
 if [ ${ATS_HOME:-null}=null ]; then
-    export ATS_HOME="/opt/ats/adsi/current"
+    export ATS_HOME="/home/tlc/adsi/MADIS/current"
 fi
 if [ ${ADSI_HOME:-null}=null ]; then
-    export ADSI_HOME="/opt/ats/adsi/current"
+    export ADSI_HOME="/home/tlc/adsi/MADIS/current"
 fi
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
