@@ -4,6 +4,10 @@
 
 
 troglodyte=0
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 # Make important directories
 [ -d ~/.vim/undodir ] && mkdir -p ~/.vim/undodir
@@ -27,9 +31,9 @@ if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
 
   nix-env -iA \
       nixpkgs.antibody \
+      nixpkgs.atool \
       nixpkgs.bat \
       nixpkgs.bpytop \
-      nixpkgs.atool \
       nixpkgs.clang_13 \
       nixpkgs.cppcheck \
       nixpkgs.direnv \
@@ -53,6 +57,7 @@ if ! grep -qE "manjaro|arch|debian|raspbian" "/etc/os-release"; then
       nixpkgs.toilet \
       nixpkgs.valgrind \
       nixpkgs.vim \
+      nixpkgs.xcape \
       nixpkgs.yarn \
       nixpkgs.zsh
 
@@ -76,6 +81,8 @@ if [ -f ~/.vim/autoload/plug.vim ]; then
 else
     echo "Found vim-plug, already installed"
 fi
+
+# Remove directories that the install process created, these create conflicts for stow
 
 
 # Install dotfiles with gnu stow
