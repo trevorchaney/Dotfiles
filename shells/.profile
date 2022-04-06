@@ -35,6 +35,6 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 export BROWSER=/usr/bin/firefox
 
 # Mount external drive if this is a virtual machine.
-vmhgfs-fuse -o auto_unmount,allow_other .host:/ $HOME/Desktop/external
+# vmhgfs-fuse -o auto_unmount,allow_other .host:/ $HOME/Desktop/external
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

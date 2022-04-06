@@ -1,6 +1,7 @@
 [user]
     name = Trevor Chaney
-    email = trevorchaney@gmail.com
+    email = trevor.chaney@ultra-ats.com
+    ; email = trevorchaney@gmail.com
 [credential "https://github.com"]
     helper = !/usr/bin/gh auth git-credential
 [core]
