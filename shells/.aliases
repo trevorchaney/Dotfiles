@@ -23,6 +23,7 @@ alias mkdir="mkdir -p"              # Create parent directories.
 alias more=less                     # Use less instead of more.
 alias mv="mv -i"                    # Confirm before overwriting.
 alias ne="nnn -ea"                  # Open txt docs in $EDITOR and auto start NNN_FIFO
+alias ni="touch"                    # New-Item alias from powershell
 alias nnn="nnn -e"                  # Always open text documents in $EDITOR
 alias py="python3"                  # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
