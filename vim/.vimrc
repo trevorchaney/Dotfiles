@@ -867,6 +867,7 @@ Plug 'skywind3000/asyncrun.vim'             "
 Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'                 "
 Plug 'tpope/vim-fugitive'                   "
+Plug 'andymass/vim-matchup'                 " Extends % key to language-specific words
 Plug 'tpope/vim-repeat'                     "
 Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'vim-airline/vim-airline'              " Adds styled status bars.
