@@ -11,7 +11,8 @@ alias dir='dir --color=auto'        # Add color to dir command.
 alias egrep='egrep --color=auto'    # Add color to egrep command.
 alias fgrep='fgrep --color=auto'    # Add color to fgrep command.
 alias free="free -m"                # Show sizes in MB.
-alias gitu="git add . && git commit && git push"  # Quick git add, commit, push.
+alias gitu="git add . && git commit -m "UPDATE" && git push"  # Quick git add, commit, push.
+# alias gitadog="git log --all --decorate --oneline --graph" # Make a graph of a repo's commit log.
 alias grep='grep --color=auto'      # Add color to grep command.
 alias info="info --vi-keys"         # Set vi-key bindings for the info command.
 alias l="ls -CF --color=auto"
