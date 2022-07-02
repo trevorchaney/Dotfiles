@@ -1,4 +1,4 @@
-
+"
 "               ██╗   ██╗██╗███╗   ███╗
 "               ██║   ██║██║████╗ ████║
 "               ██║   ██║██║██╔████╔██║
@@ -56,7 +56,7 @@ set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
 set scrolloff=10        " Keep at least 5 lines above and below the cursor.
-set shiftwidth=4        "
+set shiftwidth=4        " Set the shift width; amount of space characters.
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
@@ -111,7 +111,7 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-au FileType html,css,js,vue,json,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,js,json,xsl,xml,vue setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++-like file extensions.
 au BufEnter *.tpp :setlocal filetype=cpp
@@ -156,6 +156,9 @@ vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"')))
 
 " Ag search for visually selected.
 vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
+
+" Create a vertical split with a terminal buffer in it.
+nnoremap <silent> <leader>` :vs<cr>:term<cr>a
 
 " Open and close tags drawer.
 nnoremap <silent> <leader>T :TagbarToggle<cr>
@@ -264,7 +267,7 @@ nnoremap <silent> <F2> :Autoformat<cr>
 
 " With AsyncRun plugin ------------------------------------------------------
 " Run make asynchronously
-nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j4<cr>:copen<cr><c-w>p
+nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j6<cr>:copen<cr><c-w>p
 " Run make clean asynchronously.
 nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr>:copen<cr><c-w>p
 " Run make asynchronously and open the Quickfix menu.
@@ -273,8 +276,8 @@ nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w>p
 " nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
 " Just create a .root in the current folder and have Gutentags do the rest.
 nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
-" Run scons asynchronously
-nnoremap <silent> <leader>C :AsyncRun scons -uj6 --no-cache --type=debug<cr>:copen<cr><c-w>p
+" Run the current script file asynchronously (must have shebang)
+nnoremap <silent> <leader>C :AsyncRun "%<cr>
 
 " " Without asyncrun plugin ---------------------------------------------------
 " " Run :make
@@ -283,8 +286,8 @@ nnoremap <silent> <leader>C :AsyncRun scons -uj6 --no-cache --type=debug<cr>:cop
 " nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
 " " Run :make and open the Quickfix menu.
 " nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
-" " Run scons
-" nnoremap <silent> <leader>C :!scons -uj6 --no-cache --type=debug<cr>
+" " Run the current script file (must have shebang)
+" nnoremap <silent> <leader>C :!"%<cr>
 " " ---------------------------------------------------------------------------
 
 " Run an a.out program.
@@ -628,7 +631,7 @@ let g:airline_symbols.linenr = '☰'
 " let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.spell = ''
+" let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = '∥'
 
@@ -639,7 +642,6 @@ let g:airline_symbols.whitespace = '∥'
 " let g:airline_right_alt_sep = ''
 " let g:airline_symbols.branch = ''
 " let g:airline_symbols.colnr = ' :'
-
 let g:airline_symbols.maxlinenr = 'Ξ'
 let g:airline_symbols.dirty = '⚡'
 
@@ -845,14 +847,14 @@ Plug 'Matt-A-Bennett/vim-surround-funk'     " Surround function calls
 Plug 'airblade/vim-gitgutter'               "
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } "
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'ludovicchabant/vim-gutentags'         " Provides ctag management.
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
@@ -864,9 +866,10 @@ Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'                  "
 Plug 'skywind3000/asyncrun.vim'             "
-Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'                 "
 Plug 'tpope/vim-fugitive'                   "
+" Plug 'adelarsq/vim-matchit'                 " Repo for matchit.vim, replaced by matchup
 Plug 'andymass/vim-matchup'                 " Extends % key to language-specific words
 Plug 'tpope/vim-repeat'                     "
 Plug 'tpope/vim-surround'                   " Surround text objects.

@@ -1,19 +1,76 @@
+# Trevor's Git Configuration File
+
 [user]
     name = Trevor Chaney
-    email = trevor.chaney@ultra-ats.com
-    ; email = trevorchaney@gmail.com
-[credential "https://github.com"]
-    helper = !/usr/bin/gh auth git-credential
+    email = trevorchaney@gmail.com
 [core]
     exlcudesfile = ~/.gitignore_global
-    editor = vim
-[pull]
-    ; ff = only
+    editor = nvim
+    exlcudesFile = C:/Users/tlc/.gitignore_global
+    fileMode = false
+    ignoreCase = true
+    logAllRefUpdates = true
+[credential "https://github.com"]
+    helper = !/usr/bin/gh auth git-credential
+[credential "helperselector"]
+    selected = <no helper>
+[credential]
+    helper = store
+[color]
+    ui = true
 [init]
-    defaultBranch = main
+    defaultBranch = master
+[branch "master"]
+    mergeoptions = --no-ff
+    ; mergeoptions = --ff-only ; This should be prefered
+[format]
+    pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D
+[log]
+    date = human
+[pull]
+    rebase = false
+    ; rebase = true ; This should be preferred
 [push]
-    default = matching
+    default = current
+[fetch]
+    prune = true
+[rebase]
+    autoStash = true
+    autoSquash = true
 [merge]
-    tool = vimdiff
-    conflictstyle = diff3
-    prompt = false
+    tool = vscode
+    ; tool = vimdiff
+    ; conflictStyle = diff3
+    ; prompt = false
+[mergetool "vscode"]
+    cmd = "code -n -w $MERGED"
+[diff]
+    tool = vscode
+    colorMoved = zebra
+[difftool "vscode"]
+    cmd = "code -n -w -d $LOCAL $REMOTE"
+[difftool "sourcetree"]
+    cmd = '' \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+    cmd = "'' "
+    trustExitCode = true
+[alias]
+    # General
+    lg = log --all --decorate --graph
+    co = checkout
+    st = status
+    s = status -s
+    br = branch -a
+    r = reset
+    unstage = reset HEAD --
+    last = log -1 HEAD
+    cp = cherry-pick
+    gr = grep -WIi
+
+    # Commits
+    ci = commit
+    cm = commit -m
+    cam = commit -a -m
+    ca = commit --amend
+    amend = commit --amend
+    caa = commit -a --amend -C HEAD
