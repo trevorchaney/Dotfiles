@@ -6,7 +6,7 @@
 [core]
     exlcudesfile = ~/.gitignore_global
     editor = nvim
-    exlcudesFile = C:/Users/tlc/.gitignore_global
+    exlcudesFile = ~/.gitignore_global
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true

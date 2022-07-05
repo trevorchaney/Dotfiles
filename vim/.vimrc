@@ -1,3 +1,4 @@
+"
 "               ██╗   ██╗██╗███╗   ███╗
 "               ██║   ██║██║████╗ ████║
 "               ██║   ██║██║██╔████╔██║
@@ -110,7 +111,7 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-au FileType html,css,js,json,xsl,xml,vue setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,js,json,vue,xml,xsl setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++-like file extensions.
 au BufEnter *.tpp :setlocal filetype=cpp
@@ -122,14 +123,14 @@ au FileType make setlocal noexpandtab
 au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
 " File templates =============================================================
-" TODO(tlc): Make automatic inculed guards for header files.
+" TODO(tlc): Make automatic include guards for header files.
 au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("0.0.%y%j%H%M")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
 au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 
@@ -314,6 +315,10 @@ nmap <leader>pm <Plug>MarkdownPreviewToggle
 
 " Escape terminal command instert mode
 tnoremap <esc> <c-\><c-n>
+
+" Start EasyAlign in normal mode and visual mode.
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
@@ -842,18 +847,21 @@ call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'Matt-A-Bennett/vim-surround-funk'     " Surround function calls
-" Plug 'SirVer/ultisnips'                   "
+" Plug 'SirVer/ultisnips'                     " <##>
 Plug 'airblade/vim-gitgutter'               "
+Plug 'andymass/vim-matchup'                 " Extends % key to language-specific words
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } "
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
+" Plug 'godlygeek/tabular'                    " Text Alignment, through <##>
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " Name
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'junegunn/vim-easy-align'              " Text Alignment, simple
+Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
@@ -861,15 +869,14 @@ Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'     "
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
-" Plug 'puremourning/vimspector'              " Vim graphical debugger
+" Plug 'puremourning/vimspector'              " Vim graphical debugger <##>
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'                  "
 Plug 'skywind3000/asyncrun.vim'             "
-" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'                 "
 Plug 'tpope/vim-fugitive'                   "
 " Plug 'adelarsq/vim-matchit'                 " Repo for matchit.vim, replaced by matchup
-Plug 'andymass/vim-matchup'                 " Extends % key to language-specific words
 Plug 'tpope/vim-repeat'                     "
 Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'vim-airline/vim-airline'              " Adds styled status bars.
