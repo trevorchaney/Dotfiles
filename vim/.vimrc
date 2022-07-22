@@ -15,7 +15,7 @@
 " settings ===================================================================
 " Set vim colors.
 syntax enable
-" set background=dark
+set background=dark
 
 " Set vim behavior. TODO(tlc): Add context to these.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
@@ -26,7 +26,7 @@ set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one shiftwidth. Used with cinkeys.
-set colorcolumn=80      " Add a colored column at 80.
+set colorcolumn=80      " Adds a colored column at the specified column.
 set complete+=kspell    "
 set cursorline          "
 set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
@@ -76,25 +76,25 @@ filetype plugin on
 " ░█▀█░░█░░█░█░█▀█░█░░░░█░░█░█░█▀█░░█░░░█░░█░█░█░█
 " ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀
 " Highlighting ===============================================================
-" Cursor & Color Related settings.
-hi CocCodeLens ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi CocHighlightText term=NONE ctermbg=236 ctermfg=NONE cterm=bold
-hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi DebugPC ctermfg=darkyellow ctermbg=236 cterm=bold
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi Folded ctermfg=darkblue ctermbg=black
-hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
-hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
-hi Todo ctermfg=green ctermbg=NONE cterm=bold
-hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
-hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
-"hi DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+" Cursor, Color, and Style related settings.
+hi CocCodeLens      term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi CocHighlightText term=NONE ctermbg=236        ctermfg=NONE       cterm=bold
+hi ColorColumn      term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi CursorLine       term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi DebugPC          term=NONE ctermbg=236        ctermfg=darkyellow cterm=bold
+"hi DiffAdd          term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffChange       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffDelete       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffText         term=NONE ctermbg=88         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+hi FoldColumn       term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi Folded           term=NONE ctermbg=black      ctermfg=darkblue   cterm=bold
+hi Pmenu            term=NONE ctermbg=236        ctermfg=15         guibg=magenta
+hi Search           term=NONE ctermbg=yellow     ctermfg=black      cterm=bold
+hi SignColumn       term=NONE ctermbg=black      ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi SpellBad         term=NONE ctermbg=NONE       ctermfg=darkred    cterm=reverse
+hi Todo             term=NONE ctermbg=NONE       ctermfg=green      cterm=bold
+hi VertSplit        term=NONE ctermbg=NONE       ctermfg=white      cterm=NONE
+hi Visual           term=NONE ctermbg=darkyellow ctermfg=black      cterm=bold
 
 " ============================================================================
 " ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
@@ -131,6 +131,7 @@ au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 
@@ -298,8 +299,6 @@ nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
 " Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
-
-" Jump to previous item in quickfix.
 
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
@@ -515,7 +514,7 @@ nnoremap <silent><nowait> <leader>re :<c-u>CocListResume<cr>
 " NERDTree ===================================================================
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeMinimalUI = 1 " hide helper
+let g:NERDTreeMinimalUI = 1 " hide helper, this also hides ".." (use 'u')
 let g:NERDTreeIgnore = ['^node_modules$']
 let g:NERDTreeStatusline = '' " set to empty to use lightline
 
@@ -756,9 +755,9 @@ let g:tagbar_type_vimwiki = {
             \ }
 
 " fzf ========================================================================
-" set silversearche-ag be the default searching command, by file name
+" set silversearcher-ag to be the default searching command, by file name
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
+let g:fzf_action = {'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit'}
 
 " GitGutter ==================================================================
 hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
