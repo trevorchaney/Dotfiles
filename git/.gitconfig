@@ -4,7 +4,6 @@
     name = Trevor Chaney
     email = trevorchaney@gmail.com
 [core]
-    exlcudesfile = ~/.gitignore_global
     editor = nvim
     exlcudesFile = ~/.gitignore_global
     fileMode = false
@@ -21,8 +20,8 @@
 [init]
     defaultBranch = master
 [branch "master"]
-    mergeoptions = --no-ff
-    ; mergeoptions = --ff-only ; This should be prefered
+    mergeoptions = --no-ff ; This is set this way for work. Forces merge commit.
+    ; mergeoptions = --ff-only ; This should be preferred
 [format]
     pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN%C(auto,reset)%s%C(auto,red)% gD% D
 [log]
