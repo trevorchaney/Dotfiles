@@ -15,7 +15,7 @@
 " settings ===================================================================
 " Set vim colors.
 syntax enable
-set background=dark
+" set background=dark
 
 " Set vim behavior. TODO(tlc): Add context to these.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
@@ -135,6 +135,7 @@ au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .st
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
@@ -272,12 +273,14 @@ nnoremap <silent> <leader>; @:
 nnoremap <silent> <F2> :Autoformat<cr>
 
 " With AsyncRun plugin ------------------------------------------------------
-" Run make asynchronously
-nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j6<cr>:copen<cr><c-w>p
-" Run make clean asynchronously.
-nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr>:copen<cr><c-w>p
-" Run make asynchronously and open the Quickfix menu.
-nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w>p
+" Run :make asynchronously
+nnoremap <silent> <leader>m :wa<cr>:AsyncRun :silent make<cr>:copen<cr><c-w>p
+" Run :make asynchronously with 6 threads
+nnoremap <silent> <leader>M :wa<cr>:AsyncRun :silent make -j6<cr>:copen<cr><c-w>p
+" Run :make clean asynchronously.
+nnoremap <silent> <F4> :wa<cr>:AsyncRun :silent make clean<cr>:copen<cr><c-w>p
+" Run :make asynchronously and open the Quickfix menu.
+nnoremap <silent> <F9> :wa<cr>:AsyncRun :silent make rebuild<cr>:copen<cr><c-w>p
 " Build ctags and cscope.
 " nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
 " Just create a .root in the current folder and have Gutentags do the rest.
@@ -287,7 +290,9 @@ nnoremap <silent> <leader>C :AsyncRun "%<cr>
 
 " " Without asyncrun plugin ---------------------------------------------------
 " " Run :make
-" nnoremap <silent> <leader>m :silent make -j4<cr>
+" nnoremap <silent> <leader>m :silent make<cr>
+" " Run :make with 6 jobs
+" nnoremap <silent> <leader>M :silent make -j6<cr>
 " " Run :make clean.
 " nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
 " " Run :make and open the Quickfix menu.
@@ -418,7 +423,8 @@ endfunc
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 " Plugins ====================================================================
-"" Plugins install with packadd
+"" Plugins install with packadd ______________________________________________
+" Termdebug ==================================================================
 packadd! termdebug
 
 " Termdebug ==================================================================
@@ -526,6 +532,9 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
 
+" Add `:Prettier` command to format the current buffer with coc-prettier.
+command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
+
 " Mapping for CocList
 " Show all diagnostics.
 nnoremap <silent><nowait> <leader>da :<c-u>CocList diagnostics<cr>
@@ -554,6 +563,9 @@ nnoremap <silent><nowait> <leader>re :<c-u>CocListResume<cr>
 
 " Run rest-client.request
 nnoremap <leader>0 :CocCommand rest-client.request<cr>
+
+" Open coc-yank list
+nnoremap <silent> <leader>yl :<c-u>CocList -A yank<cr>
 
 " NERDTree ===================================================================
 let g:NERDTreeShowHidden = 1
@@ -644,6 +656,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
