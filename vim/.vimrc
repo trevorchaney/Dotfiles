@@ -15,7 +15,7 @@
 " settings ===================================================================
 " Set vim colors.
 syntax enable
-" set background=dark
+set background=dark
 
 " Set vim behavior. TODO(tlc): Add context to these.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
@@ -26,7 +26,7 @@ set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one shiftwidth. Used with cinkeys.
-set colorcolumn=80      " Add a colored column at 80.
+set colorcolumn=80      " Adds a colored column at the specified column.
 set complete+=kspell    "
 set cursorline          "
 set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
@@ -76,25 +76,30 @@ filetype plugin on
 " ░█▀█░░█░░█░█░█▀█░█░░░░█░░█░█░█▀█░░█░░░█░░█░█░█░█
 " ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀
 " Highlighting ===============================================================
-" Cursor & Color Related settings.
-hi CocCodeLens ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi CocHighlightText term=NONE ctermbg=236 ctermfg=NONE cterm=bold
-hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi DebugPC ctermfg=darkyellow ctermbg=236 cterm=bold
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi Folded ctermfg=darkblue ctermbg=black
-hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
-hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
-hi Todo ctermfg=green ctermbg=NONE cterm=bold
-hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
-hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
-"hi DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+" Cursor, Color, and Style related settings.
+"
+" TODO(tlc): Figure out what 'term=NONE' was suppose to be doing and remove if
+"            it's not important.
+hi CocCodeLens      term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi CocHighlightText term=NONE ctermbg=236        ctermfg=NONE       cterm=bold
+hi ColorColumn      term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi CursorLine       term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi DebugPC          term=NONE ctermbg=236        ctermfg=darkyellow cterm=bold
+"hi DiffAdd          term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffChange       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffDelete       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffText         term=NONE ctermbg=88         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+hi FoldColumn       term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi Folded           term=NONE ctermbg=black      ctermfg=darkblue   cterm=bold
+hi Pmenu            term=NONE ctermbg=236        ctermfg=15         guibg=magenta
+hi Search           term=NONE ctermbg=yellow     ctermfg=black      cterm=bold
+hi SignColumn       term=NONE ctermbg=black      ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi SpecialKey       term=NONE ctermbg=red        ctermfg=black      cterm=bold guibg=darkgrey
+hi SpellBad         term=NONE ctermbg=NONE       ctermfg=darkred    cterm=reverse
+hi Todo             term=NONE ctermbg=NONE       ctermfg=green      cterm=bold
+hi VertSplit        term=NONE ctermbg=NONE       ctermfg=white      cterm=NONE
+hi Visual           term=NONE ctermbg=darkyellow ctermfg=black      cterm=bold
+hi Whitespace       term=NONE ctermbg=NONE       ctermfg=darkcyan   cterm=NONE
 
 " ============================================================================
 " ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
@@ -131,6 +136,7 @@ au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
+au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 
@@ -293,16 +299,21 @@ nnoremap <silent> <leader>C :AsyncRun "%<cr>
 " Run an a.out program.
 nnoremap <silent> <F5> :term ./a.out<cr>
 
+" Run a command line command in a file.
+nnoremap <silent> <leader>rc yy:vs<cr>:exec 'term '.@"<cr>
+vnoremap <silent> <leader>rc y:vs<cr>:exec 'term '.@"<cr>
+
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 
 " Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
 
-" Jump to previous item in quickfix.
-
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
+
+" Toggle whitespace (list) setting.
+nnoremap <silent> <leader>u :call g:ToggleShowWhitespace()<cr>
 
 " Open and close project drawer, uses :Lexplore if there is no NERDTree.
 nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
@@ -313,7 +324,7 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 " Toggle Markdown Preview
 nmap <leader>pm <Plug>MarkdownPreviewToggle
 
-" Escape terminal command instert mode
+" Escape terminal command insert mode
 tnoremap <esc> <c-\><c-n>
 
 " Start EasyAlign in normal mode and visual mode.
@@ -341,6 +352,14 @@ function! g:ToggleSpellMode()
         set nospell
     else
         set spell
+    endif
+endfunc
+
+function! g:ToggleShowWhitespace()
+    if(&list == 1)
+        set nolist
+    else
+        set list
     endif
 endfunc
 
@@ -421,6 +440,26 @@ let g:termdebug_wide=1
 " Disable python2 support, python2 is deprecated.
 let g:loaded_python_provider = 0
 
+" Extensions
+let g:coc_global_extensions = [
+    \ '@yaegassy/coc-volar',
+    \ '@yaegassy/coc-volar-tools',
+    \ 'coc-clangd',
+    \ 'coc-css',
+    \ 'coc-eslint',
+    \ 'coc-git',
+    \ 'coc-go',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-markdownlint',
+    \ 'coc-marketplace',
+    \ 'coc-prettier',
+    \ 'coc-python',
+    \ 'coc-restclient',
+    \ 'coc-tsserver',
+    \ 'coc-vetur',
+    \ ]
+
 " Highlight the symbol and its references on cursor hover.
 au CursorHold * silent call CocActionAsync('highlight')
 inoremap <c-s> <c-r>=CocActionAsync('showSignatureHelp')<cr>
@@ -448,10 +487,10 @@ function! s:show_documentation()
 endfunction
 
 " Jump to next and previous issue
-nmap <silent> <leader>a <Plug>(coc-diagnostics-next-error)
-nmap <silent> <leader>x <Plug>(coc-diagnostics-previous-error)
-nmap <silent> <leader>A <Plug>(coc-diagnostics-next)
-nmap <silent> <leader>X <Plug>(coc-diagnostics-previous)
+nmap <silent> <leader>a <Plug>(coc-diagnostic-next-error)
+nmap <silent> <leader>x <Plug>(coc-diagnostic-previous-error)
+nmap <silent> <leader>A <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>X <Plug>(coc-diagnostic-previous)
 
 " Formatting
 nmap <silent> <leader>fm <Plug>(coc-format)
@@ -503,6 +542,7 @@ nnoremap <silent><nowait> <leader>co :<c-u>CocList outline<cr>
 " Search airspace symbols.
 nnoremap <silent><nowait> <leader>cw :<c-u>CocList -I symbols<cr>
 
+" Misc. Mappings
 " Do default action for next item.
 nnoremap <silent><nowait> <leader>cn :<c-u>CocNext<cr>
 
@@ -512,10 +552,13 @@ nnoremap <silent><nowait> <leader>cp :<c-u>CocPrev<cr>
 " Resume fastest coc list.
 nnoremap <silent><nowait> <leader>re :<c-u>CocListResume<cr>
 
+" Run rest-client.request
+nnoremap <leader>0 :CocCommand rest-client.request<cr>
+
 " NERDTree ===================================================================
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeMinimalUI = 1 " hide helper
+let g:NERDTreeMinimalUI = 1 " hide helper, this also hides ".." (use 'u')
 let g:NERDTreeIgnore = ['^node_modules$']
 let g:NERDTreeStatusline = '' " set to empty to use lightline
 
@@ -598,9 +641,9 @@ let g:airline_theme='luna'
 " let g:airline_theme = 'minimalist'
 " let g:airline_theme = 'monochrome'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#hunks#enabled = 0
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -720,7 +763,7 @@ let g:gutentags_generate_on_empty_buffer = 0
 " Let Gutentags generate more info for tags
 let g:gutentags_ctags_extra_args = [ '--tag-relative=yes', '--fields=+ailmnS' ]
 
-" Ignored files and extentions.
+" Ignored files and extensions.
 let g:gutentags_ctags_exclude = [
             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
@@ -745,6 +788,7 @@ let g:vimwiki_list = [{
             \ 'list_margin': 0,
             \ 'auto_toc': 1,
             \ }]
+
 let g:tagbar_type_vimwiki = {
             \   'ctagstype':'vimwiki'
             \ , 'kinds':['h:header']
@@ -756,9 +800,9 @@ let g:tagbar_type_vimwiki = {
             \ }
 
 " fzf ========================================================================
-" set silversearche-ag be the default searching command, by file name
+" set silversearcher-ag to be the default searching command, by file name
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
+let g:fzf_action = {'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit'}
 
 " GitGutter ==================================================================
 hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
