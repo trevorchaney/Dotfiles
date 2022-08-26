@@ -134,11 +134,11 @@ au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("0.0.%y%j%H%M")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
 " au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
-au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
+" au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 
 " ============================================================================
@@ -462,6 +462,7 @@ let g:coc_global_extensions = [
     \ 'coc-prettier',
     \ 'coc-python',
     \ 'coc-restclient',
+    \ 'coc-sh',
     \ 'coc-tsserver',
     \ 'coc-vetur',
     \ ]
@@ -656,8 +657,6 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#hunks#enabled = 0
-let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
