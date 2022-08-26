@@ -60,6 +60,9 @@
     gr = grep -WIi
     last = log -1 HEAD
     lg = log --all --decorate --graph
+    full = log --format=full
+    fuller = log --format=fuller
+    refs = reflog show --all
     r = reset
     s = status -s
     st = status
@@ -69,14 +72,29 @@
     br = branch
     bra = branch -a
     brr = branch -r
+    brd = git symbolic-ref --short HEAD
+    bred = branch --edit-description
+    brshow = config --get-regexp 'branch.*.description'
+    brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
 
     # Commits
     ci = commit
+    ca = commit -a
+    caa = commit -a --amend -C HEAD
     cm = commit -m
     cam = commit -a -m
-    ca = commit --amend
     amend = commit --amend
-    caa = commit -a --amend -C HEAD
+
+    # Diffs
+    ds = diff --staged
+    dead = diff HEAD
+    dstat = diff --stat
+    check = diff --check
 
     # Remotes
     rso = remote show origin
+
+    # Git-flow
+    ff = flow feature
+    fr = flow release
+    fh = flow hotfix
