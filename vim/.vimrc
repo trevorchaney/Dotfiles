@@ -653,11 +653,11 @@ let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
 " let g:airline_theme = 'minimalist'
 " let g:airline_theme = 'monochrome'
-let g:airline_powerline_fonts = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif

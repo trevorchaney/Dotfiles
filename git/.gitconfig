@@ -11,7 +11,7 @@
     ignoreCase = true
     logAllRefUpdates = true
 [credential "https://github.com"]
-    helper = !/usr/bin/gh auth git-credential
+    helper = !gh auth git-credential
 [credential "helperselector"]
     selected = <no helper>
 [credential]
@@ -82,7 +82,7 @@
     # Commits
     ci = commit
     ca = commit -a
-    caa = commit -a --amend -C HEAD
+    camend = commit -a --amend -C HEAD
     cm = commit -m
     cam = commit -a -m
     amend = commit --amend
