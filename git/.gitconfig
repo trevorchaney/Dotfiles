@@ -1,12 +1,12 @@
-# Trevor's Git Configuration File
+; Trevor's Git Configuration File
 
 [user]
     name = Trevor Chaney
     email = trevorchaney@gmail.com
 [core]
-    exlcudesfile = ~/.gitignore_global
     editor = nvim
-    exlcudesFile = ~/.gitignore_global
+    ; exlcudesFile = ~/.gitignore_global
+    exlcudesFile = ~/.config/git/.gitignore_global
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
@@ -55,7 +55,7 @@
     cmd = "'' "
     trustExitCode = true
 [alias]
-    # General
+    ; General
     alias = config --get-regexp alias
     co = checkout
     cp = cherry-pick
@@ -70,7 +70,7 @@
     st = status
     unstage = reset HEAD --
 
-    # Branches
+    ; Branches
     br = branch
     bra = branch -a
     brr = branch -r
@@ -79,7 +79,7 @@
     brshow = config --get-regexp 'branch.*.description'
     brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
 
-    # Commits
+    ; Commits
     ci = commit
     ca = commit -a
     camend = commit -a --amend -C HEAD
@@ -87,16 +87,16 @@
     cam = commit -a -m
     amend = commit --amend
 
-    # Diffs
+    ; Diffs
     ds = diff --staged
     dead = diff HEAD
     dstat = diff --stat
     check = diff --check
 
-    # Remotes
+    ; Remotes
     rso = remote show origin
 
-    # Git-flow
+    ; Git-flow
     ff = flow feature
     fr = flow release
     fh = flow hotfix
