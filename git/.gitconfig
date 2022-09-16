@@ -62,6 +62,7 @@
     gr = grep -WIi
     refs = reflog show --all
     r = reset
+    rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
     s = status -s
     st = status
     unstage = reset HEAD --
@@ -71,6 +72,10 @@
     lg = log --all --decorate --graph
     full = log --format=full
     fuller = log --format=fuller
+    sl = shortlog
+    slog = log --stat
+    plog = log -p
+    lgrep = log --grep=
 
     ; Branches
     br = branch
