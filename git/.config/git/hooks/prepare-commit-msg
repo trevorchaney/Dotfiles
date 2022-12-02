@@ -12,7 +12,8 @@ addBranchName() {
     DESCRIPTION=$(git config branch."$NAME".description)
 
     # This is how I do this in my personal work.
-    echo "[${NAME%%_*}]: $(cat $COMMIT_MSG_FILE)" > $COMMIT_MSG_FILE
+    # echo "${NAME%%_*}: $(cat $COMMIT_MSG_FILE)" > $COMMIT_MSG_FILE
+    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #${NAME%%_*}" > $COMMIT_MSG_FILE
 
     # Add the repo description if one exists.
     if [ -n "$DESCRIPTION" ]; then
@@ -21,8 +22,11 @@ addBranchName() {
     fi
 }
 
-IS_MERGE=$(cat $COMMIT_MSG_FILE | grep -i 'merge' | wc -l)
+# This is how I would do it in my personal work
+# IS_MERGE=$(cat $COMMIT_MSG_FILE | grep -i 'merge' | wc -l)
 
-if [ $IS_MERGE -eq 0 ]; then
-    addBranchName
-fi
+# if [ $IS_MERGE -eq 0 ]; then
+#     addBranchName
+# fi
+
+addBranchName
