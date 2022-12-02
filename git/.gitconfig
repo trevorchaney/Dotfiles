@@ -57,6 +57,7 @@
 [alias]
     ; General
     alias = config --get-regexp alias
+    ap = add --patch
     co = checkout
     cp = cherry-pick
     gr = grep -WIi
@@ -69,7 +70,8 @@
 
     ; Log
     last = log -1 HEAD
-    lg = log --all --decorate --graph
+    lg = log --decorate --graph
+    lo = log --all --decorate --graph
     full = log --format=full
     fuller = log --format=fuller
     sl = shortlog
