@@ -1,39 +1,51 @@
 #!/bin/bash
-# Automatically adds branch request tracker number to the end of every commit
-# message.
+# Automatically adds branch ticket number to the end of every commit message.
 # ref: https://stackoverflow.com/questions/5894946/how-to-add-gits-branch-name-to-the-commit-message
 
 COMMIT_MSG_FILE=$1
 # COMMIT_MSG_SOURCE=$2
-# COMMIT_MSG_OBJ_NAME=$3
+# COMMIT_MSG_OBJ_TICKET_NUMBER=$3
 
 addBranchName() {
-    NAME=$(git symbolic-ref --short HEAD | sed 's/^.*\///g')
-    DESCRIPTION=$(git config branch."$NAME".description)
+    TICKET_NUMBER=$(git symbolic-ref --short HEAD | sed "s/^.*\///g")
+    HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
+    BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
+    DESCRIPTION=$(git config branch."$TICKET_NUMBER".description)
 
     # This is how I do this in my personal work.
-    # echo "${NAME%%_*}: $(cat $COMMIT_MSG_FILE)" > $COMMIT_MSG_FILE
-    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #${NAME%%_*}" > $COMMIT_MSG_FILE
+    printf "%s %s" "[${TICKET_NUMBER%%_*}]:" "$HEADER" > $COMMIT_MSG_FILE
+    printf "%s %s" "$HEADER" "as Per RT Ticket #${TICKET_NUMBER%%_*}" > $COMMIT_MSG_FILE
+
+    # Add commit body text if it exists
+    if [ -n "$BODY" ]; then
+        printf "\n\n%s" "$BODY" >> $COMMIT_MSG_FILE
+    fi
 
     # Add the repo description if one exists.
     if [ -n "$DESCRIPTION" ]; then
-        echo "" >> $COMMIT_MSG_FILE
-        echo $DESCRIPTION >> $COMMIT_MSG_FILE
+        printf "\n\n%s" "$DESCRIPTION" >> $COMMIT_MSG_FILE
     fi
 }
 
 addBranchNameToMerge() {
-    NAME=$(cat "$COMMIT_MSG_FILE" | sed -e "s/Merge branch '\(.*\)[_']/\1/")
+    TICKET_NUMBER=$(cat "$COMMIT_MSG_FILE" | sed -e "s/Merge branch '\(.*\)[_']/\1/")
+    HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
+    BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
 
-    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #${NAME%%_*}" > $COMMIT_MSG_FILE
+    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #${TICKET_NUMBER%%_*}" > $COMMIT_MSG_FILE
+
+    # Add commit body text if it exists
+    if [ -n "$BODY" ]; then
+        printf "\n\n%s" "$BODY" >> $COMMIT_MSG_FILE
+    fi
+
+    # Add the repo description if one exists.
+    if [ -n "$DESCRIPTION" ]; then
+        printf "\n\n%s" "$DESCRIPTION" >> $COMMIT_MSG_FILE
+    fi
 }
 
-IS_MERGE=$(cat "$COMMIT_MSG_FILE" | grep -i 'merge' | wc -l)
-
-# This is how I would do it in my personal work
-# if [ $IS_MERGE -eq 0 ]; then
-#     addBranchName
-# fi
+IS_MERGE=$(cat "$COMMIT_MSG_FILE" | grep -ei "merge" | wc -l)
 
 if [ $IS_MERGE -eq 0 ]; then
     addBranchName
