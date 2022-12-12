@@ -45,7 +45,7 @@ addBranchNameToMerge() {
     fi
 }
 
-IS_MERGE=$(cat "$COMMIT_MSG_FILE" | grep -ei "merge" | wc -l)
+IS_MERGE=$(cat "$COMMIT_MSG_FILE" | grep -i "merge" | wc -l)
 
 if [ $IS_MERGE -eq 0 ]; then
     addBranchName
