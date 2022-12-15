@@ -1,5 +1,5 @@
 #!/bin/sh
-# Abort commits with the term 'localhost'
+# Abort commits with any of a list of terms.
 
 term="localhost|127.0.0.1"
 if ag "$term"; then

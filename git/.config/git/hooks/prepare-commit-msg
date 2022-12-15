@@ -7,14 +7,17 @@ COMMIT_MSG_FILE=$1
 # COMMIT_MSG_OBJ_TICKET_NUMBER=$3
 
 addBranchName() {
-    TICKET_NUMBER=$(git symbolic-ref --short HEAD | sed "s/^.*\///g")
+    BRANCH=$(git symbolic-ref --short HEAD | sed "s/^.*\///g")
+    TICKET_NUMBER=${BRANCH%%_*}
     HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
     BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
-    DESCRIPTION=$(git config branch."$TICKET_NUMBER".description)
+    DESCRIPTION=$(git config branch."$BRANCH".description)
+
+    # printf "BRANCH:\n%s\nTN:\n%s\nDesc:\n%s\n" $BRANCH $TICKET_NUMBER $DESCRIPTION > outputfile.txt # @debug
 
     # This is how I do this in my personal work.
-    printf "%s %s" "[${TICKET_NUMBER%%_*}]:" "$HEADER" > $COMMIT_MSG_FILE
-    printf "%s %s" "$HEADER" "as Per RT Ticket #${TICKET_NUMBER%%_*}" > $COMMIT_MSG_FILE
+    # printf "%s %s" "[${TICKET_NUMBER%%_*}]:" "$HEADER" > $COMMIT_MSG_FILE
+    printf "%s %s" "$HEADER" "as Per RT Ticket #$TICKET_NUMBER" > $COMMIT_MSG_FILE
 
     # Add commit body text if it exists
     if [ -n "$BODY" ]; then
@@ -28,11 +31,15 @@ addBranchName() {
 }
 
 addBranchNameToMerge() {
-    TICKET_NUMBER=$(cat "$COMMIT_MSG_FILE" | sed -e "s/Merge branch '\(.*\)[_']/\1/")
+    MERGED_BRANCH=$(cat "$COMMIT_MSG_FILE" | sed -e "s/Merge branch '\(.*\)'/\1/")
+    TICKET_NUMBER=${MERGED_BRANCH%%_*}
     HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
     BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
+    DESCRIPTION=$(git config branch."$MERGED_BRANCH".description)
 
-    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #${TICKET_NUMBER%%_*}" > $COMMIT_MSG_FILE
+    # printf "BRANCH:\n%s\nTN:\n%s\nDesc:\n%s\n" $BRANCH $TICKET_NUMBER $DESCRIPTION > outputfile.txt # @debug
+
+    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #$TICKET_NUMBER" > $COMMIT_MSG_FILE
 
     # Add commit body text if it exists
     if [ -n "$BODY" ]; then
