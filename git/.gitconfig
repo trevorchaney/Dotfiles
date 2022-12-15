@@ -83,6 +83,7 @@
     br = branch
     bra = branch -a
     brr = branch -r
+    brn = branch -m
     brd = git symbolic-ref --short HEAD
     bred = branch --edit-description
     brshow = config --get-regexp 'branch.*.description'
