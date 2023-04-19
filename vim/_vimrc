@@ -55,7 +55,7 @@ set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=10        " Keep at least 5 lines above and below the cursor.
+set scrolloff=5        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.

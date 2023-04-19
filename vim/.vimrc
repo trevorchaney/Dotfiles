@@ -15,7 +15,7 @@
 " settings ===================================================================
 " Set vim colors.
 syntax enable
-" set background=dark
+" Set background=dark
 
 " Set vim behavior. TODO(tlc): Add context to these.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
@@ -55,7 +55,7 @@ set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=10        " Keep at least 5 lines above and below the cursor.
+set scrolloff=5        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        " Set the shift width; amount of space characters.
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
@@ -164,7 +164,12 @@ vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"')))
 " Ag search for visually selected.
 vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 
+" Search current file for visually selected
+vnoremap <silent> <leader>/ y/\V<C-R>=escape(@",'/\')<CR><CR>
+
 " Create a vertical split with a terminal buffer in it.
+" NOTE: You can't map CTRL-` because it equates to a NUL chararcter and vim
+" will allway interperate it as such.
 nnoremap <silent> <leader>` :vs<cr>:term<cr>a
 
 " Open and close tags drawer.
@@ -181,6 +186,10 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 
 " Move to next fill character, staying in insert mode and removing highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
+
+" Basic mappings for popup menu
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 " Trigger Codi scratchpad.
 nnoremap <silent> <leader>is :Codi!!<cr>
@@ -452,19 +461,22 @@ let g:coc_global_extensions = [
     \ '@yaegassy/coc-volar-tools',
     \ 'coc-clangd',
     \ 'coc-css',
+    \ 'coc-docker',
     \ 'coc-eslint',
     \ 'coc-git',
     \ 'coc-go',
     \ 'coc-html',
+    \ 'coc-jedi',
     \ 'coc-json',
     \ 'coc-markdownlint',
     \ 'coc-marketplace',
     \ 'coc-prettier',
-    \ 'coc-python',
+    \ 'coc-pyright',
     \ 'coc-restclient',
     \ 'coc-sh',
     \ 'coc-tsserver',
     \ 'coc-vetur',
+    \ 'coc-yaml',
     \ ]
 
 " Highlight the symbol and its references on cursor hover.
