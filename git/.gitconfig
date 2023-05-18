@@ -10,12 +10,18 @@
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
+[credential]
+    helper = store
 [credential "https://github.com"]
     helper = !gh auth git-credential
 [credential "helperselector"]
     selected = <no helper>
-[credential]
-    helper = store
+[credential "http://3.101.19.21"]
+    provider = generic
+[credential "http://3.95.241.3"]
+    provider = generic
+[safe]
+    directory = C:/Users/tlc/scoop/apps/scoop/current
 [color]
     ui = true
 [init]
@@ -84,7 +90,7 @@
     bra = branch -a
     brr = branch -r
     brn = branch -m
-    brd = git symbolic-ref --short HEAD
+    brd = symbolic-ref --short HEAD
     bred = branch --edit-description
     brshow = config --get-regexp 'branch.*.description'
     brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
@@ -92,9 +98,9 @@
     ; Commits
     ci = commit
     ca = commit -a
-    camend = commit -a --amend -C HEAD
     cm = commit -m
     cam = commit -a -m
+    camend = commit -a --amend -C HEAD
     amend = commit --amend
 
     ; Diffs
@@ -104,6 +110,7 @@
     check = diff --check
 
     ; Remotes
+    rs = remote show
     rso = remote show origin
 
     ; Git-flow
