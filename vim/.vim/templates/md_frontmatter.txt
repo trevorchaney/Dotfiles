@@ -1,0 +1,11 @@
+:insert
+---
+title: # The title of the article or content page.
+date: # The date the article was published or last updated.
+author: # The author of the article.
+tags: # Keywords or labels that represent the topics or themes covered in the article. You can use an array or a comma-separated list to define multiple tags or categories.
+description: # A brief summary or description of the article.
+thumbnail: # The URL or path to an image associated with the article.
+draft: # A boolean value (true or false) indicating whether the article is a draft and should be excluded from the published site.
+slug: # The URL slug or permalink for the article. If not provided, Hugo generates it based on the title.
+---
