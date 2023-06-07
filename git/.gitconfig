@@ -75,11 +75,16 @@
     unstage = reset HEAD --
 
     ; Log
-    last = log -1 HEAD
-    lg = log --decorate --graph
-    lo = log --all --decorate --graph
     full = log --format=full
     fuller = log --format=fuller
+    last = log -1 HEAD
+    leg = log -E --grep
+    lfh = log --full-history -- 
+    lg = log --decorate --graph
+    lgrep = log --grep=
+    lig = log -i --grep
+    lo = log --all --decorate --graph
+    plog = log -p
     sl = shortlog
     slog = log --stat
     plog = log -p
@@ -112,6 +117,9 @@
     ; Remotes
     rs = remote show
     rso = remote show origin
+
+    ; Worktrees
+    wt = worktree
 
     ; Git-flow
     ff = flow feature
