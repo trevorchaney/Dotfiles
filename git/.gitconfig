@@ -83,7 +83,7 @@
     sl = shortlog
     slog = log --stat
     plog = log -p
-    lgrep = log --grep=
+    lgrep = log --grep
 
     ; Branches
     br = branch
