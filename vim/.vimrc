@@ -279,7 +279,7 @@ nnoremap <silent> <leader>4 :Files<cr>
 " Repeat last entered colon command
 nnoremap <silent> <leader>; @:
 
-" Automatically form current buffer
+" Automatically format current buffer
 nnoremap <silent> <F2> :Autoformat<cr>
 
 " With AsyncRun plugin ------------------------------------------------------
