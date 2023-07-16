@@ -346,6 +346,9 @@ tnoremap <esc> <c-\><c-n>
 nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
+" Mouse Mappings
+nnoremap <c-LeftMouse> <LeftMouse>:gd<cr>
+
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
 " ░█▀▀░█░█░█░█░█░░░░█░░░█░░█░█░█░█░▀▀█
