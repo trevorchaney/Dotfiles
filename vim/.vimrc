@@ -470,7 +470,6 @@ let g:coc_global_extensions = [
     \ 'coc-git',
     \ 'coc-go',
     \ 'coc-html',
-    \ 'coc-jedi',
     \ 'coc-json',
     \ 'coc-markdownlint',
     \ 'coc-marketplace',
@@ -665,10 +664,10 @@ let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
 " Airline ====================================================================
 " Set the theme for airline.
-let g:airline_theme='luna'
+" let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
 " let g:airline_theme = 'minimalist'
-" let g:airline_theme = 'monochrome'
+let g:airline_theme = 'monochrome'
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#hunks#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
