@@ -84,7 +84,7 @@
     lgrep = log --grep=
     lig = log -i --grep
     lo = log --all --decorate --graph
-    plog = log -p
+    lop = log -p
     sl = shortlog
     slog = log --stat
     plog = log -p
