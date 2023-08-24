@@ -61,6 +61,7 @@
     cmd = "'' "
     trustExitCode = true
 [alias]
+    ; TODO(tlc): Add comments to these to describe what they do.
     ; General
     alias = config --get-regexp alias
     ap = add --patch
@@ -88,7 +89,7 @@
     sl = shortlog
     slog = log --stat
     plog = log -p
-    lgrep = log --grep
+    lgr = log --format=fuller -i --grep
 
     ; Branches
     br = branch
