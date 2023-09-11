@@ -37,6 +37,7 @@ set foldcolumn=1        " Makes folds visable in the sidebar
 set foldlevel=2         "
 set foldmethod=indent   " Allows indented code folding.
 set foldnestmax=10      "
+set grepprg=grep\ -rn\  " Set default :grep program
 set hidden              " Allow buffer switching without saving.
 set history=500         " Sets how many lines of history VIM has to remember.
 set hlsearch            " Highlight search.
@@ -54,7 +55,7 @@ set nrformats+=alpha    " Make letters increment and decrement able.
 set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
-set printoptions=number:y   " Adds numbers to :hardcopy command.
+" set printoptions=number:y   " Adds numbers to :hardcopy command.
 set scrolloff=5        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        " Set the shift width; amount of space characters.
 set signcolumn=number   " Put signs in the number column instead of sign column.
@@ -99,7 +100,7 @@ hi SpellBad         term=NONE ctermbg=NONE       ctermfg=darkred    cterm=revers
 hi Todo             term=NONE ctermbg=NONE       ctermfg=green      cterm=bold
 hi VertSplit        term=NONE ctermbg=NONE       ctermfg=white      cterm=NONE
 hi Visual           term=NONE ctermbg=darkyellow ctermfg=black      cterm=bold
-hi Whitespace       term=NONE ctermbg=NONE       ctermfg=darkcyan   cterm=NONE
+hi Whitespace       term=NONE ctermbg=NONE       ctermfg=235        cterm=NONE
 
 " ============================================================================
 " ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
@@ -126,6 +127,10 @@ au FileType make setlocal noexpandtab
 
 " Set Rmarkdown render command
 au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
+
+" Automatically save open buffers when changes are made.
+" NOTE: This could lead to degradation of storage.
+"au TextChanged,TextChangedI * :wa
 
 " File templates =============================================================
 " TODO(tlc): Make automatic include guards for header files.
@@ -312,7 +317,7 @@ nnoremap <silent> <leader>C :AsyncRun "%<cr>
 " " ---------------------------------------------------------------------------
 
 " Run an a.out program.
-nnoremap <silent> <F5> :term ./a.out<cr>
+nnoremap <silent> <F5> :term a.*<cr>
 
 " Run a command line command in a file.
 nnoremap <silent> <leader>rc yy:vs<cr>:exec 'term '.@"<cr>
@@ -933,7 +938,7 @@ Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
 Plug 'junegunn/vim-easy-align'              " Text Alignment, simple
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
@@ -945,7 +950,7 @@ Plug 'preservim/tagbar'                     " Tag browser for ctags.
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'                  "
 Plug 'skywind3000/asyncrun.vim'             "
-Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'                 "
 Plug 'tpope/vim-fugitive'                   "
 " Plug 'adelarsq/vim-matchit'                 " Repo for matchit.vim, replaced by matchup
