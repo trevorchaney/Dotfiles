@@ -1,19 +1,128 @@
+; Trevor's Git Configuration File
+
 [user]
     name = Trevor Chaney
-    email = trevor.chaney@ultra-ats.com
-    ; email = trevorchaney@gmail.com
-[credential "https://github.com"]
-    helper = !/usr/bin/gh auth git-credential
+    email = trevorchaney@gmail.com
 [core]
-    exlcudesfile = ~/.gitignore_global
-    editor = vim
-[pull]
-    ; ff = only
+    editor = nvim
+    ; exlcudesFile = ~/.gitignore_global
+    exlcudesFile = ~/.config/git/.gitignore_global
+    fileMode = false
+    ignoreCase = true
+    logAllRefUpdates = true
+[credential]
+    helper = store
+[credential "https://github.com"]
+    helper = !gh auth git-credential
+[credential "helperselector"]
+    selected = <no helper>
+[credential "http://3.101.19.21"]
+    provider = generic
+[credential "http://3.95.241.3"]
+    provider = generic
+[safe]
+    directory = C:/Users/tlc/scoop/apps/scoop/current
+[color]
+    ui = true
 [init]
-    defaultBranch = main
+    defaultBranch = master
+[branch "master"]
+    mergeoptions = --no-ff ; This is set this way for work. Forces merge commit.
+    ; mergeoptions = --ff-only ; This should be preferred
+[format]
+    pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
+[log]
+    date = human
+[pull]
+    ; rebase = false
+    rebase = true ; This should be preferred
 [push]
-    default = matching
+    default = current
+[fetch]
+    prune = true
+[rebase]
+    autoStash = true
+    autoSquash = true
 [merge]
-    tool = vimdiff
-    conflictstyle = diff3
-    prompt = false
+    tool = vscode
+    ; tool = vimdiff
+    ; conflictStyle = diff3
+    ; prompt = false
+[mergetool "vscode"]
+    cmd = "code -n -w $MERGED"
+[diff]
+    tool = vscode
+    colorMoved = zebra
+[difftool "vscode"]
+    cmd = "code -n -w -d $LOCAL $REMOTE"
+[difftool "sourcetree"]
+    cmd = '' \"$LOCAL\" \"$REMOTE\"
+[mergetool "sourcetree"]
+    cmd = "'' "
+    trustExitCode = true
+[alias]
+    ; TODO(tlc): Add comments to these to describe what they do.
+    ; General
+    alias = config --get-regexp alias
+    ap = add --patch
+    co = checkout
+    cp = cherry-pick
+    gr = grep -WIi
+    refs = reflog show --all
+    r = reset
+    rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
+    s = status -s
+    st = status
+    unstage = reset HEAD --
+
+    ; Log
+    full = log --format=full
+    fuller = log --format=fuller
+    last = log -1 HEAD
+    leg = log -E --grep
+    lfh = log --full-history -- 
+    lg = log --decorate --graph
+    lgrep = log --grep=
+    lig = log -i --grep
+    lo = log --all --decorate --graph
+    lop = log -p
+    sl = shortlog
+    slog = log --stat
+    plog = log -p
+    lgr = log --format=fuller -i --grep
+
+    ; Branches
+    br = branch
+    bra = branch -a
+    brr = branch -r
+    brn = branch -m
+    brd = symbolic-ref --short HEAD
+    bred = branch --edit-description
+    brshow = config --get-regexp 'branch.*.description'
+    brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
+
+    ; Commits
+    ci = commit
+    ca = commit -a
+    cm = commit -m
+    cam = commit -a -m
+    camend = commit -a --amend -C HEAD
+    amend = commit --amend
+
+    ; Diffs
+    ds = diff --staged
+    dead = diff HEAD
+    dstat = diff --stat
+    check = diff --check
+
+    ; Remotes
+    rs = remote show
+    rso = remote show origin
+
+    ; Worktrees
+    wt = worktree
+
+    ; Git-flow
+    ff = flow feature
+    fr = flow release
+    fh = flow hotfix

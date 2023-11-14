@@ -14,7 +14,7 @@
 
 ## Default CXX is g++
 # CXX = clang
-CXXSPEC = c++03
+CXXSPEC = c++20
 SHELL = bash
 
 ## Use '-m32' to build 32-bit binaries.
@@ -36,7 +36,7 @@ DEBUG = yes
 DEBUGVERBOSE = no
 PEDANTIC = yes
 PROFILE = yes
-PROFILE_GUIDED_OPTIMIZATION = yes
+PROFILE_GUIDED_OPTIMIZATION = no
 SUPER_OPTIMIZATION = no
 
 ifeq ($(DEBUG), yes)

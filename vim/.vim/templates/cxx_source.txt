@@ -3,7 +3,7 @@
  * @file
  * @version
  * @date
- * @author Trevor Chaney (tlc) (trevorchaney@gmail.com)
+ * @author Trevor Chaney (tlc) <trevorchaney@gmail.com>
  *
  * @brief
  */

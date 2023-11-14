@@ -1,6 +1,6 @@
 /**
  * @file
- * @author Trevor Chaney (tlc) (trevorchaney@gmail.com)
+ * @author Trevor Chaney (tlc) <trevorchaney@gmail.com>
  * @version
  * @date
  *

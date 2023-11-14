@@ -1,0 +1,61 @@
+#!/bin/bash
+# Automatically adds branch ticket number to the end of every commit message.
+# ref: https://stackoverflow.com/questions/5894946/how-to-add-gits-branch-name-to-the-commit-message
+
+COMMIT_MSG_FILE=$1
+# COMMIT_MSG_SOURCE=$2
+# COMMIT_MSG_OBJ_TICKET_NUMBER=$3
+
+addBranchName() {
+    BRANCH=$(git symbolic-ref --short HEAD | sed "s/^.*\///g")
+    TICKET_NUMBER=${BRANCH%%_*}
+    HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
+    BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
+    DESCRIPTION=$(git config branch."$BRANCH".description)
+
+    # printf "BRANCH:\n%s\nTN:\n%s\nDesc:\n%s\n" $BRANCH $TICKET_NUMBER $DESCRIPTION > outputfile.txt # @debug
+
+    # This is how I do this in my personal work.
+    # printf "%s %s" "[${TICKET_NUMBER%%_*}]:" "$HEADER" > $COMMIT_MSG_FILE
+    printf "%s %s" "$HEADER" "as Per RT Ticket #$TICKET_NUMBER" > $COMMIT_MSG_FILE
+
+    # Add commit body text if it exists
+    if [ -n "$BODY" ]; then
+        printf "\n\n%s" "$BODY" >> $COMMIT_MSG_FILE
+    fi
+
+    # Add the repo description if one exists.
+    if [ -n "$DESCRIPTION" ]; then
+        printf "\n\n%s" "$DESCRIPTION" >> $COMMIT_MSG_FILE
+    fi
+}
+
+addBranchNameToMerge() {
+    MERGED_BRANCH=$(cat "$COMMIT_MSG_FILE" | sed -e "s/Merge branch '\(.*\)'/\1/")
+    TICKET_NUMBER=${MERGED_BRANCH%%_*}
+    HEADER=$(cat $COMMIT_MSG_FILE | sed -e "/./!Q" )
+    BODY=$(cat $COMMIT_MSG_FILE | sed "1,/^$/d")
+    DESCRIPTION=$(git config branch."$MERGED_BRANCH".description)
+
+    # printf "BRANCH:\n%s\nTN:\n%s\nDesc:\n%s\n" $BRANCH $TICKET_NUMBER $DESCRIPTION > outputfile.txt # @debug
+
+    printf "%s %s" "$(cat $COMMIT_MSG_FILE)" "as Per RT Ticket #$TICKET_NUMBER" > $COMMIT_MSG_FILE
+
+    # Add commit body text if it exists
+    if [ -n "$BODY" ]; then
+        printf "\n\n%s" "$BODY" >> $COMMIT_MSG_FILE
+    fi
+
+    # Add the repo description if one exists.
+    if [ -n "$DESCRIPTION" ]; then
+        printf "\n\n%s" "$DESCRIPTION" >> $COMMIT_MSG_FILE
+    fi
+}
+
+IS_MERGE=$(cat "$COMMIT_MSG_FILE" | grep -i "merge" | wc -l)
+
+if [ $IS_MERGE -eq 0 ]; then
+    addBranchName
+else
+    addBranchNameToMerge
+fi
