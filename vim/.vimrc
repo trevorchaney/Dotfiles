@@ -1,4 +1,4 @@
-
+"
 "               ██╗   ██╗██╗███╗   ███╗
 "               ██║   ██║██║████╗ ████║
 "               ██║   ██║██║██╔████╔██║
@@ -15,7 +15,7 @@
 " settings ===================================================================
 " Set vim colors.
 syntax enable
-" set background=dark
+" Set background=dark
 
 " Set vim behavior. TODO(tlc): Add context to these.
 " set makeprg=cmd.exe\ /c\ wslBuild.bat " Set :make for microsoft programming.
@@ -26,7 +26,7 @@ set backup              " Enable backups
 set backupdir=~/.vim/tmp//,.    " Backup working files to ~/.vim/tmp.
 set cinkeys-=0#         " Stop vim from treating # indentation different.
 set cinoptions+=#1s     " Indent with c-macros one shiftwidth. Used with cinkeys.
-set colorcolumn=80      " Add a colored column at 80.
+set colorcolumn=80      " Adds a colored column at the specified column.
 set complete+=kspell    "
 set cursorline          "
 set directory=~/.vim/tmp//,.    " Put swaps in ~/.vim/tmp.
@@ -37,6 +37,7 @@ set foldcolumn=1        " Makes folds visable in the sidebar
 set foldlevel=2         "
 set foldmethod=indent   " Allows indented code folding.
 set foldnestmax=10      "
+set grepprg=grep\ -rn\  " Set default :grep program
 set hidden              " Allow buffer switching without saving.
 set history=500         " Sets how many lines of history VIM has to remember.
 set hlsearch            " Highlight search.
@@ -54,9 +55,9 @@ set nrformats+=alpha    " Make letters increment and decrement able.
 set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
-set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=10        " Keep at least 5 lines above and below the cursor.
-set shiftwidth=4        "
+" set printoptions=number:y   " Adds numbers to :hardcopy command.
+set scrolloff=5        " Keep at least 5 lines above and below the cursor.
+set shiftwidth=4        " Set the shift width; amount of space characters.
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
 set softtabstop=4       "
@@ -76,25 +77,30 @@ filetype plugin on
 " ░█▀█░░█░░█░█░█▀█░█░░░░█░░█░█░█▀█░░█░░░█░░█░█░█░█
 " ░▀░▀░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀░▀▀▀
 " Highlighting ===============================================================
-" Cursor & Color Related settings.
-hi CocCodeLens ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi CocHighlightText term=NONE ctermbg=236 ctermfg=NONE cterm=bold
-hi ColorColumn term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi CursorLine term=NONE ctermbg=236 ctermfg=NONE cterm=NONE
-hi DebugPC ctermfg=darkyellow ctermbg=236 cterm=bold
-hi FoldColumn ctermbg=NONE ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi Folded ctermfg=darkblue ctermbg=black
-hi Pmenu ctermfg=15 ctermbg=236 guibg=Magenta
-hi Search ctermfg=black ctermbg=yellow cterm=bold
-hi SignColumn ctermbg=black ctermfg=darkyellow cterm=bold guibg=darkgrey
-hi SpellBad ctermfg=darkred ctermbg=NONE cterm=reverse
-hi Todo ctermfg=green ctermbg=NONE cterm=bold
-hi VertSplit term=NONE ctermbg=NONE ctermfg=white cterm=NONE
-hi Visual ctermfg=black ctermbg=darkyellow cterm=bold
-"hi DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
-"hi DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+" Cursor, Color, and Style related settings.
+"
+" TODO(tlc): Figure out what 'term=NONE' was suppose to be doing and remove if
+"            it's not important.
+hi CocCodeLens      term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi CocHighlightText term=NONE ctermbg=236        ctermfg=NONE       cterm=bold
+hi ColorColumn      term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi CursorLine       term=NONE ctermbg=236        ctermfg=NONE       cterm=NONE
+hi DebugPC          term=NONE ctermbg=236        ctermfg=darkyellow cterm=bold
+"hi DiffAdd          term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffChange       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffDelete       term=NONE ctermbg=17         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+"hi DiffText         term=NONE ctermbg=88         ctermfg=10         cterm=bold guibg=Red guifg=bg gui=none
+hi FoldColumn       term=NONE ctermbg=NONE       ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi Folded           term=NONE ctermbg=black      ctermfg=darkblue   cterm=bold
+hi Pmenu            term=NONE ctermbg=236        ctermfg=15         guibg=magenta
+hi Search           term=NONE ctermbg=yellow     ctermfg=black      cterm=bold
+hi SignColumn       term=NONE ctermbg=black      ctermfg=darkyellow cterm=bold guibg=darkgrey
+hi SpecialKey       term=NONE ctermbg=red        ctermfg=black      cterm=bold guibg=darkgrey
+hi SpellBad         term=NONE ctermbg=NONE       ctermfg=darkred    cterm=reverse
+hi Todo             term=NONE ctermbg=NONE       ctermfg=green      cterm=bold
+hi VertSplit        term=NONE ctermbg=NONE       ctermfg=white      cterm=NONE
+hi Visual           term=NONE ctermbg=darkyellow ctermfg=black      cterm=bold
+hi Whitespace       term=NONE ctermbg=NONE       ctermfg=235        cterm=NONE
 
 " ============================================================================
 " ░█▀█░█░█░▀█▀░█▀█░█▀▀░█▄█░█▀▄
@@ -111,7 +117,7 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-au FileType html,css,js,json,xsl,xml setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,js,json,vue,xml,xsl setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++-like file extensions.
 au BufEnter *.tpp :setlocal filetype=cpp
@@ -122,16 +128,23 @@ au FileType make setlocal noexpandtab
 " Set Rmarkdown render command
 au Filetype rmd map <silent> <leader>rr :!echo<space>"require(rmarkdown);<space>render('<c-r>%')"<space>\|<space>R<space>--vanilla<enter>
 
+" Automatically save open buffers when changes are made.
+" NOTE: This could lead to degradation of storage.
+"au TextChanged,TextChangedI * :wa
+
 " File templates =============================================================
-" TODO(tlc): Make automatic inculed guards for header files.
+" TODO(tlc): Make automatic include guards for header files.
 au BufNewFile *.c,*.cpp,*.h,*.hpp so ~/.vim/templates/cxx_source.txt
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%c")
-au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("0.0.%y%j%H%M")
+au BufNewFile *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
 au BufNewFile *.c,*.cpp,*.h,*.hpp exe "normal G"
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
-au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
-au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
+au BufNewFile *.md so ~/.vim/templates/md_frontmatter.txt
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@file.*/s//@file " .expand("%")
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/\\(@version.*\\d*\\.\\d*\\.\\).*/s//\\1" .strftime("%y%j%H%M")
+" au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@date.*/s//@date " .strftime("%Y-%m-%dT%H:%M:%SZ%z (%A)")
+" au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
 " ============================================================================
 " ░█▄█░█▀█░█▀█░█▀█░▀█▀░█▀█░█▀▀░█▀▀
@@ -156,6 +169,14 @@ vnoremap <silent> <leader>s d:execute 'normal i' . join(sort(split(getreg('"')))
 " Ag search for visually selected.
 vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 
+" Search current file for visually selected
+vnoremap <silent> <leader>/ y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Create a vertical split with a terminal buffer in it.
+" NOTE: You can't map CTRL-` because it equates to a NUL chararcter and vim
+" will allway interperate it as such.
+nnoremap <silent> <leader>` :vs<cr>:term<cr>a
+
 " Open and close tags drawer.
 nnoremap <silent> <leader>T :TagbarToggle<cr>
 
@@ -170,6 +191,10 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 
 " Move to next fill character, staying in insert mode and removing highlight.
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
+
+" Basic mappings for popup menu
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 " Trigger Codi scratchpad.
 nnoremap <silent> <leader>is :Codi!!<cr>
@@ -258,36 +283,44 @@ nnoremap <silent> <leader>4 :Files<cr>
 " Repeat last entered colon command
 nnoremap <silent> <leader>; @:
 
-" Automatically form current buffer
+" Automatically format current buffer
 nnoremap <silent> <F2> :Autoformat<cr>
 
 " With AsyncRun plugin ------------------------------------------------------
-" Run make asynchronously
-nnoremap <silent> <leader>m :wa<cr>:AsyncRun make -j4<cr>:copen<cr><c-w>p
-" Run make clean asynchronously.
-nnoremap <silent> <F4> :wa<cr>:AsyncRun make clean<cr>:copen<cr><c-w>p
-" Run make asynchronously and open the Quickfix menu.
-nnoremap <silent> <F9> :wa<cr>:AsyncRun make rebuild<cr>:copen<cr><c-w>p
+" Run :make asynchronously
+nnoremap <silent> <leader>m :wa<cr>:AsyncRun :silent make<cr>:copen<cr><c-w>p
+" Run :make asynchronously with 6 threads
+nnoremap <silent> <leader>M :wa<cr>:AsyncRun :silent make -j6<cr>:copen<cr><c-w>p
+" Run :make clean asynchronously.
+nnoremap <silent> <F4> :wa<cr>:AsyncRun :silent make clean<cr>:copen<cr><c-w>p
+" Run :make asynchronously and open the Quickfix menu.
+nnoremap <silent> <F9> :wa<cr>:AsyncRun :silent make rebuild<cr>:copen<cr><c-w>p
 " Build ctags and cscope.
 " nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>:silent !ctags *<cr>:silent !cscope -Rb<cr>
 " Just create a .root in the current folder and have Gutentags do the rest.
 nnoremap <silent> <leader>t :AsyncRun :silent !touch .root<cr>
-" Run scons asynchronously
-nnoremap <silent> <leader>C :AsyncRun scons -uj6 --no-cache --type=debug<cr>:copen<cr><c-w>p
+" Run the current script file asynchronously (must have shebang)
+nnoremap <silent> <leader>C :AsyncRun "%<cr>
 
 " " Without asyncrun plugin ---------------------------------------------------
 " " Run :make
-" nnoremap <silent> <leader>m :silent make -j4<cr>
+" nnoremap <silent> <leader>m :silent make<cr>
+" " Run :make with 6 jobs
+" nnoremap <silent> <leader>M :silent make -j6<cr>
 " " Run :make clean.
 " nnoremap <silent> <F4> :silent make clean<cr>:copen<cr>
 " " Run :make and open the Quickfix menu.
 " nnoremap <silent> <F9> :silent make rebuild<cr>:copen<cr>
-" " Run scons
-" nnoremap <silent> <leader>C :!scons -uj6 --no-cache --type=debug<cr>
+" " Run the current script file (must have shebang)
+" nnoremap <silent> <leader>C :!"%<cr>
 " " ---------------------------------------------------------------------------
 
 " Run an a.out program.
-nnoremap <silent> <F5> :term ./a.out<cr>
+nnoremap <silent> <F5> :term a.*<cr>
+
+" Run a command line command in a file.
+nnoremap <silent> <leader>rc yy:vs<cr>:exec 'term '.@"<cr>
+vnoremap <silent> <leader>rc y:vs<cr>:exec 'term '.@"<cr>
 
 " Toggle line number modes
 nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
@@ -295,10 +328,11 @@ nnoremap <silent> <leader>n :call g:ToggleNuMode()<cr>
 " Open/close Quickfix drawer.
 nnoremap <silent> <leader>q :call g:ToggleQuickfix()<cr>
 
-" Jump to previous item in quickfix.
-
 " Toggle spell mode.
 nnoremap <silent> <leader>s :call g:ToggleSpellMode()<cr>
+
+" Toggle whitespace (list) setting.
+nnoremap <silent> <leader>u :call g:ToggleShowWhitespace()<cr>
 
 " Open and close project drawer, uses :Lexplore if there is no NERDTree.
 nmap <silent> <leader><tab> :call g:ToggelFileBrowser()<cr>
@@ -309,8 +343,15 @@ xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<cr>
 " Toggle Markdown Preview
 nmap <leader>pm <Plug>MarkdownPreviewToggle
 
-" Escape terminal command instert mode
+" Escape terminal command insert mode
 tnoremap <esc> <c-\><c-n>
+
+" Start EasyAlign in normal mode and visual mode.
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+
+" Mouse Mappings
+nnoremap <c-LeftMouse> <LeftMouse>:gd<cr>
 
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
@@ -333,6 +374,14 @@ function! g:ToggleSpellMode()
         set nospell
     else
         set spell
+    endif
+endfunc
+
+function! g:ToggleShowWhitespace()
+    if(&list == 1)
+        set nolist
+    else
+        set list
     endif
 endfunc
 
@@ -391,7 +440,8 @@ endfunc
 " ░█▀▀░█░░░█░█░█░█░░█░░█░█░▀▀█
 " ░▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀░▀░▀▀▀
 " Plugins ====================================================================
-"" Plugins install with packadd
+"" Plugins install with packadd ______________________________________________
+" Termdebug ==================================================================
 packadd! termdebug
 
 " Termdebug ==================================================================
@@ -412,6 +462,29 @@ let g:termdebug_wide=1
 
 " Disable python2 support, python2 is deprecated.
 let g:loaded_python_provider = 0
+
+" Extensions
+let g:coc_global_extensions = [
+    \ '@yaegassy/coc-volar',
+    \ '@yaegassy/coc-volar-tools',
+    \ 'coc-clangd',
+    \ 'coc-css',
+    \ 'coc-docker',
+    \ 'coc-eslint',
+    \ 'coc-git',
+    \ 'coc-go',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-markdownlint',
+    \ 'coc-marketplace',
+    \ 'coc-prettier',
+    \ 'coc-pyright',
+    \ 'coc-restclient',
+    \ 'coc-sh',
+    \ 'coc-tsserver',
+    \ 'coc-vetur',
+    \ 'coc-yaml',
+    \ ]
 
 " Highlight the symbol and its references on cursor hover.
 au CursorHold * silent call CocActionAsync('highlight')
@@ -440,10 +513,10 @@ function! s:show_documentation()
 endfunction
 
 " Jump to next and previous issue
-nmap <silent> <leader>a <Plug>(coc-diagnostics-next-error)
-nmap <silent> <leader>x <Plug>(coc-diagnostics-previous-error)
-nmap <silent> <leader>A <Plug>(coc-diagnostics-next)
-nmap <silent> <leader>X <Plug>(coc-diagnostics-previous)
+nmap <silent> <leader>a <Plug>(coc-diagnostic-next-error)
+nmap <silent> <leader>x <Plug>(coc-diagnostic-previous-error)
+nmap <silent> <leader>A <Plug>(coc-diagnostic-next)
+nmap <silent> <leader>X <Plug>(coc-diagnostic-previous)
 
 " Formatting
 nmap <silent> <leader>fm <Plug>(coc-format)
@@ -479,6 +552,9 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
 
+" Add `:Prettier` command to format the current buffer with coc-prettier.
+command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
+
 " Mapping for CocList
 " Show all diagnostics.
 nnoremap <silent><nowait> <leader>da :<c-u>CocList diagnostics<cr>
@@ -495,6 +571,7 @@ nnoremap <silent><nowait> <leader>co :<c-u>CocList outline<cr>
 " Search airspace symbols.
 nnoremap <silent><nowait> <leader>cw :<c-u>CocList -I symbols<cr>
 
+" Misc. Mappings
 " Do default action for next item.
 nnoremap <silent><nowait> <leader>cn :<c-u>CocNext<cr>
 
@@ -504,10 +581,16 @@ nnoremap <silent><nowait> <leader>cp :<c-u>CocPrev<cr>
 " Resume fastest coc list.
 nnoremap <silent><nowait> <leader>re :<c-u>CocListResume<cr>
 
+" Run rest-client.request
+nnoremap <leader>0 :CocCommand rest-client.request<cr>
+
+" Open coc-yank list
+nnoremap <silent> <leader>yl :<c-u>CocList -A yank<cr>
+
 " NERDTree ===================================================================
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeQuitOnOpen = 1
-let g:NERDTreeMinimalUI = 1 " hide helper
+let g:NERDTreeMinimalUI = 1 " hide helper, this also hides ".." (use 'u')
 let g:NERDTreeIgnore = ['^node_modules$']
 let g:NERDTreeStatusline = '' " set to empty to use lightline
 
@@ -585,15 +668,15 @@ let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
 " Airline ====================================================================
 " Set the theme for airline.
-let g:airline_theme='luna'
+" let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
 " let g:airline_theme = 'minimalist'
-" let g:airline_theme = 'monochrome'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#hunks#enabled = 0
+let g:airline_theme = 'monochrome'
 let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#hunks#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -627,7 +710,7 @@ let g:airline_symbols.linenr = '☰'
 " let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.spell = 'Ꞩ'
-let g:airline_symbols.spell = ''
+" let g:airline_symbols.spell = ''
 let g:airline_symbols.notexists = 'Ɇ'
 let g:airline_symbols.whitespace = '∥'
 
@@ -638,7 +721,6 @@ let g:airline_symbols.whitespace = '∥'
 " let g:airline_right_alt_sep = ''
 " let g:airline_symbols.branch = ''
 " let g:airline_symbols.colnr = ' :'
-
 let g:airline_symbols.maxlinenr = 'Ξ'
 let g:airline_symbols.dirty = '⚡'
 
@@ -713,7 +795,7 @@ let g:gutentags_generate_on_empty_buffer = 0
 " Let Gutentags generate more info for tags
 let g:gutentags_ctags_extra_args = [ '--tag-relative=yes', '--fields=+ailmnS' ]
 
-" Ignored files and extentions.
+" Ignored files and extensions.
 let g:gutentags_ctags_exclude = [
             \ '*.git', '*.svg', '*.hg', '*/tests/*', 'build', 'dist',
             \ '*sites/*/files/*', 'bin', 'node_modules', 'bower_components',
@@ -738,6 +820,7 @@ let g:vimwiki_list = [{
             \ 'list_margin': 0,
             \ 'auto_toc': 1,
             \ }]
+
 let g:tagbar_type_vimwiki = {
             \   'ctagstype':'vimwiki'
             \ , 'kinds':['h:header']
@@ -749,9 +832,9 @@ let g:tagbar_type_vimwiki = {
             \ }
 
 " fzf ========================================================================
-" set silversearche-ag be the default searching command, by file name
+" set silversearcher-ag to be the default searching command, by file name
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
-let g:fzf_action = {'ctrl-t': 'tab split','ctrl-s': 'split','ctrl-v': 'vsplit'}
+let g:fzf_action = {'ctrl-t': 'tab split', 'ctrl-s': 'split', 'ctrl-v': 'vsplit'}
 
 " GitGutter ==================================================================
 hi GitGutterAdd ctermfg=green ctermbg=black guifg=#009900
@@ -840,18 +923,21 @@ call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
 Plug 'Chiel92/vim-autoformat'               " Autoformatting of code
 Plug 'Matt-A-Bennett/vim-surround-funk'     " Surround function calls
-" Plug 'SirVer/ultisnips'                   "
+" Plug 'SirVer/ultisnips'                     " <##>
 Plug 'airblade/vim-gitgutter'               "
+Plug 'andymass/vim-matchup'                 " Extends % key to language-specific words
 Plug 'ap/vim-css-color'                     " Add css color previews.
 Plug 'chaoren/vim-wordmotion'               " Move by camalCase and snake_case
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " The name
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' } "
+" Plug 'godlygeek/tabular'                    " Text Alignment, through <##>
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' } " Name
 Plug 'jiangmiao/auto-pairs'                 " Autocomplete scopes and more.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " Fuzzy searching of files.
 Plug 'junegunn/fzf.vim'                     " ^
 Plug 'junegunn/goyo.vim'                    " Minimal interface.
 Plug 'junegunn/limelight.vim'               " Dims unfocused text sections.
-Plug 'ludovicchabant/vim-gutentags'         " Provides ctag management.
-Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
+Plug 'junegunn/vim-easy-align'              " Text Alignment, simple
+" Plug 'ludovicchabant/vim-gutentags'         " Provides tag management.
 Plug 'mattn/emmet-vim'                      " Web code abbreviation tool.
 Plug 'metakirby5/codi.vim'                  " Interactive scratchpad
 Plug 'mhinz/vim-startify'                   " Add vim home screen.
@@ -859,13 +945,14 @@ Plug 'mtdl9/vim-log-highlighting'           " Highlighting for log files.
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Completion engine, primary.
 Plug 'octol/vim-cpp-enhanced-highlight'     "
 Plug 'preservim/tagbar'                     " Tag browser for ctags.
-" Plug 'puremourning/vimspector'              " Vim graphical debugger
+" Plug 'puremourning/vimspector'              " Vim graphical debugger <##>
 Plug 'rking/ag.vim'                         " Silver file searcher
 Plug 'scrooloose/nerdtree'                  "
 Plug 'skywind3000/asyncrun.vim'             "
-Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
+" Plug 'skywind3000/gutentags_plus'           " Extends gutentags capabilities.
 Plug 'tpope/vim-commentary'                 "
 Plug 'tpope/vim-fugitive'                   "
+" Plug 'adelarsq/vim-matchit'                 " Repo for matchit.vim, replaced by matchup
 Plug 'tpope/vim-repeat'                     "
 Plug 'tpope/vim-surround'                   " Surround text objects.
 Plug 'vim-airline/vim-airline'              " Adds styled status bars.
