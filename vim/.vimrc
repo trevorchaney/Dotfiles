@@ -133,7 +133,6 @@ au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "normal ma"
 au BufWritePre,FileWritePre *.c,*.cpp,*.h,*.hpp exe "1," . 8 . "g/@version.*/s//@version " .strftime("%F")
 au BufWritePost,FileWritePost *.c,*.cpp,*.h,*.hpp execute "normal 'a"
 
-
 " ============================================================================
 " ░█▄█░█▀█░█▀█░█▀█░▀█▀░█▀█░█▀▀░█▀▀
 " ░█░█░█▀█░█▀▀░█▀▀░░█░░█░█░█░█░▀▀█
@@ -767,7 +766,7 @@ nnoremap <silent> <leader>dn :DirDiffNext<cr>
 nnoremap <silent> <leader>dp :DirDiffPrevious<cr>
 
 " Markdown-Preview ===========================================================
-let g:mkdp_auto_start = 1
+let g:mkdp_auto_start = 0
 let g:mkdp_auto_close = 1
 let g:mkdp_refresh_slow = 0
 let g:mkdp_command_for_global = 0
