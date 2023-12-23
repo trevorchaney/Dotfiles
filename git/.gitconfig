@@ -10,6 +10,7 @@
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
+    autocrlf = true
 [credential]
     helper = store
 [credential "https://github.com"]
