@@ -666,6 +666,15 @@ let g:ale_set_balloons = 1
 let g:ale_c_clangd_options = "-stdlib=libc++"
 let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
+" For some dumb reason, ale keeps opening the file explorer on windows
+" whenever I open a javascript file. Just disable it for js files.
+let g:ale_pattern_options = {
+    \ 'js': {'ale_enabled': 0},
+    \ 'js.jsx': {'ale_enabled': 0},
+    \ 'ts': {'ale_enabled': 0},
+    \ 'ts.jsx': {'ale_enabled': 0},
+    \ }
+
 " Airline ====================================================================
 " Set the theme for airline.
 " let g:airline_theme='luna'
