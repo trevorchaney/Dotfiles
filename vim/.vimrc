@@ -172,6 +172,10 @@ vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 " Search current file for visually selected
 vnoremap <silent> <leader>/ y/\V<C-R>=escape(@",'/\')<CR><CR>
 
+" Support tab and shift-tab for indenting and unindenting.
+vnoremap <silent> <tab> >gv
+vnoremap <silent> <s-tab> <gv
+
 " Create a vertical split with a terminal buffer in it.
 " NOTE: You can't map CTRL-` because it equates to a NUL chararcter and vim
 " will allway interperate it as such.
@@ -193,7 +197,7 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Basic mappings for popup menu
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<tab>"
 inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 " Trigger Codi scratchpad.
@@ -821,6 +825,7 @@ let g:gutentags_ctags_exclude = [
 
 " vimwiki ====================================================================
 let g:vimwiki_toc_link_format = 1
+imap <c-]> <Plug>VimwikiTableNextCell
 let g:vimwiki_list = [{
             \ 'path': '~/.vim/vimwiki',
             \ 'syntax:': 'markdown',
