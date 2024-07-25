@@ -132,6 +132,10 @@
     rs = remote show
     rso = remote show origin
 
+    ; Stashes
+    spop = stash pop
+    lst = stash list
+
     ; Worktrees
     wt = worktree
 
