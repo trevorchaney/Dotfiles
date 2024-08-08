@@ -81,8 +81,17 @@ project: $(OBJECTS)
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Create a shared library (a.k.a. dynamic library)
 shared: $(OBJECTS)
 	$(CXX) $(OBJECTS) $(CXXFLAGS) $(LDLIBS) -shared -o libshared_lib_out.so
+
+# Create a static library
+static: $(OBJECTS)
+	ar rcs libstatic_lib_out.a $(OBJECTS)
+
+# Create a precompiled header
+header: $(OBJECTS)
+	$(CXX) $(OBJECTS) $(CXXFLAGS) $(LDLIBS) -o header.h.gch
 
 dox: project
 	doxygen .
