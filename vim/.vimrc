@@ -172,6 +172,10 @@ vnoremap <silent> <leader>s y:Ag "<c-r>""<cr>
 " Search current file for visually selected
 vnoremap <silent> <leader>/ y/\V<C-R>=escape(@",'/\')<CR><CR>
 
+" Support tab and shift-tab for indenting and unindenting.
+vnoremap <silent> <tab> >gv
+vnoremap <silent> <s-tab> <gv
+
 " Create a vertical split with a terminal buffer in it.
 " NOTE: You can't map CTRL-` because it equates to a NUL chararcter and vim
 " will allway interperate it as such.
@@ -193,7 +197,7 @@ nnoremap <silent> <leader>l :w<cr>:!pdflatex %; xdg-open %:t:r.pdf<cr>
 inoremap <C-h> <esc>/<##><cr>:noh<cr>"_c4l
 
 " Basic mappings for popup menu
-inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <expr> <TAB> pumvisible() ? "\<C-y>" : "\<tab>"
 inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
 
 " Trigger Codi scratchpad.
@@ -666,6 +670,15 @@ let g:ale_set_balloons = 1
 let g:ale_c_clangd_options = "-stdlib=libc++"
 let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
+" For some dumb reason, ale keeps opening the file explorer on windows
+" whenever I open a javascript file. Just disable it for js files.
+let g:ale_pattern_options = {
+    \ 'js': {'ale_enabled': 0},
+    \ 'js.jsx': {'ale_enabled': 0},
+    \ 'ts': {'ale_enabled': 0},
+    \ 'ts.jsx': {'ale_enabled': 0},
+    \ }
+
 " Airline ====================================================================
 " Set the theme for airline.
 " let g:airline_theme='luna'
@@ -812,6 +825,7 @@ let g:gutentags_ctags_exclude = [
 
 " vimwiki ====================================================================
 let g:vimwiki_toc_link_format = 1
+imap <c-]> <Plug>VimwikiTableNextCell
 let g:vimwiki_list = [{
             \ 'path': '~/.vim/vimwiki',
             \ 'syntax:': 'markdown',
