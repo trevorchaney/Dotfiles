@@ -67,14 +67,20 @@
     alias = config --get-regexp alias
     ap = add --patch
     co = checkout
+    cob = checkout -b
     cp = cherry-pick
+    gg = grep -E --line-number
     gr = grep -WIi
-    refs = reflog show --all
     r = reset
+    refs = reflog show --all
     rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
     s = status -s
+    sadd = add --intent-to-add
     st = status
+    sw = switch
+    unadd = restore --staged
     unstage = reset HEAD --
+    untrack = rm --cached
 
     ; Log
     full = log --format=full
@@ -83,14 +89,15 @@
     leg = log -E --grep
     lfh = log --full-history -- 
     lg = log --decorate --graph
+    lgr = log --format=fuller -i --grep
     lgrep = log --grep=
     lig = log -i --grep
     lo = log --all --decorate --graph
     lop = log -p
+    plog = log -p
     sl = shortlog
     slog = log --stat
-    plog = log -p
-    lgr = log --format=fuller -i --grep
+    struct = log --oneliner --simplified-by-decoration --graph --all
 
     ; Branches
     br = branch
@@ -110,15 +117,24 @@
     camend = commit -a --amend -C HEAD
     amend = commit --amend
 
+    ; Pushs
+    fpush = push --force-with-lease
+
     ; Diffs
     ds = diff --staged
+    dlc = diff --cached HEAD^
     dead = diff HEAD
     dstat = diff --stat
     check = diff --check
+    dc = diff -w --word-diff=color --ignore-space-at-eol
 
     ; Remotes
     rs = remote show
     rso = remote show origin
+
+    ; Stashes
+    spop = stash pop
+    lst = stash list
 
     ; Worktrees
     wt = worktree
