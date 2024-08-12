@@ -133,8 +133,8 @@
     rso = remote show origin
 
     ; Stashes
-    spop = stash pop
-    lst = stash list
+    stap = stash pop
+    stal = stash list
 
     ; Worktrees
     wt = worktree
