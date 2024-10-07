@@ -72,7 +72,6 @@
     gg = grep -E --line-number
     gr = grep -WIi
     r = reset
-    refs = reflog show --all
     rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
     s = status -s
     sadd = add --intent-to-add
@@ -81,6 +80,11 @@
     unadd = restore --staged
     unstage = reset HEAD --
     untrack = rm --cached
+
+    ; Refs
+    refs = reflog show --all
+    recent = for-each-ref --sort committerdate
+    fers = for-each-ref --sorted refs/remotes
 
     ; Log
     full = log --format=full
