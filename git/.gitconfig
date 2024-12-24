@@ -4,6 +4,7 @@
     name = Trevor Chaney
     email = trevorchaney@gmail.com
 [core]
+    autocrlf = true
     editor = nvim
     ; exlcudesFile = ~/.gitignore_global
     exlcudesFile = ~/.config/git/.gitignore_global
@@ -72,6 +73,7 @@
     gg = grep -E --line-number
     gr = grep -WIi
     r = reset
+    refs = reflog show --all
     rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
     s = status -s
     sadd = add --intent-to-add
@@ -137,8 +139,8 @@
     rso = remote show origin
 
     ; Stashes
-    stap = stash pop
-    stal = stash list
+    spop = stash pop
+    lst = stash list
 
     ; Worktrees
     wt = worktree
