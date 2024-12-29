@@ -388,7 +388,7 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 " Mouse Mappings
-nnoremap <C-LeftMouse> <LeftMouse>:gd<CR>
+nnoremap <silent> <C-LeftMouse> <LeftMouse>:call SmartCtrlClick()<CR>
 
 " ============================================================================
 " ░█▀▀░█░█░█▀█░█▀▀░▀█▀░▀█▀░█▀█░█▀█░█▀▀
@@ -462,6 +462,17 @@ function! ExecuteMacroOverVisualRange()
     echo "@".getcmdline()
     execute ":'<, '>normal @".nr2char(getchar())
 endfunc
+
+function! SmartCtrlClick()
+  let l:cfile = expand('<cfile>')
+  if filereadable(l:cfile)
+    " It's a file => open it
+    execute 'edit ' . fnameescape(l:cfile)
+  else
+    " Not a file => treat it as a symbol => go to definition
+    normal! gd
+  endif
+endfunction
 
 " ============================================================================
 " ░▀█▀░█▀█░█▀▀░█▀▀
