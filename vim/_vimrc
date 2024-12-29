@@ -55,7 +55,7 @@ set number              " Enable line numbers at startup.
 set numberwidth=1       " Minimum number of columns to use fo line numbers
 set path+=**            " Used for nested file searching.
 set printoptions=number:y   " Adds numbers to :hardcopy command.
-set scrolloff=5        " Keep at least 5 lines above and below the cursor.
+set scrolloff=10        " Keep at least 5 lines above and below the cursor.
 set shiftwidth=4        "
 set signcolumn=number   " Put signs in the number column instead of sign column.
 set smartcase           " '' excepted if an uppercase letter is used.
@@ -67,6 +67,25 @@ set undodir=~/.vim/undodir  " Directory to vim undo files.
 set undofile            " Maintain undo history between sessions.
 set updatetime=300      " Faster refresh rate.
 set wildmenu            " Show tab completion options.
+
+if has("gui_running")
+  " set guioptions-=T    " Remove toolbar
+  " set guioptions-=m    " Remove menu
+  " set guioptions-=r    " Remove right scrollbar
+  " set guioptions-=L    " Remove left scrollbar
+  " set guioptions-=b    " Remove bottom scrollbar
+  " set guioptions-=a    " Remove top scrollbar
+  " set guioptions-=c    " Remove toolbar
+  " set guioptions-=e    " Remove toolbar
+  " set guioptions-=i    " Remove toolbar
+  " set guioptions-=k    " Remove toolbar
+  " set guioptions-=q    " Remove toolbar
+  " set guioptions-=t    " Remove toolbar
+  " set guioptions-=v    " Remove toolbar
+  " set guioptions-=w    " Remove toolbar
+  " set guioptions-=z    " Remove toolbar
+  colorscheme lunaperche
+endif
 
 " Allow specific filetype plugins for buffer only changes to settings.
 filetype plugin on
@@ -586,10 +605,10 @@ let g:ale_cpp_clangd_options = "-stdlib=libc++"
 
 " Airline ====================================================================
 " Set the theme for airline.
-let g:airline_theme='luna'
+" let g:airline_theme='luna'
 " let g:airline_theme = 'base16_grayscale'
 " let g:airline_theme = 'minimalist'
-" let g:airline_theme = 'monochrome'
+let g:airline_theme = 'monochrome'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#hunks#enabled = 0
