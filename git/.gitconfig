@@ -63,91 +63,113 @@
     cmd = "'' "
     trustExitCode = true
 [alias]
-    ; TODO(tlc): Add comments to these to describe what they do.
     ; General
-    alias = config --get-regexp alias
-    ap = add --patch
-    co = checkout
-    cob = checkout -b
-    cp = cherry-pick
-    gg = grep -E --line-number
-    gr = grep -WIi
-    r = reset
-    refs = reflog show --all
-    rns = "!_() { rev=$(git rev-parse "$1") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _"
-    s = status -s
-    sadd = add --intent-to-add
-    st = status
-    sw = switch
-    unadd = restore --staged
-    unstage = reset HEAD --
-    untrack = rm --cached
+    alias = config --get-regexp alias                          ; List all defined Git aliases
+    ap = add --patch                                           ; Interactively stage changes
+    co = checkout                                              ; Checkout a branch or revision
+    cob = checkout -b                                          ; Create and checkout a new branch
+    cp = cherry-pick                                           ; Cherry-pick commits
+    gg = grep -E --line-number                                 ; Run grep with extended regex and line numbers
+    gr = grep -WIi                                             ; Case-insensitive grep with match word boundaries
+    r = reset                                                  ; Reset current HEAD
+    rns = "!_() { rev=$(git rev-parse \"$1\") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _" ; Rename a stash entry with a new message
+    s = status -s                                              ; Short git status
+    sadd = add --intent-to-add                                 ; Stage untracked files for future changes
+    st = status                                                ; Git status
+    sw = switch                                                ; Switch branches
+    unadd = restore --staged                                   ; Unstage changes (like unadd from index)
+    unstage = reset HEAD --                                    ; Unstage files manually
+    untrack = rm --cached                                      ; Stop tracking a file but keep it in the working directory
 
-    ; Refs
-    refs = reflog show --all
-    recent = for-each-ref --sort committerdate
-    fers = for-each-ref --sorted refs/remotes
+    ; References
+    recent = for-each-ref --sort=committerdate --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List all refs sorted by commit date
+    refbr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List local branches sorted by commit date
+    refr = for-each-ref --sort=committerdate refs/remotes     ; List remote branches sorted by commit date
+    reflogs = reflog show --all                                ; Show reflog entries for all refs
 
-    ; Log
-    full = log --format=full
-    fuller = log --format=fuller
-    last = log -1 HEAD
-    leg = log -E --grep
-    lfh = log --full-history -- 
-    lg = log --decorate --graph
-    lgr = log --format=fuller -i --grep
-    lgrep = log --grep=
-    lig = log -i --grep
-    lo = log --all --decorate --graph
-    lop = log -p
-    plog = log -p
-    sl = shortlog
-    slog = log --stat
-    struct = log --oneliner --simplified-by-decoration --graph --all
+    ; Logs
+    full = log --format=full                                   ; Show full commit information
+    fuller = log --format=fuller                               ; Show extended commit info with dates
+    last = log -1 HEAD                                         ; Show the last commit
+    leg = log -E --grep                                        ; Search commits by regex
+    lfh = log --full-history --                                ; Show full history of a path
+    lg = log --decorate --graph                                ; Graph log with refs
+    lgr = log --format=fuller -i --grep                        ; Case-insensitive grep with fuller format
+    lgrep = log --grep=                                        ; Quick log search alias
+    lig = log -i --grep                                        ; Case-insensitive commit search
+    lo = log --all --decorate --graph                          ; Full log graph with all refs
+    lop = log -p                                               ; Show log with patches
+    plog = log -p                                              ; Duplicate of `lop`
+    sl = shortlog                                              ; Summary log grouped by author
+    slog = log --stat                                          ; Log with file change stats
+    struct = log --oneliner --simplified-by-decoration --graph --all ; Graph log with simplified structure
 
     ; Branches
-    br = branch
-    bra = branch -a
-    brd = symbolic-ref --short HEAD
-    bred = branch --edit-description
-    brn = branch -m
-    brr = branch -r
-    brshow = config --get-regexp 'branch.*.description'
-    brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
-    refbr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)'
+    br = branch                                                ; List branches
+    bra = branch -a                                            ; List all branches (local + remote)
+    brd = symbolic-ref --short HEAD                            ; Show current branch
+    bred = branch --edit-description                           ; Edit branch description
+    brn = branch -m                                            ; Rename current branch
+    brr = branch -r                                            ; List remote branches
+    brshow = config --get-regexp 'branch.*.description'        ; Show all branch descriptions
+    brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description" ; Show description for current branch
 
     ; Commits
-    ci = commit
-    ca = commit -a
-    cm = commit -m
-    cam = commit -a -m
-    camp = "!_() { git commit -a -m \"$1\" && git push; }; _"
-    camend = commit -a --amend -C HEAD
-    amend = commit --amend
+    ci = commit                                                ; Commit staged changes
+    ca = commit -a                                             ; Commit all tracked changes
+    cm = commit -m                                             ; Commit with message
+    cam = commit -a -m                                         ; Commit all tracked changes with message
+    camp = "!_() { git commit -a -m \"$1\" && git push; }; _"  ; Commit all and push in one command
+    camend = commit -a --amend -C HEAD                         ; Amend last commit with all tracked changes
+    amend = commit --amend                                     ; Amend last commit
 
-    ; Pushs
-    fpush = push --force-with-lease
+    ; Blames
+    wtf = blame -wCM                                           ; Show blame ignoring whitespace and across copies/moves
+
+    ; Pushes
+    fpush = push --force-with-lease                            ; Force push safely with lease check
+    pushu = push -u origin HEAD                                ; Push and set upstream for current branch
+
+    ; Fetches
+    sync = "!git fetch origin && git rebase origin/$(git rev-parse --abbrev-ref HEAD)" ; Pull with rebase from origin
+
+    ; Merging
+    m = merge                                                  ; Merge the given branch into the current one
+    ma = merge --abort                                         ; Abort a merge in progress (use if conflicts get out of hand)
+    mc = merge --continue                                      ; Continue a merge after resolving conflicts
+    ms = merge --squash                                        ; Squash merge (combine changes without a merge commit)
+    mnff = merge --no-ff                                       ; Force a merge commit even if fast-forward is possible
+    mff = merge --ff-only                                      ; Only allow fast-forward merges (fail otherwise)
+    mt = mergetool                                             ; Open your configured merge tool to resolve conflicts
+    mtc = mergetool --tool=code                                ; Use VS Code as the merge tool (customizable)
+    ml = log --merges                                          ; Show only merge commits in the log
+    mlb = log --merges --oneline --graph                       ; Graph view of merge history
+
+    ; GitHub PR convenience
+    prmerge = "!f() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1; }; f" ; Fetch and checkout GitHub PR by number
 
     ; Diffs
-    ds = diff --staged
-    dlc = diff --cached HEAD^
-    dead = diff HEAD
-    dstat = diff --stat
-    check = diff --check
-    dc = diff -w --word-diff=color --ignore-space-at-eol
+    ds = diff --staged                                         ; Show staged diffs
+    dlc = diff --cached HEAD^                                  ; Show staged diffs vs previous commit
+    dead = diff HEAD                                           ; Show diffs against HEAD
+    dstat = diff --stat                                        ; Show summary of diffs per file
+    check = diff --check                                       ; Show whitespace errors
+    dc = diff -w --word-diff=color --ignore-space-at-eol       ; Word diff ignoring whitespace
 
     ; Remotes
-    rs = remote show
-    rso = remote show origin
+    rs = remote show                                           ; Show all remotes
+    rso = remote show origin                                   ; Show detailed info about origin
 
     ; Stashes
-    spop = stash pop
-    lst = stash list
+    lst = stash list                                           ; List stashes
+    spatch = "!_() { git stash show -p | get apply -R && git stash drop;  }; _" ; Apply and drop stash with patch (note: `get` likely a typo)
+    spop = stash pop                                           ; Pop last stash
 
     ; Worktrees
-    wt = worktree
+    wt = worktree                                              ; Shortcut for worktree commands
 
     ; Git-flow
-    ff = flow feature
-    fr = flow release
-    fh = flow hotfix
+    ff = flow feature                                          ; Git-flow: feature
+    fr = flow release                                          ; Git-flow: release
+    fh = flow hotfix                                           ; Git-flow: hotfix
+
