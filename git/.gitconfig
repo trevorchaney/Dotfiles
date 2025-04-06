@@ -7,13 +7,13 @@
     autocrlf = true
     editor = nvim
     ; exlcudesFile = ~/.gitignore_global
-    exlcudesFile = ~/.config/git/.gitignore_global
+    excludesFile = ~/.config/git/.gitignore_global
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
     autocrlf = true
 [credential]
-    helper = store
+    helper = manager-core
 [credential "https://github.com"]
     helper = !gh auth git-credential
 [credential "helperselector"]
@@ -29,8 +29,8 @@
 [init]
     defaultBranch = master
 [branch "master"]
-    mergeoptions = --no-ff ; This is set this way for work. Forces merge commit.
-    ; mergeoptions = --ff-only ; This should be preferred
+    mergeoptions = --no-ff            ; This is set this way for work. Forces merge commit.
+    ; mergeoptions = --ff-only        ; This should be preferred
 [format]
     pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
 [log]
@@ -84,7 +84,7 @@
     ; References
     recent = for-each-ref --sort=committerdate --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List all refs sorted by commit date
     refbr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List local branches sorted by commit date
-    refr = for-each-ref --sort=committerdate refs/remotes     ; List remote branches sorted by commit date
+    refr = for-each-ref --sort=committerdate refs/remotes      ; List remote branches sorted by commit date
     reflogs = reflog show --all                                ; Show reflog entries for all refs
 
     ; Logs
@@ -99,7 +99,6 @@
     lig = log -i --grep                                        ; Case-insensitive commit search
     lo = log --all --decorate --graph                          ; Full log graph with all refs
     lop = log -p                                               ; Show log with patches
-    plog = log -p                                              ; Duplicate of `lop`
     sl = shortlog                                              ; Summary log grouped by author
     slog = log --stat                                          ; Log with file change stats
     struct = log --oneliner --simplified-by-decoration --graph --all ; Graph log with simplified structure
@@ -131,7 +130,22 @@
     pushu = push -u origin HEAD                                ; Push and set upstream for current branch
 
     ; Fetches
+    f = fetch                                                  ; Shorthand for basic fetch
+    fo = fetch origin                                          ; Fetch only from origin
+    fu = fetch --all                                           ; Fetch from all remotes
+    fprune = fetch --prune                                     ; Fetch and remove any deleted remote branches
+    fpo = fetch --prune origin                                 ; Fetch + prune from origin only
+    ftags = fetch --tags                                       ; Fetch remote tags
+    fclean = fetch --prune --tags                              ; Fetch + clean stale branches and update tags
+    fup = fetch upstream                                       ; Fetch from upstream remote (useful in forked repos)
+    fupstat = "!git fetch upstream && git status"              ; Fetch from upstream and check local status
+    prmerge = "!_() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1; }; _" ; Fetch and checkout GitHub PR by number
     sync = "!git fetch origin && git rebase origin/$(git rev-parse --abbrev-ref HEAD)" ; Pull with rebase from origin
+
+    ; Fetch + Info
+    fcheck = "!git fetch --dry-run && git status"              ; Simulate fetch to check if there are remote changes
+    fstat = "!git fetch && git status"                         ; Fetch and show whether you're behind or ahead
+    fdelta = "!git fetch && git rev-list --left-right --count HEAD...@{u}" ; Show commit delta between local and upstream
 
     ; Merging
     m = merge                                                  ; Merge the given branch into the current one
@@ -144,9 +158,6 @@
     mtc = mergetool --tool=code                                ; Use VS Code as the merge tool (customizable)
     ml = log --merges                                          ; Show only merge commits in the log
     mlb = log --merges --oneline --graph                       ; Graph view of merge history
-
-    ; GitHub PR convenience
-    prmerge = "!f() { git fetch origin pull/$1/head:pr-$1 && git checkout pr-$1; }; f" ; Fetch and checkout GitHub PR by number
 
     ; Diffs
     ds = diff --staged                                         ; Show staged diffs
@@ -162,7 +173,7 @@
 
     ; Stashes
     lst = stash list                                           ; List stashes
-    spatch = "!_() { git stash show -p | get apply -R && git stash drop;  }; _" ; Apply and drop stash with patch (note: `get` likely a typo)
+    spatch = "!_() { git stash show -p | git apply -R && git stash drop;  }; _" ; Apply and drop stash with patch (note: `get` likely a typo)
     spop = stash pop                                           ; Pop last stash
 
     ; Worktrees
