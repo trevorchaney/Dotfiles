@@ -114,6 +114,7 @@
     bred = branch --edit-description
     brshow = config --get-regexp 'branch.*.description'
     brshow1 = !git config --get "branch.$(git rev-parse --abbrev-ref HEAD).description"
+    refbr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:blue)%(refname:short) %(color:yellow)%(objectname:short) %(color:green)(%(committerdate:relative)) %(color:red)%(authorname) %(color:reset)%(contents:subject)'
 
     ; Commits
     ci = commit
