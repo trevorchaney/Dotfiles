@@ -121,6 +121,7 @@
     ca = commit -a
     cm = commit -m
     cam = commit -a -m
+    camp = "!f() { git commit -a -m \"$1\" && git push; }; f"
     camend = commit -a --amend -C HEAD
     amend = commit --amend
 
