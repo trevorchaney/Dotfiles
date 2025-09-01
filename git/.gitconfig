@@ -4,7 +4,7 @@
     name = Trevor Chaney
     email = trevorchaney@gmail.com
 [commit]
-    ; gpgsign = true
+    gpgsign = true
 [core]
     autocrlf = true
     editor = nvim
