@@ -3,6 +3,9 @@
 [user]
     name = Trevor Chaney
     email = trevorchaney@gmail.com
+	signingkey = <REDACTED-GPG-FINGERPRINT>
+[gpg]
+	program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
 [commit]
     gpgsign = true
 [core]
