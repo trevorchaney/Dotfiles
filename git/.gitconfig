@@ -3,63 +3,97 @@
 [user]
     name = Trevor Chaney
     email = trevorchaney@gmail.com
-	signingkey = C11126B9593817C79550D2418A8BBB1DE997F3A7
+    signingkey = C11126B9593817C79550D2418A8BBB1DE997F3A7
+
 [gpg]
-	program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
+    program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
+
 [commit]
     gpgsign = true
+    verbose = true                 ; Show diff in commit editor for context
+
+[log]
+    date = human
+    showSignature = true           ; Always show signature status in logs
+
 [core]
     autocrlf = true
     editor = nvim
-    ; exlcudesFile = ~/.gitignore_global
+    ; excludesFile = ~/.gitignore_global
     excludesFile = ~/.config/git/.gitignore_global
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
     autocrlf = true
+    pager = less -R                ; Avoid ^M in GPG output; pass ANSI through
+    quotePath = false              ; Don’t escape non-ASCII in paths
+
 [credential]
     helper = manager-core
+
 [credential "https://github.com"]
     helper = !gh auth git-credential
+
 [credential "helperselector"]
     selected = <no helper>
+
 [credential "http://3.101.19.21"]
     provider = generic
+
 [credential "http://3.95.241.3"]
     provider = generic
+
 [safe]
     directory = C:/Users/tlc/scoop/apps/scoop/current
+
 [color]
     ui = true
+
 [init]
     defaultBranch = master
+
 [branch "master"]
-    mergeoptions = --no-ff            ; This is set this way for work. Forces merge commit.
-    ; mergeoptions = --ff-only        ; This should be preferred
+    mergeoptions = --no-ff         ; For work policy: force merge commits
+    ; mergeoptions = --ff-only     ; Preferred elsewhere
+
 [format]
     pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
-[log]
-    date = human
+
 [pull]
+    ff = only                      ; Disallow merge commits on pull
     ; rebase = false
-    rebase = true ; This should be preferred
+    rebase = true                  ; Safer linear history by default, should be preferred
+
 [push]
     default = current
+    autoSetupRemote = true         ; Auto-set upstream on first push (newer Git)
+
 [fetch]
     prune = true
+    writeCommitGraph = true        ; Speed up history queries
+
 [rebase]
     autoStash = true
     autoSquash = true
+    updateRefs = true              ; Move other branches when rebasing (2.38+)
+
 [merge]
-    tool = vscode
-    ; tool = vimdiff
     ; conflictStyle = diff3
+    conflictStyle = zdiff3         ; Clearer conflict hunks with base context
     ; prompt = false
+    ; tool = vimdiff
+    tool = vscode
+
 [mergetool "vscode"]
     cmd = "code -n -w $MERGED"
+
 [diff]
     tool = vscode
     colorMoved = zebra
+    algorithm = histogram          ; Better rename/large diff behavior
+    renames = true
+    mnemonicPrefix = true
+
 [difftool "vscode"]
     cmd = "code -n -w -d $LOCAL $REMOTE"
 [difftool "sourcetree"]
@@ -67,6 +101,21 @@
 [mergetool "sourcetree"]
     cmd = "'' "
     trustExitCode = true
+
+[gc]
+    writeCommitGraph = true        ; Ensure commit-graph gets written during GC
+
+[maintenance]
+    strategy = incremental         ; Keep repos snappy in the background
+    auto = true
+
+[tag]
+    gpgSign = true                 ; Sign tags by default too
+    forceSignAnnotated = true      ; Prefer annotated (and thus signable) tags
+
+[status]
+    submoduleSummary = true        ; Handy if/when submodules appear
+
 [alias]
     ; General
     alias = config --get-regexp alias                          ; List all defined Git aliases
@@ -107,6 +156,10 @@
     sl = shortlog                                              ; Summary log grouped by author
     slog = log --stat                                          ; Log with file change stats
     struct = log --oneliner --simplified-by-decoration --graph --all ; Graph log with simplified structure
+
+    ; Signatures
+    sig = log -1 --show-signature
+    siglog = log --pretty='format:%h %G? %aI %an  %s'
 
     ; Branches
     br = branch                                                ; List branches
@@ -188,4 +241,3 @@
     ff = flow feature                                          ; Git-flow: feature
     fr = flow release                                          ; Git-flow: release
     fh = flow hotfix                                           ; Git-flow: hotfix
-
