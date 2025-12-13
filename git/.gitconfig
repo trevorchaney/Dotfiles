@@ -130,7 +130,7 @@
     rns = "!_() { rev=$(git rev-parse \"$1\") && git stash drop $1 || exit 1 ; git stash store -m \"$2\" \"$rev\"; }; _" ; Rename a stash entry with a new message
     s = status -s                                              ; Short git status
     sadd = add --intent-to-add                                 ; Stage untracked files for future changes
-    st = status                                                ; Git status
+    st = status -s --branch                                    ; Human-friendly short status with branch
     sw = switch                                                ; Switch branches
     unadd = restore --staged                                   ; Unstage changes (like unadd from index)
     unstage = reset HEAD --                                    ; Unstage files manually
@@ -237,6 +237,10 @@
 
     ; Worktrees
     wt = worktree                                              ; Shortcut for worktree commands
+
+    ; Porcelain / scripting helpers
+    porc = status --porcelain=2 -z --branch                    ; Machine-readable porcelain v2 + NUL
+    changed = "!git diff --name-only --diff-filter=ACMRT HEAD"  ; List changed/added/renamed files
 
     ; Git-flow
     ff = flow feature                                          ; Git-flow: feature

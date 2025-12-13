@@ -1,0 +1,179 @@
+done
+#!/bin/sh
+# Server-side `pre-receive` hook
+# Author: Your Name <you@example.com>
+# Contact: https://example.com/ or you@example.com
+#
+# Purpose:
+# - Reject pushes that introduce `@do-not-commit` or `@review` markers in
+#   added lines. This enforces the same checks as the local `pre-commit`.
+#
+# What good looks like:
+# - No pushes are accepted that introduce `@do-not-commit` or `@review`
+#   in new/added lines on protected branches.
+#
+# Common issues & troubleshooting:
+# - Hooks must be installed in the bare repo's `hooks/pre-receive` and be
+#   executable: `chmod +x hooks/pre-receive`.
+# - To allow specific branches, create `hooks/allow-branches` in the bare
+#   repo with one shell-glob pattern per line (e.g. `refs/heads/release/*`).
+# - To bypass checks temporarily, place a file `hooks/admin-bypass` with
+#   content `bypass=true` in the bare repo (admins only).
+# - To opt-out per-repo via git config, set: `git config hooks.server.allow-markers true`
+#
+# Installation example (on the server):
+#   cp /path/to/Dotfiles/git/server-hooks/pre-receive hooks/pre-receive
+#   chmod +x hooks/pre-receive
+
+set -eu
+
+MARKER_BLOCK='@do-not-commit'
+MARKER_REVIEW='@review'
+REJECTED=0
+
+# Fast helper to print to stderr
+err() { printf '%s\n' "$1" >&2; }
+
+# Respect per-repo opt-out: if hooks.server.allow-markers is true, skip checks
+if git config --bool --get hooks.server.allow-markers >/dev/null 2>&1 && \
+   [ "$(git config --bool --get hooks.server.allow-markers)" = "true" ]; then
+  err "hooks.server.allow-markers=true — skipping marker checks"
+  exit 0
+fi
+
+# Admin bypass file: if present and contains 'bypass=true', skip checks.
+if [ -f hooks/admin-bypass ]; then
+  if grep -Eq '^\s*bypass\s*=\s*true\s*$' hooks/admin-bypass; then
+    err "hooks/admin-bypass contains bypass=true — skipping marker checks"
+    exit 0
+  fi
+fi
+
+# Load allowlist branch patterns (one shell-glob per non-empty non-comment line)
+ALLOW_PATTERNS=()
+if [ -f hooks/allow-branches ]; then
+  while IFS= read -r p; do
+    case "$p" in
+      ''|\#*) continue ;;
+      *) ALLOW_PATTERNS="${ALLOW_PATTERNS:+$ALLOW_PATTERNS }$p" ;;
+    esac
+  done < hooks/allow-branches
+fi
+
+reject() {
+  printf '%s\n' "$1" >&2
+  REJECTED=1
+}
+
+# Read ref updates from stdin: <oldrev> <newrev> <refname>
+while read -r oldrev newrev refname; do
+  # Check allowlist patterns first
+  skip_ref=0
+  for pat in $ALLOW_PATTERNS; do
+    case "$refname" in
+      $pat) skip_ref=1; break ;;
+    esac
+  done
+  if [ "$skip_ref" -eq 1 ]; then
+    err "Ref $refname matches allowlist — skipping checks"
+    continue
+  fi
+
+  case "$refname" in
+    refs/heads/*)
+      err "Checking ref $refname ($oldrev -> $newrev)"
+
+      if printf '%s' "$oldrev" | grep -Eq '^0+$'; then
+        commits=$(git rev-list "$newrev" --not --all || true)
+      else
+        commits=$(git rev-list "$oldrev..$newrev" || true)
+      fi
+
+      for commit in $commits; do
+        [ -z "$commit" ] && continue
+        git show -s --format='Commit: %H%nAuthor: %an <%ae>%nDate: %ad%nSubject: %s%n' "$commit" >&2 || true
+
+        # Capture diff with a small surrounding context for easier debugging
+        diff=$(git diff-tree -r -U3 --no-color "$commit" || true)
+
+        current_file=''
+        in_hunk=0
+        hunk_header=''
+        new_start=0
+        new_lineno=0
+        hunk_buffer=''
+
+        # Parse the diff output by hunk; when a marker is found in an added
+        # line, print the whole hunk for context and reject.
+        while IFS= read -r line; do
+          case "$line" in
+            diff\ --git\ a/*)
+              # New file header; reset state
+              current_file=$(printf '%s' "$line" | sed -n 's|.* b/||p')
+              in_hunk=0
+              hunk_buffer=''
+              ;;
+            @@*)
+              # New hunk begins; flush previous hunk_buffer
+              in_hunk=1
+              hunk_header="$line"
+              # extract new-file start line from header: +start,count
+              new_start=$(printf '%s' "$line" | sed -n 's/.* +\([0-9]\+\)\(,\([0-9]\+\)\)?.*/\1/p')
+              case "$new_start" in
+                '') new_start=0 ;;
+              esac
+              new_lineno=$new_start
+              hunk_buffer="$line\n"
+              ;;
+            *)
+              if [ "$in_hunk" -eq 1 ]; then
+                hunk_buffer="$hunk_buffer$line\n"
+                case "$line" in
+                  +*)
+                    # Added line at new_lineno
+                    content=${line#'+'}
+                    # Check markers
+                    case "$content" in
+                      *$MARKER_BLOCK*|*"$MARKER_BLOCK"*)
+                        err "Found $MARKER_BLOCK in commit $commit file $current_file (hunk header: $hunk_header)"
+                        err "--- Hunk context ---"
+                        printf '%b' "$hunk_buffer" >&2
+                        reject "Found $MARKER_BLOCK in commit $commit file $current_file"
+                        ;;
+                      *$MARKER_REVIEW*|*"$MARKER_REVIEW"*)
+                        err "Found $MARKER_REVIEW in commit $commit file $current_file (hunk header: $hunk_header)"
+                        err "--- Hunk context ---"
+                        printf '%b' "$hunk_buffer" >&2
+                        reject "Found $MARKER_REVIEW in commit $commit file $current_file"
+                        ;;
+                    esac
+                    # increment new-line counter for space/plus lines
+                    new_lineno=$((new_lineno + 1))
+                    ;;
+                  ' '*)
+                    new_lineno=$((new_lineno + 1))
+                    ;;
+                  -*)
+                    # deletion: don't advance new_lineno
+                    ;;
+                esac
+              fi
+              ;;
+          esac
+        done <<EOF
+$diff
+EOF
+      done
+      ;;
+    *)
+      # ignore non-branch refs
+      ;;
+  esac
+done
+
+if [ "$REJECTED" -ne 0 ]; then
+  err "Push rejected due to forbidden markers. See details above."
+  exit 1
+fi
+
+exit 0
