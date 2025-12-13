@@ -95,8 +95,10 @@
 
 [difftool "vscode"]
     cmd = "code -n -w -d $LOCAL $REMOTE"
+
 [difftool "sourcetree"]
     cmd = '' \"$LOCAL\" \"$REMOTE\"
+
 [mergetool "sourcetree"]
     cmd = "'' "
     trustExitCode = true
