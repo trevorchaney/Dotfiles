@@ -136,6 +136,10 @@
     unstage = reset HEAD --                                    ; Unstage files manually
     untrack = rm --cached                                      ; Stop tracking a file but keep it in the working directory
 
+    ; Porcelain / scripting helpers
+    porc = status --porcelain=2 -z --branch                    ; Machine-readable porcelain v2 + NUL
+    changed = "!git diff --name-only --diff-filter=ACMRT HEAD"  ; List changed/added/renamed files
+
     ; References
     recent = for-each-ref --sort=committerdate --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List all refs sorted by commit date
     refbr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:magenta)%(refname:short) %(color:yellow)%(objectname:short) %(color:blue)(%(committerdate:relative)) %(color:green)%(authorname) %(color:reset)%(contents:subject)' ; List local branches sorted by commit date
