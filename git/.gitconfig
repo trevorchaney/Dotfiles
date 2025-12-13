@@ -3,7 +3,7 @@
 [user]
     name = Trevor Chaney
     email = trevorchaney@gmail.com
-    signingkey = <REDACTED-GPG-FINGERPRINT>
+    signingkey = ; Secret, sourced from environment. Do not commit your keys.
 
 [gpg]
     program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
@@ -19,12 +19,11 @@
 [core]
     autocrlf = true
     editor = nvim
-    ; excludesFile = ~/.gitignore_global
+    ;excludesFile = ~/.gitignore_global
     excludesFile = ~/.config/git/.gitignore_global
     fileMode = false
     ignoreCase = true
     logAllRefUpdates = true
-    autocrlf = true
     pager = less -R                ; Avoid ^M in GPG output; pass ANSI through
     quotePath = false              ; Don’t escape non-ASCII in paths
 
@@ -57,7 +56,7 @@
     ; mergeoptions = --ff-only     ; Preferred elsewhere
 
 [format]
-    pretty = format:%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,blue)%>(16,trunc)%ad %C(auto,green)%<(14,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D
+    pretty = format:%C(auto,yellow)%h%C(auto,cyan) (%p)%C(auto,magenta)% G? %C(auto,blue)%ad %C(auto,green)%aN%C(auto,reset) %s%C(auto,red)% gD% D
 
 [pull]
     ff = only                      ; Disallow merge commits on pull
