@@ -26,6 +26,63 @@ set print sevenbit-strings off
 set follow-fork-mode child
 set detach-on-fork off
 
+# Additional safe auto-load paths (helpful on many distros)
+add-auto-load-safe-path /usr/share/gdb/python
+add-auto-load-safe-path /usr/lib/debug/.build-id
+
+# Attempt to register libstdc++ pretty-printers if available. This is
+# best-effort: we try common installation locations and silently continue
+# if nothing is found. Improves C++ debugging output for STL types.
+python
+import glob, os, sys
+import traceback
+try:
+    import gdb.printing
+    def try_register(path):
+        # insert parent dir so imports work
+        d = os.path.dirname(path)
+        if d not in sys.path:
+            sys.path.insert(0, d)
+        try:
+            # attempt the common package layout
+            import importlib
+            mod = importlib.import_module('libstdcxx.v6.printers')
+            if hasattr(mod, 'register_libstdcxx_printers'):
+                mod.register_libstdcxx_printers(gdb.current_objfile())
+                print('libstdc++ pretty-printers registered from %s' % path)
+                return True
+        except Exception:
+            pass
+        return False
+
+    tried = False
+    # common locations where libstdc++ printers may be installed
+    candidates = []
+    candidates += glob.glob('/usr/share/gcc/*/python/libstdcxx/v6/printers.py')
+    candidates += glob.glob('/usr/share/gdb/python/libstdcxx/v6/printers.py')
+    candidates += glob.glob('/usr/lib/python*/site-packages/libstdcxx/v6/printers.py')
+    for c in candidates:
+        tried = True
+        try:
+            if try_register(c):
+                break
+        except Exception:
+            traceback.print_exc()
+    if not tried:
+        # nothing obvious found; try importing from sys.path in case distro
+        # has already installed the package
+        try:
+            import importlib
+            mod = importlib.import_module('libstdcxx.v6.printers')
+            if hasattr(mod, 'register_libstdcxx_printers'):
+                mod.register_libstdcxx_printers(gdb.current_objfile())
+                print('libstdc++ pretty-printers registered via import')
+        except Exception:
+            pass
+except Exception:
+    pass
+end
+
 #
 # Go related runtime
 #
