@@ -28,7 +28,8 @@
     quotePath = false              ; Don’t escape non-ASCII in paths
 
 [credential]
-    helper = manager-core
+    ;helper = manager-core
+    helper = store
 
 [credential "https://github.com"]
     helper = !gh auth git-credential
