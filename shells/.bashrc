@@ -76,8 +76,6 @@ fi
 unset use_color safe_term match_lhs sh
 
 
-xhost +local:root > /dev/null 2>&1
-
 complete -cf sudo
 
 # Bash won't get SIGWINCH if another process is in the foreground.
@@ -117,4 +115,9 @@ if ! shopt -oq posix; then
 fi
 
 # Enable jump command for directory jumping
-eval "$(jump shell bash)"
+command -v jump >/dev/null 2>&1 && eval "$(jump shell bash)"
+
+# Omarchy theming
+export OMARCHY_PATH="$HOME/.local/share/omarchy"
+export PATH="$OMARCHY_PATH/bin:$PATH"
+export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"

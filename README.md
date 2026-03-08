@@ -1,24 +1,11 @@
 # Dotfiles
 
-These are my personal dotfiles organized as GNU Stow packages so they
-can be bootstrapped onto a new system quickly. The repository is
-intended to be symlinked into your `$HOME` using `stow` (see
-Installation below).
+Personal dotfiles organized as GNU Stow packages, designed for Arch Linux /
+Hyprland. Each top-level directory is a stow package that symlinks into `$HOME`.
 
-This README documents the supported install flow, expectations, and a
-recommendation on using GNU Stow vs configuration management tools like
-Ansible or Vagrant.
+## Quick install
 
-## Quick install (bootstrap)
-
-Prerequisites on the target system:
-
-- `git` (to clone this repo)
-- `stow` (GNU Stow) — used to symlink package directories into `$HOME`
-- `curl` (for plugin bootstrapping)
-- Optional: `nvim`, `antibody`, etc. for post-install steps
-
-To bootstrap a new system (example):
+Prerequisites: `git`, `stow`, `curl`, `nvim`
 
 ```sh
 git clone https://github.com/trevorchaney/Dotfiles.git ~/Dotfiles
@@ -26,92 +13,69 @@ cd ~/Dotfiles
 ./install.sh
 ```
 
-The `install.sh` script will:
+## Packages
 
-- Create needed directories (vim/Neovim undo, tmp, etc.)
-- Attempt to install `nix` packages if the environment is not a known
-	Arch/Debian family (see script behavior)
-- Install vim-plug and Neovim plugins (if `nvim` present)
-- Invoke GNU Stow to symlink packages: `gdb`, `git`, `nvim`, `shells`,
-	`tmux`, `vim` into `$HOME` (only if `stow` is installed)
+| Package     | Contents                                      | When to stow          |
+|-------------|-----------------------------------------------|-----------------------|
+| `shells`    | `.bashrc`, `.zshrc`, `.shell_commons`, etc.   | Always                |
+| `vim`       | `.vimrc`, `vim-plug`, spell, templates        | Always                |
+| `nvim`      | Neovim spell files (shares `.vimrc`)          | Always                |
+| `git`       | `.gitconfig`, global hooks, gitignore         | Always                |
+| `tmux`      | `.tmux.conf`                                  | Always                |
+| `ctags`     | `.ctags`                                      | Always                |
+| `gdb`       | `.gdbinit`                                    | Always                |
+| `hyprland`  | `~/.config/hypr/` (full Hyprland config)      | Wayland sessions only |
+| `x11`       | `.Xresources`, i3 config                      | X11 sessions only     |
+| `Windows`   | PowerShell profile, startup scripts           | Windows only          |
+| `Makefiles` | C++ Makefile template                         | Copy manually         |
+| `keyd`      | capslock remap config (needs `/etc/keyd/`)    | See below             |
 
-If you prefer to run `stow` yourself, you can do so manually from the
-repo root:
+`install.sh` automatically detects Wayland vs X11 and stows the right set.
 
+## Keyboard remapping (Wayland)
+
+Capslock is remapped via `keyd` (kernel-level, works on Wayland):
+- **Tap** → Escape
+- **Hold** → Ctrl
+
+Both Shifts together → Caps Lock (handled by Hyprland `kb_options`).
+
+To install:
 ```sh
-cd ~/Dotfiles
-stow -t $HOME git nvim vim shells tmux gdb
+sudo pacman -S keyd
+sudo mkdir -p /etc/keyd
+sudo cp keyd/default.conf /etc/keyd/default.conf
+sudo systemctl enable --now keyd
 ```
+
+On X11, `setxkbmap` + `xcape` configs are in the `x11/` package instead.
+
+## Vim / Neovim
+
+Neovim shares the vim config: `~/.config/nvim/init.vim` is symlinked to
+`~/.vimrc`. Plugins are managed by vim-plug (included in the repo at
+`vim/.vim/autoload/plug.vim`). Run `:PlugInstall` inside vim/nvim after
+first install, or let `install.sh` do it headlessly.
+
+## Git package notes
+
+`git/server-hooks/` and `git/HOOKS_README.md` are reference material and are
+excluded from stowing via `.stow-local-ignore`. Copy server hooks manually
+to any git server repo's `hooks/` directory.
 
 ## Why GNU Stow?
 
-GNU Stow is a small, focused tool that manages symlinks. It's:
+Stow creates symlinks from package directories into a target (`$HOME`). It's
+simple, transparent, and easy to reason about. Each package can be stowed or
+unstowed independently, making it easy to maintain separate X11 and Wayland
+configurations on the same machine.
 
-- Simple and transparent — it creates symlinks from package dirs into a
-	target directory and is easy to reason about.
-- Lightweight — no agent, no remote execution model, no provisioning
-	runtime on target machines.
-- Easy to version and review — your dotfiles repository contains the
-	canonical files; stow only manages symlinks.
+## Troubleshooting
 
-When to use Stow vs Ansible / Vagrant / other CM tools:
-
-- Use GNU Stow if:
-	- You only need to manage dotfiles (user-level files) and symlink
-		them into `$HOME`.
-	- You want a reproducible, reviewable dotfiles repository with low
-		operational complexity.
-	- You prefer manual or ad-hoc bootstrapping; stow is excellent for
-		quick personal setups.
-
-- Consider Ansible (or other config management) if:
-	- You need to provision full system state: install packages, enable
-		services, manage system users, configure system files outside of
-		`$HOME` (e.g., `/etc`), and do this across many machines.
-	- You want idempotent remote provisioning with richer modules and
-		inventory management.
-
-- Consider Vagrant if:
-	- You want reproducible development VMs (local virtual machines)
-		for testing or development. Vagrant wraps provisioners and VM
-		tooling, it's not a dotfiles manager per se.
-
-In short: for dotfiles-only workflows, GNU Stow is a good fit. For
-multi-host system provisioning, Ansible (or similar) is a better fit.
-
-## Advanced: combining tools
-
-It's common to combine approaches:
-
-- Use Ansible to bootstrap a system (install packages, system-level
-	configuration) and then use Ansible to `git clone` this dotfiles
-	repo and run `stow` for per-user symlinks.
-- Use Vagrant for development VM reproducibility and run Ansible as a
-	provisioner inside the VM to apply the same playbooks.
-
-## Troubleshooting & common issues
-
-- If `stow` tries to symlink over existing files, you'll see errors —
-	either remove/conflict those files or use `stow --adopt` or backup
-	existing files before running `stow`.
-- On Windows, use WSL or Git Bash for best compatibility with symlinks
-	and utilities; native Windows symlink behavior requires elevated
-	permissions or special flags.
-- If `install.sh` fails because of missing utilities, install them or
-	run the steps manually; the script is conservative and will print
-	guidance when tools are missing.
-
-## Next steps / suggestions
-
-- Add a small `tests/` harness that runs `stow -t $PWD/test-home <pkg>`
-	to validate package mappings without touching your real home.
-- Add a `README.install.md` with more troubleshooting steps and known
-	platform caveats (WSL vs native Windows vs macOS differences).
-
----
-
-If you'd like, I can:
-- Add the `tests/` harness and `README.install.md` now, or
-- Create a brief `stow` usage guide for your `git/` package layout.
-
-Ping me which next step you prefer.
+- **Stow conflicts**: if stow reports a conflict, the target file already
+  exists and is not a symlink. Back it up and remove it, then re-run stow.
+- **CRLF errors in shell/vim**: repo enforces LF via `.gitattributes`. If you
+  see `^M` errors after cloning, run:
+  `find . -type f -name "*.vim" -o -name "*.sh" | xargs sed -i 's/\r//'`
+- **jump not found**: install `jump` from the AUR (`yay -S jump`), or the
+  jump eval in `.bashrc`/`.zshrc` is safely guarded and will silently skip.

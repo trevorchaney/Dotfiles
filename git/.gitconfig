@@ -9,7 +9,7 @@
     program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
 
 [commit]
-    gpgsign = true
+	gpgsign = false
     verbose = true                 ; Show diff in commit editor for context
 
 [log]
@@ -111,7 +111,7 @@
     auto = true
 
 [tag]
-    gpgSign = true                 ; Sign tags by default too
+	gpgsign = false
     forceSignAnnotated = true      ; Prefer annotated (and thus signable) tags
 
 [status]

@@ -64,8 +64,8 @@ TODO.md
 .env
 
 ### C ###
+# Ignore generated ctags files but not .ctags config
 tags
-.ctags
 
 # Vim/Neovim
 undodir

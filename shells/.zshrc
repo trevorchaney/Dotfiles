@@ -12,9 +12,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-export PATH=/mnt/c/Program\ Files\ (x86)/Microsoft\ Visual\ Studio/2019/Community/Common7/IDE:$PATH
-
 # If not running interactively, don't do anything.
 [[ $- != *i* ]] && return
 
@@ -184,8 +181,7 @@ RPROMPT="%(?.%{$fg[green]%}✓ %{$reset_color%}.%{$fg[red]%}✗ %{$reset_color%}
 # Apply different settings for different terminals
 case $(basename "$(cat "/proc/$PPID/comm")") in
     login)
-        RPROMPT="%{$fg[red]%} %(?..[%?])" 
-        alias x='startx ~/.xinitrc'      # Type name of desired desktop after x, xinitrc is configured for it
+        RPROMPT="%{$fg[red]%} %(?..[%?])"
         ;;
     'tmux: server')
         RPROMPT='$(git_prompt_string)'
@@ -223,4 +219,4 @@ esac
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 # Enable jump command for directory jumping
-eval "$(jump shell zsh)"
+command -v jump >/dev/null 2>&1 && eval "$(jump shell zsh)"
