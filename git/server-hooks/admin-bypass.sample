@@ -1,0 +1,9 @@
+# Sample `admin-bypass` file for server-side hook
+# Placing a file named `hooks/admin-bypass` in the bare repo with the
+# following content will temporarily bypass marker checks. Only admins
+# should be allowed to create/modify this file (it is a blunt instrument).
+#
+# Example content:
+# bypass=true
+
+bypass=true

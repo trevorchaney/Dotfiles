@@ -1,0 +1,65 @@
+name: Enforce commit hooks markers
+
+on:
+  push: {}
+  pull_request: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check-markers:
+    name: Check for @do-not-commit / @review markers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan commit diffs for forbidden markers
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+
+          # Determine diff range depending on event type
+          if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
+            BASE_REF=${{ github.event.pull_request.base.ref }}
+            echo "Running on pull_request — base: $BASE_REF"
+            # ensure base exists locally
+            git fetch origin "$BASE_REF" --no-tags --depth=1 || true
+            RANGE="origin/$BASE_REF...HEAD"
+          else
+            # push event: compare before..after
+            BEFORE=${{ github.event.before }}
+            AFTER=${{ github.event.after }}
+            echo "Running on push — range: $BEFORE..$AFTER"
+            # if BEFORE is all zeros (new branch), compare initial commit via --root
+            if printf "%s" "$BEFORE" | grep -Eq '^[0]+$'; then
+              RANGE="$AFTER"
+            else
+              RANGE="$BEFORE..$AFTER"
+            fi
+          fi
+
+          echo "Diff range: $RANGE"
+
+          # Collect diff with zero context so added lines are explicit
+          DIFF=$(git diff --unified=0 $RANGE || true)
+
+          echo "Scanning diff for markers..."
+
+          if printf "%s" "$DIFF" | grep -Eq '^\+.*@do-not-commit'; then
+            echo "ERROR: @do-not-commit found in added lines"
+            printf "%s" "$DIFF" | grep -n --color=always '^\+.*@do-not-commit' || true
+            exit 1
+          fi
+
+          if printf "%s" "$DIFF" | grep -Eq '^\+.*@review'; then
+            echo "ERROR: @review found in added lines — please handle review markers in PR description or remove before pushing"
+            printf "%s" "$DIFF" | grep -n --color=always '^\+.*@review' || true
+            exit 1
+          fi
+
+          echo "No forbidden markers found."

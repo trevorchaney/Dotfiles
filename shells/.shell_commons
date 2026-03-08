@@ -22,11 +22,6 @@
 # clean them up when you aren't using them.
 ulimit -c unlimited
 
-# Configure keyboard bindings.
-# setxkbmap -options found in /usr/share/X11/xkb/rules/evdev.list
-setxkbmap -option 'caps:ctrl_modifier, shift:both_shiftlock'
-xcape -e 'Caps_Lock=Escape'
-
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=
 
@@ -188,7 +183,7 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 # Set default text editor to vim.
 export VISUAL=nvim
 export EDITOR=$VISUAL
-export TERMINAL="urxvt"
+export TERMINAL="ghostty"
 # export TERMINAL="gnome-terminal"
 
 # Color man pages

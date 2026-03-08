@@ -7,7 +7,7 @@
 "                 ╚═══╝  ╚═╝╚═╝     ╚═╝
 "               Trevor's configuration
 "                file for Vim & NeoVim
-
+"
 " ============================================================================
 " ░█▀▀░█▀▀░▀█▀░▀█▀░▀█▀░█▀█░█▀▀░█▀▀
 " ░▀▀█░█▀▀░░█░░░█░░░█░░█░█░█░█░▀▀█
@@ -137,7 +137,7 @@ au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
 au BufWrite /private/etc/pw.* set nowritebackup nobackup
 
 " Set 2 space indentation for certain file formats.
-au FileType html,css,js,json,vue,xml,xsl setlocal tabstop=2 softtabstop=2 shiftwidth=2
+au FileType html,css,js,jsx,ts,tsx,json,vue,xml,xsl setlocal tabstop=2 softtabstop=2 shiftwidth=2
 
 " Set syntax highlighting for misc. C++-like file extensions.
 au BufEnter *.tpp :setlocal filetype=cpp

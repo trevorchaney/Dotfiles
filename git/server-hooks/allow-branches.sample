@@ -1,0 +1,11 @@
+# Sample `allow-branches` file for server-side hook
+# Place a file named `hooks/allow-branches` in the bare repo to allow
+# specific refs (one shell-glob pattern per non-empty, non-comment line).
+#
+# Examples:
+# refs/heads/release/*
+# refs/heads/maintenance
+#
+# Lines beginning with '#' and blank lines are ignored.
+
+refs/heads/release/*
