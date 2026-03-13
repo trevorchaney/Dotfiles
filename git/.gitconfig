@@ -9,7 +9,7 @@
     program = gpg
 
 [commit]
-	gpgsign = false
+    gpgsign = false
     verbose = true                 ; Show diff in commit editor for context
 
 [log]
@@ -33,9 +33,6 @@
 
 [credential "http://3.95.241.3"]
     provider = generic
-
-[safe]
-	directory = /mnt/state/pars/projects/repos/dotfiles
 
 [color]
     ui = true
@@ -103,7 +100,7 @@
     auto = true
 
 [tag]
-	gpgsign = false
+    gpgsign = false
     forceSignAnnotated = true      ; Prefer annotated (and thus signable) tags
 
 [status]
