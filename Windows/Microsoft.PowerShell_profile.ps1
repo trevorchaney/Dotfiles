@@ -1,1 +1,0 @@
-New-Alias vim nvim
