@@ -26,16 +26,8 @@
     logAllRefUpdates = true
     pager = less -R                ; Avoid ^M in GPG output; pass ANSI through
     quotePath = false              ; Don’t escape non-ASCII in paths
-
-[credential]
-    helper = manager-core
-
 [credential "https://github.com"]
     helper = !gh auth git-credential
-
-[credential "helperselector"]
-    selected = <no helper>
-
 [credential "http://3.101.19.21"]
     provider = generic
 
