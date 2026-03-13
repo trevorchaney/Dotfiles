@@ -6,6 +6,7 @@ export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 
 # Make important directories (create if missing)
+[ ! -d "$HOME/.config" ]               && mkdir -p "$HOME/.config"
 [ ! -d "$HOME/.vim/undodir" ]          && mkdir -p "$HOME/.vim/undodir"
 [ ! -d "$HOME/.vim/tmp" ]              && mkdir -p "$HOME/.vim/tmp"
 [ ! -d "$HOME/.vim/vimwiki" ]          && mkdir -p "$HOME/.vim/vimwiki"
@@ -68,6 +69,13 @@ fi
 if command -v nvim >/dev/null 2>&1; then
     echo "Installing neovim plugins"
     nvim --headless +PlugInstall +qall || echo "nvim PlugInstall failed"
+fi
+
+# starship prompt — install if missing
+if ! command -v starship >/dev/null 2>&1; then
+    echo ""
+    echo "NOTE: starship is not installed. To install:"
+    echo "  sudo pacman -S starship"
 fi
 
 # keyd (capslock → tap:Escape / hold:Ctrl) — requires root, manual step
