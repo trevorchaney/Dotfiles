@@ -117,6 +117,9 @@ fi
 # Enable jump command for directory jumping
 command -v jump >/dev/null 2>&1 && eval "$(jump shell bash)"
 
+# Starship prompt
+command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
+
 # Omarchy theming
 export OMARCHY_PATH="$HOME/.local/share/omarchy"
 export PATH="$OMARCHY_PATH/bin:$PATH"

@@ -220,3 +220,6 @@ if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-pro
 
 # Enable jump command for directory jumping
 command -v jump >/dev/null 2>&1 && eval "$(jump shell zsh)"
+
+# Starship prompt
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
