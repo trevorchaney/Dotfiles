@@ -44,6 +44,7 @@
 
 [safe]
     directory = C:/Users/tlc/scoop/apps/scoop/current
+	directory = /mnt/state/pars/projects/repos/dotfiles
 
 [color]
     ui = true
