@@ -6,7 +6,7 @@
     signingkey = ; Secret, sourced from environment. Do not commit your keys.
 
 [gpg]
-    program = C:\\Users\\tlc\\scoop\\apps\\gpg4win\\current\\GnuPG\\bin\\gpg.exe
+    program = gpg
 
 [commit]
 	gpgsign = false
@@ -17,12 +17,12 @@
     showSignature = true           ; Always show signature status in logs
 
 [core]
-    autocrlf = true
+    autocrlf = input
     editor = nvim
     ;excludesFile = ~/.gitignore_global
     excludesFile = ~/.config/git/.gitignore_global
-    fileMode = false
-    ignoreCase = true
+    fileMode = true
+    ignoreCase = false
     logAllRefUpdates = true
     pager = less -R                ; Avoid ^M in GPG output; pass ANSI through
     quotePath = false              ; Don’t escape non-ASCII in paths

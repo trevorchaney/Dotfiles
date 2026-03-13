@@ -173,7 +173,7 @@ proctimer() {
 ## Exports
 
 # Change mounted drive directory color. This is supposed to be set in
-# .dir_colors but some terminals don't load this file (such as alacritty);
+# .dircolors but some terminals don't load this file (such as alacritty);
 export LS_COLORS='ow=30;42'
 
 # Set PATH variables

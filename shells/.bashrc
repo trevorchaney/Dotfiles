@@ -42,7 +42,7 @@ use_color=true
 # globbing instead of external grep binary.
 safe_term=${TERM//[^[:alnum:]]/?}   # sanitize TERM
 match_lhs=""
-[[ -f ~/.dir_colors   ]] && match_lhs="${match_lhs}$(<~/.dir_colors)"
+[[ -f ~/.dircolors   ]] && match_lhs="${match_lhs}$(<~/.dircolors)"
 [[ -f /etc/DIR_COLORS ]] && match_lhs="${match_lhs}$(</etc/DIR_COLORS)"
 [[ -z ${match_lhs}    ]] \
     && type -P dircolors >/dev/null \
@@ -50,10 +50,10 @@ match_lhs=""
 [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
 
 if ${use_color} ; then
-    # Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+    # Enable colors for ls, etc.  Prefer ~/.dircolors #64489
     if type -P dircolors >/dev/null ; then
-        if [[ -f ~/.dir_colors ]] ; then
-            eval $(dircolors -b ~/.dir_colors)
+        if [[ -f ~/.dircolors ]] ; then
+            eval $(dircolors -b ~/.dircolors)
         elif [[ -f /etc/DIR_COLORS ]] ; then
             eval $(dircolors -b /etc/DIR_COLORS)
         fi
