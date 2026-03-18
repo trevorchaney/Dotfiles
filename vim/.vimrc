@@ -8,6 +8,13 @@
 "               Trevor's configuration
 "                file for Vim & NeoVim
 "
+" TODO(tlc): This config should probably be rewritten as a Lua-based Neovim
+"            config using lazy.nvim, following the omarchy-nvim setup as a
+"            reference. See:
+"              - Omarchy nvim config: /usr/share/omarchy-nvim/config/
+"              - Omarchy nvim source: ~/pars/storage/repos/omarchy/install/packaging/nvim.sh
+"              - LazyVim docs: https://lazyvim.org
+"
 " ============================================================================
 " ░█▀▀░█▀▀░▀█▀░▀█▀░▀█▀░█▀█░█▀▀░█▀▀
 " ░▀▀█░█▀▀░░█░░░█░░░█░░█░█░█░█░▀▀█

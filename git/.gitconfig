@@ -40,6 +40,9 @@
 [init]
     defaultBranch = master
 
+[branch]
+    sort = -committerdate          ; Sort branches by most recent commit first
+
 [branch "master"]
     mergeoptions = --no-ff         ; For work policy: force merge commits
     ; mergeoptions = --ff-only     ; Preferred elsewhere
@@ -102,6 +105,14 @@
 [tag]
     gpgsign = false
     forceSignAnnotated = true      ; Prefer annotated (and thus signable) tags
+    sort = -version:refname        ; Sort version numbers as you would expect
+
+[column]
+    ui = auto                      ; Output in columns when possible
+
+[rerere]
+    enabled = true                 ; Record and reuse conflict resolutions
+    autoupdate = true              ; Apply stored conflict resolutions automatically
 
 [status]
     submoduleSummary = true        ; Handy if/when submodules appear
