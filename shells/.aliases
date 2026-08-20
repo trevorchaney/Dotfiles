@@ -30,6 +30,7 @@ alias py="python3"                  # Python abbreviation.
 alias run="make rebuild && ./a.out" # I'm tired of typing this.
 alias scim="sc-im"
 # alias sudo="doas"                   # YAGNI
+alias tf="terraform"                # Terraform abbreviation.
 alias tem="trash-empty"             # Empty the trash, found in ~/.local/share/Trash
 alias tls="trash-list"              # List the files in the trash directory
 alias trest="trash-restore"         # Restore a file in the trash directory

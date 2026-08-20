@@ -18,3 +18,5 @@ if uwsm check may-start; then
 fi
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+. "$HOME/.local/share/../bin/env"

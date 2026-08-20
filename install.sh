@@ -18,7 +18,7 @@ export LC_CTYPE=en_US.UTF-8
 # Install dotfiles with GNU Stow (target = $HOME)
 if command -v stow >/dev/null 2>&1; then
     # Core packages — always stow
-    for pkg in ctags gdb git nvim shells tmux vim; do
+    for pkg in bin ctags gdb git nvim shells tmux vim; do
         echo "Stowing $pkg"
         stow -v -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
     done
@@ -27,8 +27,11 @@ if command -v stow >/dev/null 2>&1; then
     if [ -n "$WAYLAND_DISPLAY" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         echo "Stowing hyprland"
         stow -v -t "$HOME" hyprland || echo "stow failed for hyprland (continuing)"
+        echo "Stowing waybar"
+        stow -v -t "$HOME" waybar || echo "stow failed for waybar (continuing)"
     else
         echo "Skipping hyprland (not a Wayland session)"
+        echo "Skipping waybar (not a Wayland session)"
     fi
 
     # X11 — stow if running X11

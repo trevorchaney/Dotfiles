@@ -18,6 +18,7 @@ cd ~/Dotfiles
 
 | Package     | Contents                                      | When to stow          |
 |-------------|-----------------------------------------------|-----------------------|
+| `bin`       | `~/bin/` scripts that shadow omarchy commands | Always                |
 | `shells`    | `.bashrc`, `.zshrc`, `.shell_commons`, etc.   | Always                |
 | `vim`       | `.vimrc`, `vim-plug`, spell, templates        | Always                |
 | `nvim`      | Neovim spell files (shares `.vimrc`)          | Always                |
@@ -26,6 +27,7 @@ cd ~/Dotfiles
 | `ctags`     | `.ctags`                                      | Always                |
 | `gdb`       | `.gdbinit`                                    | Always                |
 | `hyprland`  | `~/.config/hypr/` (full Hyprland config)      | Wayland sessions only |
+| `waybar`    | `~/.config/waybar/` (status bar layout + CSS) | Wayland sessions only |
 | `x11`       | `.Xresources`, i3 config                      | X11 sessions only     |
 | `Windows`   | PowerShell profile, startup scripts           | Windows only          |
 | `Makefiles` | C++ Makefile template                         | Copy manually         |
@@ -63,6 +65,23 @@ first install, or let `install.sh` do it headlessly.
 `git/server-hooks/` and `git/HOOKS_README.md` are reference material and are
 excluded from stowing via `.stow-local-ignore`. Copy server hooks manually
 to any git server repo's `hooks/` directory.
+
+## Omarchy command overrides (`bin/`)
+
+Scripts in `bin/bin/` are symlinked into `~/bin/` and shadow same-named
+commands in `~/.local/share/omarchy/bin/`. This is the mechanism for fixing
+omarchy bugs without modifying omarchy's source (which would be wiped on
+`omarchy-update`).
+
+`.bashrc` appends `~/bin` to the front of `$PATH` *after* omarchy's path
+setup, so scripts here take precedence. Omarchy itself has no official
+override mechanism — this is a `$PATH` shadowing convention.
+
+Current overrides:
+
+| Script | Fixes |
+|--------|-------|
+| `omarchy-restart-waybar` | Waits for the old waybar instance to fully exit before starting a new one, preventing two waybars from stacking when switching themes (race condition in `omarchy-restart-app`) |
 
 ## Why GNU Stow?
 

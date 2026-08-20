@@ -28,3 +28,5 @@ export BROWSER=/usr/bin/firefox
 # vmhgfs-fuse -o auto_unmount,allow_other .host:/ $HOME/Desktop/external
 
 if [ -e /home/tlc/.nix-profile/etc/profile.d/nix.sh ]; then . /home/tlc/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+
+. "$HOME/.local/share/../bin/env"

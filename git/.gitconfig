@@ -241,6 +241,9 @@
 
     ; Worktrees
     wt = worktree                                              ; Shortcut for worktree commands
+    wta = worktree add                                         ; Shortcut for worktree add commands
+    wtl = worktree list                                        ; Shortcut for worktree list commands
+    wtr = worktree remove                                      ; Shortcut for worktree remove commands
 
     ; Porcelain / scripting helpers
     porc = status --porcelain=2 -z --branch                    ; Machine-readable porcelain v2 + NUL

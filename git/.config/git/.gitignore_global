@@ -130,3 +130,4 @@ cscope.out
 # Vim/Neovim
 undodir
 tmp
+**/.claude/settings.local.json

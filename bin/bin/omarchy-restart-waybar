@@ -1,0 +1,22 @@
+#!/bin/bash
+# Custom waybar restart that:
+# 1. Prevents concurrent restarts (flock -n: skip if already restarting)
+# 2. Waits for the old instance to fully exit before starting a new one
+#
+# Without the lock, multiple simultaneous callers (e.g. monitors.sh triggered
+# by concurrent Hyprland reloads at boot) each race to start a new waybar,
+# resulting in 3-5 stacked instances.
+
+LOCK=/tmp/waybar-restart.lock
+
+(
+    flock -n 9 || exit 0  # Skip if another restart is already in progress
+
+    if pgrep -x waybar > /dev/null; then
+        pkill -x waybar
+        # Wait up to 3 seconds for waybar to fully exit
+        timeout 3 bash -c 'while pgrep -x waybar > /dev/null; do sleep 0.1; done'
+    fi
+
+    setsid uwsm-app -- waybar >/dev/null 2>&1 &
+) 9>"$LOCK"

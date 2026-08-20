@@ -18,6 +18,9 @@
 # Include aliases definitions if they exist.
 [ -f ~/.aliases ] && . ~/.aliases
 
+# Load secret environment variables if the file exists.
+[ -f ~/.env ] && . ~/.env
+
 # Allow core files, they output wherever the executable is located. Remember to
 # clean them up when you aren't using them.
 ulimit -c unlimited
@@ -119,6 +122,63 @@ ex() {
   fi
 }
 
+# Fuzzy checkout a git branch
+gcb() {
+    local branch
+    branch=$(git branch -a | fzf) || return 1
+    git checkout "$branch"
+}
+
+# Pull all git repos under pars/projects
+git-all-pull() {
+    local PROJECTS="/mnt/state/pars/projects"
+    for dir in "$PROJECTS"/*/; do
+        [[ -d "$dir/.git" ]] || continue
+        echo "---------------------------------"
+        echo "$dir"
+        git -C "$dir" pull origin master --all
+    done
+}
+
+# Show git status for all repos under pars/projects
+git-all-status() {
+    local PROJECTS="/mnt/state/pars/projects"
+    for dir in "$PROJECTS"/*/; do
+        [[ -d "$dir/.git" ]] || continue
+        echo "---------------------------------"
+        echo "$dir"
+        git -C "$dir" status -s
+    done
+}
+
+# Open today's diary note in nvim, or search notebox with rg.
+# Usage: notes [search terms]
+notes() {
+    local NOTEBOX=~/pars/resources/notebox
+    pushd "$NOTEBOX" > /dev/null
+    if [[ $# -gt 0 ]]; then
+        rg -i "$@"
+    else
+        nvim "notes/diary/$(date +%Y-%m-%d).md"
+    fi
+    popd > /dev/null
+}
+
+# Go to the notebox
+notebox() {
+    cd ~/pars/resources/notebox
+}
+
+# Open todo.txt in nvim, or search todos with rg.
+todo() {
+    local TODO_FILE="/mnt/state/pars/resources/todos/todo.txt"
+    if [[ $# -gt 0 ]]; then
+        rg -i "$@" "$TODO_FILE"
+    else
+        nvim "$TODO_FILE"
+    fi
+}
+
 # Diff whole directories with vim
 dirdiff() {
     # Shell-escape each path
@@ -172,12 +232,19 @@ proctimer() {
 
 ## Exports
 
-# Change mounted drive directory color. This is supposed to be set in
-# .dircolors but some terminals don't load this file (such as alacritty);
-export LS_COLORS='ow=30;42'
+# Initialize dircolors for ls colors. The ow override ensures the mounted
+# drive directory color is set even if ~/.dircolors doesn't define it.
+if type -P dircolors >/dev/null ; then
+    if [[ -f ~/.dircolors ]] ; then
+        eval $(dircolors -b ~/.dircolors)
+    elif [[ -f /etc/DIR_COLORS ]] ; then
+        eval $(dircolors -b /etc/DIR_COLORS)
+    fi
+fi
+export LS_COLORS="${LS_COLORS}:ow=30;42"
 
 # Set PATH variables
-export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin"
+export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin:$HOME/go/bin"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
 # Set default text editor to vim.
