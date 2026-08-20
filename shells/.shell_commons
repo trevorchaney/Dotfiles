@@ -244,7 +244,7 @@ fi
 export LS_COLORS="${LS_COLORS}:ow=30;42"
 
 # Set PATH variables
-export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin:$HOME/go/bin"
+export PATH="$PATH:~/.config/node_modules_global/bin:/usr/include:/opt/cuda/bin:~/.local/bin:~/.local/share/gem/ruby/3.0.0/bin"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 
 # Set default text editor to vim.
