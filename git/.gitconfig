@@ -254,4 +254,4 @@
     fr = flow release                                          ; Git-flow: release
     fh = flow hotfix                                           ; Git-flow: hotfix
 [gpg "ssh"]
-	allowedSignersFile = /home/tlc/.config/git/allowed_signers
+	allowedSignersFile = ~/.config/git/allowed_signers

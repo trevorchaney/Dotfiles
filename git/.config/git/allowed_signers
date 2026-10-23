@@ -1,0 +1,2 @@
+# SSH allowed signers for git signature verification (gpg.ssh.allowedSignersFile).
+# One per line: <email> namespaces="git" <key-type> <public-key>
