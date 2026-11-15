@@ -70,3 +70,4 @@ tags
 # Vim/Neovim
 undodir
 tmp
+plugged
