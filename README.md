@@ -34,6 +34,7 @@ symlink the standard home folders out to it:
 | `tmux`      | `.tmux.conf`                                  | Always                |
 | `ctags`     | `.ctags`                                      | Always                |
 | `gdb`       | `.config/gdb/`, `.config/gf2_config.ini`      | Always                |
+| `mise`      | `.config/mise/config.toml` (global tool list) | Always                |
 | `hyprland`  | `~/.config/hypr/` (full Hyprland config)      | Wayland sessions only |
 | `waybar`    | `~/.config/waybar/` (status bar layout + CSS) | Wayland sessions only |
 | `x11`       | `.Xresources`, i3 config                      | X11 sessions only     |

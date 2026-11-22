@@ -34,6 +34,11 @@ if command -v stow >/dev/null 2>&1; then
         stow -v -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
     done
 
+    # mise: link only config.toml so ~/.config/mise stays a real directory
+    # (mise may write other files there; they shouldn't land in this repo)
+    echo "Stowing mise"
+    stow -v --no-folding -t "$HOME" mise || echo "stow failed for mise (continuing)"
+
     # Wayland/Hyprland — stow if running Wayland
     if [ -n "$WAYLAND_DISPLAY" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         echo "Stowing hyprland"

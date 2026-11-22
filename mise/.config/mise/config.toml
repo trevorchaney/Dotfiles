@@ -1,0 +1,9 @@
+[tools]
+bun = "latest"
+go = "latest"
+java = "latest"
+python = "latest"
+zig = "latest"
+zls = "latest"
+
+[settings.upgrade]
