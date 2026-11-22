@@ -1,0 +1,3 @@
+# ~/.config/gdb/gdbearlyinit -- read before gdb prints its banner (gdb >= 11).
+# Skip the version/copyright banner (gf2 also shows it as "???" boxes).
+set startup-quietly on

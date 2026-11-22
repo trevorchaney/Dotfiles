@@ -25,7 +25,7 @@ cd ~/Dotfiles
 | `git`       | `.gitconfig`, global hooks, gitignore         | Always                |
 | `tmux`      | `.tmux.conf`                                  | Always                |
 | `ctags`     | `.ctags`                                      | Always                |
-| `gdb`       | `.gdbinit`                                    | Always                |
+| `gdb`       | `.config/gdb/`, `.config/gf2_config.ini`      | Always                |
 | `hyprland`  | `~/.config/hypr/` (full Hyprland config)      | Wayland sessions only |
 | `waybar`    | `~/.config/waybar/` (status bar layout + CSS) | Wayland sessions only |
 | `x11`       | `.Xresources`, i3 config                      | X11 sessions only     |
