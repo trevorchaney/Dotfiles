@@ -14,6 +14,14 @@ cd ~/Dotfiles
 ./install.sh
 ```
 
+On a machine with the `~/pars` layout (personal data on a separate mount,
+`~/pars` symlinked to it — see below), also pass `--link-user-dirs` to
+symlink the standard home folders out to it:
+
+```sh
+./install.sh --link-user-dirs
+```
+
 ## Packages
 
 | Package     | Contents                                      | When to stow          |
@@ -34,6 +42,40 @@ cd ~/Dotfiles
 | `keyd`      | capslock remap config (needs `/etc/keyd/`)    | See below             |
 
 `install.sh` automatically detects Wayland vs X11 and stows the right set.
+
+## User Directories (`~/pars`)
+
+On the primary machine, personal data (photos, videos, downloads, projects,
+etc.) lives on a separate mount at `/mnt/state/pars`, with `~/pars`
+symlinked to it — kept out of `$HOME` itself so it isn't tied to the OS
+install. `./install.sh --link-user-dirs` (or `link-user-dirs.sh` directly)
+symlinks the standard home folders out to it and updates
+`~/.config/user-dirs.dirs` so XDG-aware apps (browsers, GTK/Qt file
+pickers) recognize the real paths instead of falling back to bare `$HOME`:
+
+| Home folder   | Symlinked to                       |
+|---------------|-------------------------------------|
+| `Downloads`   | `~/pars/storage/downloads`          |
+| `Pictures`    | `~/pars/storage/pictures`           |
+| `Videos`      | `~/pars/storage/videos`             |
+| `Music`       | `~/pars/storage/music`              |
+| `Documents`   | `~/pars/storage/documents`          |
+| `Templates`   | `~/pars/resources/templates`        |
+| `Projects`    | `~/pars/projects`                   |
+| `Work`        | `~/pars/areas/ai`                   |
+
+`Desktop` and `PublicShare` are intentionally left alone — not symlinked,
+and their `XDG_*_DIR` entries aren't touched.
+
+Some of these (`Pictures`, `Videos`, `camera`) may themselves be symlinks
+further out to removable cold storage (an SD card, etc.) — chained symlinks
+resolve transparently, so this is not a problem, but it does mean those
+folders will appear empty if that media isn't currently mounted.
+
+Safe to re-run: `link-user-dirs.sh` only replaces a target that doesn't
+exist yet or is an already-empty directory — it never touches a target with
+real content, and skips anything that's already a symlink. On a machine
+without the `~/pars` layout, it's a no-op.
 
 ## Keyboard remapping (Wayland)
 

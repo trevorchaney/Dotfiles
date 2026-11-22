@@ -1,5 +1,16 @@
 #!/usr/bin/env sh
 
+# --link-user-dirs: also symlink Downloads/Pictures/Videos/Music/Documents/
+# Templates/Projects/Work to ~/pars and fix ~/.config/user-dirs.dirs (see
+# link-user-dirs.sh). Opt-in: only makes sense on a machine with the ~/pars
+# layout, not every machine this repo gets stowed on.
+LINK_USER_DIRS=0
+for arg in "$@"; do
+    case "$arg" in
+        --link-user-dirs) LINK_USER_DIRS=1 ;;
+    esac
+done
+
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
@@ -45,6 +56,12 @@ else
     echo "GNU Stow not found; please install 'stow' and run 'stow -t \$HOME <pkg>' for each package"
 fi
 
+# Personal user-dir symlinks (Downloads, Pictures, Videos, etc. -> ~/pars) —
+# opt-in via --link-user-dirs, see link-user-dirs.sh for details.
+if [ "$LINK_USER_DIRS" = "1" ]; then
+    sh "$(dirname "$0")/link-user-dirs.sh"
+fi
+
 # Install vim-plug for vim (symlinked by stow above, but download if missing)
 if [ ! -f "$HOME/.vim/autoload/plug.vim" ]; then
     if command -v curl >/dev/null 2>&1; then
@@ -63,8 +80,10 @@ if [ ! -f "$HOME/.local/share/nvim/site/autoload/plug.vim" ] && [ -f "$HOME/.vim
     ln -s "$HOME/.vim/autoload/plug.vim" "$HOME/.local/share/nvim/site/autoload/plug.vim"
 fi
 
-# Link vimrc as neovim init (neovim shares vim config)
-if [ ! -f "$HOME/.config/nvim/init.vim" ] && [ -f "$HOME/.vimrc" ]; then
+# Link vimrc as neovim init (only for a plain-vimscript neovim setup —
+# skip if init.lua already exists, e.g. a LazyVim-style config, since
+# neovim only loads one or the other and having both is a conflict)
+if [ ! -f "$HOME/.config/nvim/init.vim" ] && [ ! -f "$HOME/.config/nvim/init.lua" ] && [ -f "$HOME/.vimrc" ]; then
     ln -s "$HOME/.vimrc" "$HOME/.config/nvim/init.vim"
 fi
 
