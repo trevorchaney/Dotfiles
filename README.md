@@ -53,6 +53,23 @@ symlink the standard home folders out to it:
 | `keyd`      | capslock remap config (needs `/etc/keyd/`)    | See below             |
 
 `install.sh` automatically detects Wayland vs X11 and stows the right set.
+The package list and each package's stow flags live in `packages.sh`; add
+new packages there.
+
+### Checking the links
+
+`./check-stow.sh` verifies, without changing anything, that every managed
+file is still the symlink stow would create. It catches configs that an app
+or an Omarchy update replaced with a regular file (and says whether that file
+still matches the repo copy), missing links, links pointing elsewhere, and
+links into the repo whose file no longer exists. Exit status is non-zero when
+something is wrong.
+
+```sh
+./check-stow.sh            # packages for this session
+./check-stow.sh --all -q   # every package, problems only
+./check-stow.sh kitty      # one package
+```
 
 ## User Directories (`~/pars`)
 

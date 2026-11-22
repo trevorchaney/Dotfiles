@@ -26,45 +26,26 @@ export LC_CTYPE=en_US.UTF-8
 [ ! -d "$HOME/.cache/vim/ctags" ]      && mkdir -p "$HOME/.cache/vim/ctags"
 [ ! -d "$HOME/.local/share/nvim/site/autoload" ] && mkdir -p "$HOME/.local/share/nvim/site/autoload"
 
-# Install dotfiles with GNU Stow (target = $HOME)
+# Install dotfiles with GNU Stow (target = $HOME). The package list and the
+# flags for each package live in packages.sh (shared with check-stow.sh).
+DOTFILES="$(cd "$(dirname "$0")" && pwd)"
+. "$DOTFILES/packages.sh"
+
 if command -v stow >/dev/null 2>&1; then
-    # Core packages — always stow
-    for pkg in bin ctags gdb git nvim shells tmux vim; do
+    is_wayland || echo "Skipping Wayland packages: $STOW_WAYLAND $STOW_WAYLAND_NOFOLD (not a Wayland session)"
+    is_x11 || echo "Skipping X11 packages: $STOW_X11 (not an X11 session)"
+
+    for pkg in $(session_packages); do
         echo "Stowing $pkg"
-        stow -v -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
+        stow -v $(stow_flags "$pkg") -d "$DOTFILES" -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
     done
 
-    # Packages that link individual files (--no-folding) so the app's own
-    # directory stays real: apps write logs, sockets, caches and backups
-    # next to their config, and those must not land in this repo.
-    for pkg in mise btop newsboat taskwarrior aerc; do
-        echo "Stowing $pkg"
-        stow -v --no-folding -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
-    done
-
-    # Wayland/Hyprland — stow if running Wayland
-    if [ -n "$WAYLAND_DISPLAY" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-        echo "Stowing hyprland"
-        stow -v -t "$HOME" hyprland || echo "stow failed for hyprland (continuing)"
-        echo "Stowing waybar"
-        stow -v -t "$HOME" waybar || echo "stow failed for waybar (continuing)"
-        for pkg in kitty ghostty imv herdr voxtype fontconfig xcompose systemd-user; do
-            echo "Stowing $pkg"
-            stow -v --no-folding -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
-        done
-        # Pick up the user units (gitea, voxtype); enabling them is left to the user
-        command -v systemctl >/dev/null 2>&1 && systemctl --user daemon-reload || true
-    else
-        echo "Skipping hyprland, waybar and desktop app configs (not a Wayland session)"
+    # Pick up the user units (gitea, voxtype); enabling them is left to the user
+    if is_wayland && command -v systemctl >/dev/null 2>&1; then
+        systemctl --user daemon-reload || true
     fi
 
-    # X11 — stow if running X11
-    if [ -n "$DISPLAY" ] && [ -z "$WAYLAND_DISPLAY" ]; then
-        echo "Stowing x11"
-        stow -v -t "$HOME" x11 || echo "stow failed for x11 (continuing)"
-    else
-        echo "Skipping x11 (not an X11 session)"
-    fi
+    echo "Run ./check-stow.sh to verify every link."
 else
     echo "GNU Stow not found; please install 'stow' and run 'stow -t \$HOME <pkg>' for each package"
 fi
