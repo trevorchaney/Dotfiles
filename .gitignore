@@ -71,3 +71,7 @@ tags
 undodir
 tmp
 plugged
+
+### Vim ###
+# netrw directory history (machine-local)
+vim/.vim/.netrwhist
