@@ -41,12 +41,30 @@ HISTCONTROL=ignoreboth
 # Don't consider certain characters part of the word
 WORDCHARS=${WORDCHARS//\/[&.;]}
 
+# Disable command hashing so bash re-resolves PATH lookups every time,
+# instead of caching a binary's location. Needed for mise: without this,
+# a shell can keep running a stale (pre-upgrade) binary path after `mup`
+# switches versions, until a new shell is opened.
+set +h
+
 # Make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# Always show the contents after a change directory
+# Always show the contents after a change directory.
+#
+# Also dispatches chpwd_functions (mise's cd wrapper does this to run its
+# per-directory tool activation from `mise activate bash`; referencing the
+# array here at call time, not definition time, means it works regardless of
+# whether this function or mise's own init loads first).
 cd() {
-    builtin cd "$@" && ls --color=auto;
+    builtin cd "$@" || return
+    ls --color=auto
+    local __chpwd_hook
+    for __chpwd_hook in chpwd "${chpwd_functions[@]:-}"; do
+        if typeset -f "$__chpwd_hook" >/dev/null 2>&1; then
+            "$__chpwd_hook" || break
+        fi
+    done
 }
 
 # Print terminal colors
@@ -229,6 +247,285 @@ proctimer() {
     fi
 }
 
+## Functions incorporated from Omarchy's default/bash/fns (reviewed and
+## copied in directly, not sourced, so they don't drift with Omarchy updates).
+
+# Compression
+compress() { tar -czf "${1%/}.tar.gz" "${1%/}"; }
+alias decompress="tar -xzf"
+
+# Wrap ssh to clean up the terminal and reconnect when a connection drops.
+#
+# A remote tmux, herdr, or editor arms terminal modes over the SSH pipe (mouse
+# tracking, focus reporting, the alternate screen) that only it can disarm. If
+# the connection dies instead of exiting cleanly, those modes stay armed on the
+# local terminal, and every mouse move floods the prompt with escape junk.
+ssh() {
+  local rc started
+
+  started=$SECONDS
+  command ssh "$@"
+  rc=$?
+
+  [[ -t 1 ]] || return $rc
+  _ssh_disarm
+
+  # Reconnect only when an interactive session drops: ssh exits 255 for
+  # transport failures, but a fast 255 with no established session is a
+  # connect/auth failure, a remote command's own 255 passes through
+  # indistinguishably and must not replay its side effects, and redirected
+  # stdin would feed the remaining piped input to a fresh remote shell.
+  if (( rc != 255 )) || [[ ! -t 0 ]] || ! _ssh_interactive "$@" ||
+    (( SECONDS - started < 30 )); then
+    return $rc
+  fi
+
+  # Retry in a subshell: Ctrl-C reaches the whole foreground process group,
+  # so it cancels both the in-flight attempt and the loop itself. Keep
+  # retrying fast failures, since a rebooting server refuses connections too.
+  (
+    while true; do
+      echo "Connection lost. Reconnecting (Ctrl-C to stop)..."
+      sleep 2
+      command ssh "$@"
+      rc=$?
+      _ssh_disarm
+      (( rc != 255 )) && exit $rc
+    done
+  )
+}
+
+# Disarm mouse tracking (1000/1002/1003, 1006 encoding), focus reporting
+# (1004), and the alternate screen (1049), and show the cursor again.
+_ssh_disarm() {
+  printf '\e[?1000l\e[?1002l\e[?1003l\e[?1006l\e[?1004l\e[?1049l\e[?25h'
+}
+
+# True for an interactive session: a destination and no remote command. The
+# letters are the ssh(1) options that consume a value, so their arguments are
+# not mistaken for the destination.
+_ssh_interactive() {
+  local value_opts="BbcDEeFIiJLlmOoPpQRSWw"
+  local argv=("$@") arg letters i dest="" opts_done=""
+
+  while (($#)); do
+    arg="$1"
+    shift
+
+    if [[ -z $opts_done && $arg == "--" ]]; then
+      opts_done=1
+    elif [[ -z $opts_done && $arg == -?* ]]; then
+      letters="${arg#-}"
+      for ((i = 0; i < ${#letters}; i++)); do
+        if [[ $value_opts == *"${letters:i:1}"* ]]; then
+          # The value is glued to the letter (-p2222) unless the letter ends
+          # the argument, in which case it consumes the next one (-p 2222).
+          (( i == ${#letters} - 1 )) && shift
+          break
+        fi
+      done
+    elif [[ -z $dest ]]; then
+      dest="$arg"
+    else
+      return 1
+    fi
+  done
+
+  [[ -n $dest ]] || return 1
+
+  # A RemoteCommand from ssh_config or -o replays on reconnect just like a
+  # positional command; ssh -G resolves the effective configuration for this
+  # exact invocation without connecting. Fail closed when it cannot resolve,
+  # since an undetected RemoteCommand must not replay. The explicit "none"
+  # cancels a configured command, and some versions emit it when unset.
+  local resolved
+  resolved=$(command ssh -G "${argv[@]}" 2>/dev/null) || return 1
+  ! grep -i '^remotecommand ' <<<"$resolved" | grep -qvi '^remotecommand none$'
+}
+
+# SSH Port Forwarding Functions
+fip() {
+  (( $# < 2 )) && echo "Usage: fip <host> <port1> [port2] ..." && return 1
+  local host="$1"
+  shift
+  for port in "$@"; do
+    ssh -f -N -L "${port}:localhost:${port}" "$host" && echo "Forwarding localhost:$port -> $host:$port"
+  done
+}
+
+dip() {
+  (( $# == 0 )) && echo "Usage: dip <port1> [port2] ..." && return 1
+  for port in "$@"; do
+    pkill -f "ssh.*-L ${port}:localhost:${port}" && echo "Stopped forwarding port $port" || echo "No forwarding on port $port"
+  done
+}
+
+lip() {
+  pgrep -af "ssh.*-L [0-9]+:localhost:[0-9]+" || echo "No active forwards"
+}
+
+# Create a Tmux Dev Layout with editor, ai, and terminal
+# Usage: tdl <c|cx|codex|other_ai> [<second_ai>]
+tdl() {
+  [[ -z $1 ]] && { echo "Usage: tdl <c|cx|codex|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdl."; return 1; }
+
+  local current_dir="${PWD}"
+  local editor_pane ai_pane ai2_pane
+  local ai="$1"
+  local ai2="$2"
+
+  # Use TMUX_PANE for the pane we're running in (stable even if active window changes)
+  editor_pane="$TMUX_PANE"
+
+  # Name the current window after the base directory name
+  tmux rename-window -t "$editor_pane" "$(basename "$current_dir")"
+
+  # Split window vertically - top 85%, bottom 15% (target editor pane explicitly)
+  tmux split-window -v -p 15 -t "$editor_pane" -c "$current_dir"
+
+  # Split editor pane horizontally - AI on right 30% (capture new pane ID directly)
+  ai_pane=$(tmux split-window -h -p 30 -t "$editor_pane" -c "$current_dir" -P -F '#{pane_id}')
+
+  # If second AI provided, split the AI pane vertically
+  if [[ -n $ai2 ]]; then
+    ai2_pane=$(tmux split-window -v -t "$ai_pane" -c "$current_dir" -P -F '#{pane_id}')
+    tmux send-keys -t "$ai2_pane" "$ai2" C-m
+  fi
+
+  # Run ai in the right pane
+  tmux send-keys -t "$ai_pane" "$ai" C-m
+
+  # Run nvim in the left pane
+  tmux send-keys -t "$editor_pane" "$EDITOR ." C-m
+
+  # Select the nvim pane for focus
+  tmux select-pane -t "$opencode_pane"
+}
+
+# Create a Tmux Dev Square layout with editor, diff watch, terminal, and opencode
+# Usage: tds
+tds() {
+  [[ -n $1 ]] && { echo "Usage: tds"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tds."; return 1; }
+
+  local current_dir="${PWD}"
+  local editor_pane diff_pane terminal_pane opencode_pane
+
+  editor_pane="$TMUX_PANE"
+
+  tmux rename-window -t "$editor_pane" "$(basename "$current_dir")"
+
+  terminal_pane=$(tmux split-window -v -p 50 -t "$editor_pane" -c "$current_dir" -P -F '#{pane_id}')
+  diff_pane=$(tmux split-window -h -p 50 -t "$editor_pane" -c "$current_dir" -P -F '#{pane_id}')
+  opencode_pane=$(tmux split-window -h -p 50 -t "$terminal_pane" -c "$current_dir" -P -F '#{pane_id}')
+
+  tmux send-keys -t "$editor_pane" -l "nvim ."
+  tmux send-keys -t "$editor_pane" C-m
+  tmux send-keys -t "$diff_pane" -l "hunk diff --watch"
+  tmux send-keys -t "$diff_pane" C-m
+  tmux send-keys -t "$opencode_pane" -l "opencode"
+  tmux send-keys -t "$opencode_pane" C-m
+
+  tmux select-pane -t "$editor_pane"
+}
+
+# Create multiple tdl windows with one per subdirectory in the current directory
+# Usage: tdlm <c|cx|codex|other_ai> [<second_ai>]
+tdlm() {
+  [[ -z $1 ]] && { echo "Usage: tdlm <c|cx|codex|other_ai> [<second_ai>]"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tdlm."; return 1; }
+
+  local ai="$1"
+  local ai2="$2"
+  local base_dir="$PWD"
+  local first=true
+
+  # Rename the session to the current directory name (replace dots/colons which tmux disallows)
+  tmux rename-session "$(basename "$base_dir" | tr '.:' '--')"
+
+  for dir in "$base_dir"/*/; do
+    [[ -d $dir ]] || continue
+    local dirpath="${dir%/}"
+
+    if $first; then
+      # Reuse the current window for the first project
+      tmux send-keys -t "$TMUX_PANE" "cd '$dirpath' && tdl $ai $ai2" C-m
+      first=false
+    else
+      local pane_id=$(tmux new-window -c "$dirpath" -P -F '#{pane_id}')
+      tmux send-keys -t "$pane_id" "tdl $ai $ai2" C-m
+    fi
+  done
+}
+
+# Create a multi-pane swarm layout with the same command started in each pane (great for AI)
+# Usage: tsl <pane_count> <command>
+tsl() {
+  [[ -z $1 || -z $2 ]] && { echo "Usage: tsl <pane_count> <command>"; return 1; }
+  [[ -z $TMUX ]] && { echo "You must start tmux to use tsl."; return 1; }
+
+  local count="$1"
+  local cmd="$2"
+  local current_dir="${PWD}"
+  local -a panes
+
+  tmux rename-window -t "$TMUX_PANE" "$(basename "$current_dir")"
+
+  panes+=("$TMUX_PANE")
+
+  while (( ${#panes[@]} < count )); do
+    local new_pane
+    local split_target="${panes[-1]}"
+    new_pane=$(tmux split-window -h -t "$split_target" -c "$current_dir" -P -F '#{pane_id}')
+    panes+=("$new_pane")
+    tmux select-layout -t "${panes[0]}" tiled
+  done
+
+  for pane in "${panes[@]}"; do
+    tmux send-keys -t "$pane" "$cmd" C-m
+  done
+
+  tmux select-pane -t "${panes[0]}"
+}
+
+# Create a new worktree and branch from within current git directory.
+ga() {
+  if [[ -z "$1" ]]; then
+    echo "Usage: ga [branch name]"
+    return 1
+  fi
+
+  local branch="$1"
+  local base="$(basename "$PWD")"
+  local wt_path="../${base}--${branch}"
+
+  git worktree add -b "$branch" "$wt_path"
+  mise trust "$wt_path"
+  cd "$wt_path"
+}
+
+# Remove worktree and branch from within active worktree directory.
+gd() {
+  if gum confirm "Remove worktree and branch?"; then
+    local cwd base branch root worktree
+
+    cwd="$(pwd)"
+    worktree="$(basename "$cwd")"
+
+    # split on first `--`
+    root="${worktree%%--*}"
+    branch="${worktree#*--}"
+
+    # Protect against accidentally nuking a non-worktree directory
+    if [[ "$root" != "$worktree" ]]; then
+      cd "../$root"
+      git worktree remove "$cwd" --force || return 1
+      git branch -D "$branch"
+    fi
+  fi
+}
+
 
 ## Exports
 
@@ -250,17 +547,25 @@ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
 # Set default text editor to vim.
 export VISUAL=nvim
 export EDITOR=$VISUAL
+export SUDO_EDITOR="$EDITOR"
 export TERMINAL="ghostty"
 # export TERMINAL="gnome-terminal"
 
-# Color man pages
-export LESS_TERMCAP_mb=$'\e[01;32m'
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;47;30m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;36m'
+# Open links from CLI tools (gh, etc.) in Firefox, not Omarchy's default (chromium).
+export BROWSER=firefox
+
+# Color man pages (bat-based, from Omarchy's default rc). Previous
+# LESS_TERMCAP-based approach kept below, commented out, in case we want to
+# switch back.
+export MANROFFOPT="-c"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+# export LESS_TERMCAP_mb=$'\e[01;32m'
+# export LESS_TERMCAP_md=$'\e[01;31m'
+# export LESS_TERMCAP_me=$'\e[0m'
+# export LESS_TERMCAP_se=$'\e[0m'
+# export LESS_TERMCAP_so=$'\e[01;47;30m'
+# export LESS_TERMCAP_ue=$'\e[0m'
+# export LESS_TERMCAP_us=$'\e[01;36m'
 export LESS=-r
 
 # Set nnn plugin keybindings and fifo set up.
@@ -276,6 +581,7 @@ export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 export FZF_DEFAULT_OPTS="--no-mouse --height 50% -1 --reverse --multi --inline-info --preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300' --preview-window='right:wrap' --bind='f3:execute(bat --style=numbers {} || less -f {}),f2:toggle-preview,ctrl-d:half-page-down,ctrl-u:half-page-up,ctrl-a:select-all+accept,ctrl-y:execute-silent(echo {+} | pbcopy)'"
 
 export BAT_PAGER="less -R"
+export BAT_THEME=ansi
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

@@ -5,9 +5,6 @@
 # Source global definitions if it exists.
 [ -f /etc/bashrc ] && . /etc/bashrc
 
-# Include common shell settings for bash and zsh if it exists.
-[ -f ~/.shell_commons ] && . ~/.shell_commons
-
 HISTFILE=~/.bash_history
 
 # Sets Ctrl-s incremental search.
@@ -73,8 +70,21 @@ command -v jump >/dev/null 2>&1 && eval "$(jump shell bash)"
 # Starship prompt
 command -v starship >/dev/null 2>&1 && eval "$(starship init bash)"
 
+# mise: full per-directory tool version activation (reads .mise.toml/.tool-versions)
+command -v mise >/dev/null 2>&1 && eval "$(mise activate bash)"
+
+# zoxide: adds z/zi fuzzy directory jumping, doesn't touch cd
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
+
+# Include common shell settings for bash and zsh if it exists. Sourced after
+# jump/starship/mise/zoxide above: mise and zoxide both define their own cd()
+# on activation, so ours needs to load last to be the one that's actually
+# left standing (last function definition wins, no source-order-independent
+# override mechanism exists for plain functions like there is for aliases).
+[ -f ~/.shell_commons ] && . ~/.shell_commons
+
 # Omarchy theming
-export OMARCHY_PATH="$HOME/.local/share/omarchy"
+export OMARCHY_PATH="/usr/share/omarchy"
 export PATH="$OMARCHY_PATH/bin:$PATH"
 export PATH="$HOME/.local/share/gem/ruby/3.4.0/bin:$PATH"
 

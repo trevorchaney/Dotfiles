@@ -14,6 +14,7 @@ alias free="free -m"                # Show sizes in MB.
 alias gitu="git add . && git commit -m "UPDATE" && git push"  # Quick git add, commit, push.
 # alias gitadog="git log --all --decorate --oneline --graph" # Make a graph of a repo's commit log.
 alias goshimup="mise reshim"        # Refresh mise shims (e.g. after go install).
+alias mup='MISE_MINIMUM_RELEASE_AGE=0 mise up'  # Upgrade all mise-managed tools (claude, codex, etc.) immediately.
 alias grep='grep --color=auto'      # Add color to grep command.
 alias info="info --vi-keys"         # Set vi-key bindings for the info command.
 alias l="ls -CF --color=auto"
@@ -49,3 +50,10 @@ alias dot="cd ~/Dotfiles"
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=critical -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# mise's shims dir sits ahead of /usr/bin on PATH, so `python` (and other
+# tools) resolve to mise's managed versions instead of the system ones.
+# AUR PKGBUILDs assume system tooling (e.g. `python -m build`), so force
+# system binaries first when building packages.
+paru() { PATH="/usr/bin:$PATH" command paru "$@"; }
+makepkg() { PATH="/usr/bin:$PATH" command makepkg "$@"; }
