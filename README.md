@@ -35,8 +35,18 @@ symlink the standard home folders out to it:
 | `ctags`     | `.ctags`                                      | Always                |
 | `gdb`       | `.config/gdb/`, `.config/gf2_config.ini`      | Always                |
 | `mise`      | `.config/mise/config.toml` (global tool list) | Always                |
-| `hyprland`  | `~/.config/hypr/` (full Hyprland config)      | Wayland sessions only |
+| `btop`      | `.config/btop/btop.conf`                      | Always                |
+| `newsboat`  | `.config/newsboat/` (`config`, `urls`)        | Always                |
+| `taskwarrior` | `.taskrc`                                   | Always                |
+| `aerc`      | `aerc.conf`, `binds.conf` (not accounts)      | Always                |
+| `hyprland`  | `~/.config/hypr/` Lua config, hypridle/lock   | Wayland sessions only |
 | `waybar`    | `~/.config/waybar/` (status bar layout + CSS) | Wayland sessions only |
+| `kitty` `ghostty` | terminal configs                        | Wayland sessions only |
+| `imv` `herdr` `voxtype` | app configs                       | Wayland sessions only |
+| `fontconfig` | `.config/fontconfig/fonts.conf`              | Wayland sessions only |
+| `xcompose`  | `.XCompose`                                   | Wayland sessions only |
+| `systemd-user` | user units (gitea, voxtype); enable by hand | Wayland sessions only |
+| `systemd`   | logind/sleep drop-ins (needs `/etc/systemd/`) | Copy manually         |
 | `x11`       | `.Xresources`, i3 config                      | X11 sessions only     |
 | `Windows`   | PowerShell profile, startup scripts           | Windows only          |
 | `Makefiles` | C++ Makefile template                         | Copy manually         |
@@ -142,3 +152,13 @@ configurations on the same machine.
   `find . -type f -name "*.vim" -o -name "*.sh" | xargs sed -i 's/\r//'`
 - **jump not found**: install `jump` from the AUR (`yay -S jump`), or the
   jump eval in `.bashrc`/`.zshrc` is safely guarded and will silently skip.
+
+## Not tracked (secrets and account details)
+
+These stay local on purpose; never add them here:
+
+- `~/.env` (API keys), `~/.config/gh/` (GitHub auth)
+- Mail accounts: `~/.msmtprc`, `~/.mailrc`, `~/.config/aerc/accounts.conf`.
+  Passwords live in the GNOME keyring (`secret-tool lookup service gmail user <addr>`),
+  read by msmtp's `passwordeval` and aerc's `*-cred-cmd`.
+- Shell/REPL histories, app logs, sockets and session files

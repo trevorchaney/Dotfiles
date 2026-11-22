@@ -1,0 +1,8 @@
+# Add your RSS/Atom feeds here, one per line
+# You can tag feeds by adding tags after the URL e.g.:
+# https://example.com/feed.xml "tag1" "tag2"
+#
+# Examples:
+# https://news.ycombinator.com/rss "tech" "news"
+# https://lobste.rs/rss "tech" "news"
+# https://this-week-in-rust.org/rss.xml "tech" "rust"

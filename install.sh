@@ -34,10 +34,13 @@ if command -v stow >/dev/null 2>&1; then
         stow -v -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
     done
 
-    # mise: link only config.toml so ~/.config/mise stays a real directory
-    # (mise may write other files there; they shouldn't land in this repo)
-    echo "Stowing mise"
-    stow -v --no-folding -t "$HOME" mise || echo "stow failed for mise (continuing)"
+    # Packages that link individual files (--no-folding) so the app's own
+    # directory stays real: apps write logs, sockets, caches and backups
+    # next to their config, and those must not land in this repo.
+    for pkg in mise btop newsboat taskwarrior aerc; do
+        echo "Stowing $pkg"
+        stow -v --no-folding -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
+    done
 
     # Wayland/Hyprland — stow if running Wayland
     if [ -n "$WAYLAND_DISPLAY" ] || [ "$XDG_SESSION_TYPE" = "wayland" ]; then
@@ -45,9 +48,14 @@ if command -v stow >/dev/null 2>&1; then
         stow -v -t "$HOME" hyprland || echo "stow failed for hyprland (continuing)"
         echo "Stowing waybar"
         stow -v -t "$HOME" waybar || echo "stow failed for waybar (continuing)"
+        for pkg in kitty ghostty imv herdr voxtype fontconfig xcompose systemd-user; do
+            echo "Stowing $pkg"
+            stow -v --no-folding -t "$HOME" "$pkg" || echo "stow failed for $pkg (continuing)"
+        done
+        # Pick up the user units (gitea, voxtype); enabling them is left to the user
+        command -v systemctl >/dev/null 2>&1 && systemctl --user daemon-reload || true
     else
-        echo "Skipping hyprland (not a Wayland session)"
-        echo "Skipping waybar (not a Wayland session)"
+        echo "Skipping hyprland, waybar and desktop app configs (not a Wayland session)"
     fi
 
     # X11 — stow if running X11

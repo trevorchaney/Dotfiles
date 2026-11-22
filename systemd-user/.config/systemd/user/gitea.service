@@ -1,0 +1,13 @@
+[Unit]
+Description=Gitea user service
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/tlc/gitea
+ExecStart=/usr/bin/gitea web --pid /home/tlc/gitea/gitea.pid --work-path /home/tlc/gitea --custom-path /home/tlc/gitea/custom --config /home/tlc/gitea/custom/conf/app.ini
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target

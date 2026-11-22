@@ -1,0 +1,31 @@
+# Auto-reload feeds on startup and every hour
+auto-reload yes
+reload-time 60
+reload-threads 4
+
+# Keep last 100 items per feed
+max-items 100
+
+# Save downloaded media (podcasts) to pars storage
+download-path ~/pars/storage/podcasts/%n
+
+# Use nvim to open articles
+browser firefox
+
+# Show unread count in title
+show-read-feeds yes
+
+# vi-style keybindings (these are defaults but made explicit)
+bind-key j next
+bind-key k prev
+bind-key J next-feed
+bind-key K prev-feed
+bind-key G end
+bind-key g home
+bind-key d pagedown
+bind-key u pageup
+bind-key l open
+bind-key h quit
+bind-key a toggle-article-read
+bind-key n next-unread
+bind-key N prev-unread
